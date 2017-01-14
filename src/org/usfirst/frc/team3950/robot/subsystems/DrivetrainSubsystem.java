@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -41,6 +42,7 @@ public class DrivetrainSubsystem extends Subsystem {
     
     public void GearShift(){
     	gearShiftSolenoid.set(!gearShiftSolenoid.get());
+    	SmartDashboard.putBoolean("High Gear", gearShiftSolenoid.get());
     }
 }
 
