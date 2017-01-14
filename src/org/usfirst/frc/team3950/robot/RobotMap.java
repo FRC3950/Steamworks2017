@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3950.robot;
 
-//import com.kauailabs.navx.frc.*;
+import com.kauailabs.navx.frc.*;
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -17,7 +17,7 @@ public class RobotMap {
     public static TalonSRX rightFrontDriveMotor = new TalonSRX(2);
     public static TalonSRX rightBackDriveMotor = new TalonSRX(3);
     public static Solenoid driveGearShiftSolenoid = new Solenoid(0);
-   // public static AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
+    public static AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
