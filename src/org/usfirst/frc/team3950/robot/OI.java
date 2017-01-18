@@ -17,6 +17,7 @@ public class OI {
     // number it is.
     public Joystick driveStick = new Joystick(0);
     public Button driveStick3Button = new JoystickButton(driveStick, 3);
+    public Button driveStick4Button = new JoystickButton(driveStick, 4);
     // Button button = new JoystickButton(stick, buttonNumber);
     // There are a few additional built in buttons you can use. Additionally,
     // by subclassing Button you can create custom triggers and bind those to
@@ -38,6 +39,7 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
     public OI() {
     	driveStick3Button.whenPressed(new DriveGearShiftCommand());
+    	driveStick4Button.whenPressed(new AutoGearCommand());
     }
 }
 
