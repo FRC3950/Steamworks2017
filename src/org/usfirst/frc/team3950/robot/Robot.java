@@ -2,7 +2,7 @@
 package org.usfirst.frc.team3950.robot;
 
 import org.usfirst.frc.team3950.robot.commands.*;
-import org.usfirst.frc.team3950.robot.subsystems.DrivetrainSubsystem;
+import org.usfirst.frc.team3950.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -23,6 +23,8 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();
+	public static BallIntakeSubsystem ballintakesubsystem = new BallIntakeSubsystem();
+	public static GearIntakeSubsystem gearintakesubsystem = new GearIntakeSubsystem();
 
     Command autonomousCommand;
     SendableChooser chooser;

@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3950.robot;
 
+import com.ctre.CANTalon;
 import com.kauailabs.navx.frc.*;
+
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -12,11 +14,15 @@ import edu.wpi.first.wpilibj.*;
 public class RobotMap {
     // For example to map the left and right motors, you could define the
     // following variables to use with your drivetrain subsystem.
-    public static TalonSRX leftFrontDriveMotor = new TalonSRX(0);
-    public static TalonSRX leftBackDriveMotor = new TalonSRX(1);
-    public static TalonSRX rightFrontDriveMotor = new TalonSRX(2);
-    public static TalonSRX rightBackDriveMotor = new TalonSRX(3);
+    public static CANTalon leftFrontDriveMotor = new CANTalon(0);
+    public static CANTalon leftBackDriveMotor = new CANTalon(1);
+    public static CANTalon rightFrontDriveMotor = new CANTalon(2);
+    public static CANTalon rightBackDriveMotor = new CANTalon(3);
+    public static CANTalon ballIntakeMotor = new CANTalon(4);
+    public static CANTalon gearIntakeMotor = new CANTalon(5);
     public static Solenoid driveGearShiftSolenoid = new Solenoid(0);
+    public static Solenoid gearIntakeSolenoid1 = new Solenoid(1);
+    public static Solenoid gearIntakeSolenoid2 = new Solenoid(2);
     public static AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

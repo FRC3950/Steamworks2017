@@ -2,7 +2,9 @@ package org.usfirst.frc.team3950.robot.subsystems;
 
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.commands.*;
-import edu.wpi.first.wpilibj.TalonSRX;
+
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,10 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *Attire!
  */
 public class DrivetrainSubsystem extends Subsystem {
-    TalonSRX leftFront;
-    TalonSRX leftBack;
-    TalonSRX rightFront;
-    TalonSRX rightBack;
+    CANTalon leftFront;
+    CANTalon leftBack;
+    CANTalon rightFront;
+    CANTalon rightBack;
     RobotDrive drivetrain;
     Solenoid gearShiftSolenoid;
     // Put methods for controlling this subsystem
