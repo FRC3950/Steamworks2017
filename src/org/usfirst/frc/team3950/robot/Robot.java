@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team3950.robot;
 
 import org.usfirst.frc.team3950.robot.commands.*;
@@ -25,6 +24,7 @@ public class Robot extends IterativeRobot {
 	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();
 	public static BallIntakeSubsystem ballintakesubsystem = new BallIntakeSubsystem();
 	public static GearIntakeSubsystem gearintakesubsystem = new GearIntakeSubsystem();
+	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
     Command autonomousCommand;
     SendableChooser chooser;

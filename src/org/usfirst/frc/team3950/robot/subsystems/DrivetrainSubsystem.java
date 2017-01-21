@@ -47,4 +47,3 @@ public class DrivetrainSubsystem extends Subsystem {
     	SmartDashboard.putBoolean("High Gear", gearShiftSolenoid.get());
     }
 }
-
