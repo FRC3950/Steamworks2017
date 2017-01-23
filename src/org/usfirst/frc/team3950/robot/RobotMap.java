@@ -26,6 +26,7 @@ public class RobotMap {
     public static Solenoid gearIntakeSolenoid1 = new Solenoid(1);
     public static Solenoid gearIntakeSolenoid2 = new Solenoid(2);
     public static DigitalInput shooterIndexerSwitch = new DigitalInput(0);
+    public static DigitalInput gearBumperSwitch = new DigitalInput(1);
     public static AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

@@ -1,8 +1,10 @@
 package org.usfirst.frc.team3950.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 import org.usfirst.frc.team3950.robot.commands.*;
 //Hello World!
 
@@ -16,6 +18,7 @@ public class OI {
     // You create one by telling it which joystick it's on and which button
     // number it is.
     public Joystick driveStick = new Joystick(0);
+    public XboxController xboxController = new XboxController(1);
     public Button driveStick3Button = new JoystickButton(driveStick, 3);
     public Button driveStick4Button = new JoystickButton(driveStick, 4);
     // Button button = new JoystickButton(stick, buttonNumber);
