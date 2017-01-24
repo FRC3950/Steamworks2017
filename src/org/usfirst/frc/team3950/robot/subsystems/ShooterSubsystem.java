@@ -19,6 +19,7 @@ public class ShooterSubsystem extends Subsystem {
 	private int range = 10;
 	private CANTalon motor;
 	private int targetRPM = 0;
+	private boolean running = false; // not set up yet.
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

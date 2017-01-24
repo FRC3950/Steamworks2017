@@ -37,4 +37,3 @@ public class ShooterIndexerSubsystem extends Subsystem {
     	return limSwitch.get();
     }
 }
-

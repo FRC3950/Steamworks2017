@@ -25,6 +25,8 @@ public class Robot extends IterativeRobot {
 	public static BallIntakeSubsystem ballintakesubsystem = new BallIntakeSubsystem();
 	public static GearIntakeSubsystem gearintakesubsystem = new GearIntakeSubsystem();
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	public static ShooterIndexerSubsystem shooterIndexerSubsystem = new ShooterIndexerSubsystem();
+	
 
     Command autonomousCommand;
     SendableChooser chooser;
