@@ -27,11 +27,34 @@ public class GearIntakeSubsystem extends Subsystem {
     	setDefaultCommand(new GearIntakeCommand());
     }
     
+    public enum State{
+    	up,
+    	down
+    }
+    
+    private State gearliftstate;
+    
     public void GearIntake(double trigger){
     	intakeMotor.set(trigger);
     }
     
     public boolean GearBumperSwitchGet(){
     	return bumperSwitch.get();
+    }
+    
+    public void GearIntakeLiftUp(){
+    	solenoid1.set(true);
+    	solenoid2.set(true);
+    	gearliftstate = State.up;
+    }
+    
+    public void GearIntakeLiftDown(){
+    	solenoid1.set(false);
+    	solenoid2.set(false);
+    	gearliftstate = State.down;
+    }
+    
+    public State GearLiftStateGet(){
+    	return gearliftstate;
     }
 }
