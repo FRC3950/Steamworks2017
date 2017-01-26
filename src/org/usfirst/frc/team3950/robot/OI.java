@@ -21,6 +21,9 @@ public class OI {
     public XboxController xboxController = new XboxController(1);
     public Button driveStick3Button = new JoystickButton(driveStick, 3);
     public Button driveStick4Button = new JoystickButton(driveStick, 4);
+    public Button driveStick1Button = new JoystickButton(driveStick, 1);
+    public Button driveStick2Button = new JoystickButton(driveStick, 2);
+    public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
     // Button button = new JoystickButton(stick, buttonNumber);
     // There are a few additional built in buttons you can use. Additionally,
     // by subclassing Button you can create custom triggers and bind those to
@@ -41,8 +44,12 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
     public OI() {
+    	System.out.println("Hello from OI Constructor.");
     	driveStick3Button.whenPressed(new DriveGearShiftCommand());
     	driveStick4Button.whenPressed(new AutoGearCommand());
+    	driveStick1Button.whenPressed(shooterStartCommand);
+    	driveStick2Button.whenPressed(new ShooterEndCommand());
+    	
     }
 }
 
