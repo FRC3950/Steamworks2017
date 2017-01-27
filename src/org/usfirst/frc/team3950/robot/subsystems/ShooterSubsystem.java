@@ -28,8 +28,9 @@ public class ShooterSubsystem extends Subsystem {
 
     public void initDefaultCommand() {
     	motor = RobotMap.shooterMotor;
+//    	motor.configEncoderCodesPerRev(1024);
     	motor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-    	motor.reverseSensor(false);
+    	motor.reverseSensor(true);
     	motor.changeControlMode(TalonControlMode.Speed);
     	motor.configNominalOutputVoltage(+0.0f, -0.0f);
     	motor.configPeakOutputVoltage(+12.0f, -12.0f);
@@ -39,13 +40,13 @@ public class ShooterSubsystem extends Subsystem {
     	motor.setI(I);
     	motor.setD(D);
     	motor.set(0);
-    	motor.enable();
+    	//motor.enable();
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
     public void setTargetRPM(double rpm) {
     	targetRPM = (int) rpm;
-    	motor.enable();
+    	//motor.enable();
     	motor.set(rpm);
     }
 	public double getP() {
