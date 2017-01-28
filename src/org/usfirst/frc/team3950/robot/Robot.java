@@ -26,6 +26,8 @@ public class Robot extends IterativeRobot {
 	public static GearIntakeSubsystem gearintakesubsystem = new GearIntakeSubsystem();
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 	public static ShooterIndexerSubsystem shooterIndexerSubsystem = new ShooterIndexerSubsystem();
+	public static AxisCameraSubsystem axisCameraSubsystem = new AxisCameraSubsystem();
+	public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(); 
 	
 
     Command autonomousCommand;
