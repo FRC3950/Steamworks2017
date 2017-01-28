@@ -114,6 +114,7 @@ public class Robot extends IterativeRobot {
 		_sb.append(motorOutputBus);
         _sb.append("\tspd:");
         _sb.append(RobotMap.shooterMotor.getSpeed() );
+        SmartDashboard.putNumber("Shooter speed", RobotMap.shooterMotor.getSpeed());
         _sb.append("\terr:");
         _sb.append(RobotMap.shooterMotor.getClosedLoopError());
         _sb.append("\ttrg:");

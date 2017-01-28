@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team3950.robot.RobotMap;
 
@@ -40,13 +41,18 @@ public class ShooterSubsystem extends Subsystem {
     	motor.setI(I);
     	motor.setD(D);
     	motor.set(0);
+    	//SmartDashboard.putNumber("Proportion", P);
+    	//SmartDashboard.putNumber("Integral", I);
+    	//SmartDashboard.putNumber("Derivative", D);
+    	//SmartDashboard.putNumber("Feed Forward", F);
+    	
     	//motor.enable();
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
     public void setTargetRPM(double rpm) {
     	targetRPM = (int) rpm;
-    	//motor.enable();
+    	motor.enable();
     	motor.set(rpm);
     }
 	public double getP() {
@@ -56,12 +62,20 @@ public class ShooterSubsystem extends Subsystem {
 		P = p;
 		motor.setP(p);
 	}
+	public void setPSmartDashboard(){
+		P = SmartDashboard.getNumber("Proportion", 0);
+		motor.setP(P);
+	}
 	public double getI() {
 		return I;
 	}
 	public void setI(double i) {
 		motor.setI(i);
 		I = i;
+	}
+	public void setISmartDashboard(){
+		I = SmartDashboard.getNumber("Integral", 0);
+		motor.setI(I);
 	}
 	public double getD() {
 		return D;
@@ -70,6 +84,10 @@ public class ShooterSubsystem extends Subsystem {
 		motor.setD(d);
 		D = d;
 	}
+	public void setDSmartDashboard(){
+		D = SmartDashboard.getNumber("Derivative", 0);
+		motor.setD(D);
+	}
 	public double getF() {
 		return F;
 	}
@@ -77,8 +95,16 @@ public class ShooterSubsystem extends Subsystem {
 		motor.setF(f);
 		F = f;
 	}
+	public void setFSmartDashboard(){
+		F = SmartDashboard.getNumber("Feed Forward", 0);
+		motor.setF(F);
+	}
 	public boolean speedInRange() {
 		return (motor.getEncVelocity() > targetRPM - range) && (motor.getEncVelocity() < targetRPM - range);
+	}
+	public void shutOffMotor() {
+		motor.set(0);
+		motor.disable();
 	}
 }
 
