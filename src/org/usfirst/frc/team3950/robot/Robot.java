@@ -101,13 +101,28 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.cancel();
         RobotMap.ahrs.reset();
     }
-
+    StringBuilder _sb = new StringBuilder();
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        //System.out.println("Navx: " + RobotMap.ahrs.getAngle());
+        double motorOutputVoltage = RobotMap.shooterMotor.getOutputVoltage();
+        double motorOutputBus = RobotMap.shooterMotor.getBusVoltage();
+    	/* prepare line to print */
+		_sb.append("\toutVoltage:");
+		_sb.append(motorOutputVoltage);
+		_sb.append("\toutBus:");
+		_sb.append(motorOutputBus);
+        _sb.append("\tspd:");
+        _sb.append(RobotMap.shooterMotor.getSpeed() );
+        SmartDashboard.putNumber("Shooter speed", RobotMap.shooterMotor.getSpeed());
+        _sb.append("\terr:");
+        _sb.append(RobotMap.shooterMotor.getClosedLoopError());
+        _sb.append("\ttrg:");
+        _sb.append(ShooterStartCommand.targetRPM);
+        System.out.println(_sb);
+        _sb.setLength(0);
     }
     
     /**
