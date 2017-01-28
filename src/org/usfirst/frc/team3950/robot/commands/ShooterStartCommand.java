@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ShooterStartCommand extends Command {
-	private float targetRPM = 100;
+	private double targetRPM = .5;
     public ShooterStartCommand() {
         // Use requires() here to declare subsystem dependencies    	
         requires(Robot.shooterSubsystem);
@@ -22,7 +22,7 @@ public class ShooterStartCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	System.out.println("Shooter Start Command Initialized");
-    	float counts = (targetRPM*4096*(1/600));
+    	double counts = (targetRPM*4096*(1/600));
     	Robot.shooterSubsystem.setF(1023/counts);
     	Robot.shooterSubsystem.setP(.15);
     	Robot.shooterSubsystem.setD(.5);

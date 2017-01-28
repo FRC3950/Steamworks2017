@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team3950.robot.RobotMap;
 
@@ -39,12 +40,15 @@ public class ShooterSubsystem extends Subsystem {
     	motor.setI(I);
     	motor.setD(D);
     	motor.set(0);
-    	motor.enable();
+    	SmartDashboard.putNumber("Feed Forward", F);
+    	SmartDashboard.putNumber("Proportion", P);
+    	SmartDashboard.putNumber("Integral", I);
+    	SmartDashboard.putNumber("Derivative", D);
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
     public void setTargetRPM(double rpm) {
-    	targetRPM = (int) rpm;
+    	//targetRPM = (int) rpm;
     	motor.enable();
     	motor.set(rpm);
     }
