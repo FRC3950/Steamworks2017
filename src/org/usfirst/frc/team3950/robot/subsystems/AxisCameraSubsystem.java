@@ -1,6 +1,13 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
+
 import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.CvSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -8,17 +15,68 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class AxisCameraSubsystem extends Subsystem {
-
+	
+	private static AxisCamera camera = null;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+	public static CvSink cvSink = null;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void startCamera(){
-    	AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
+    public static void startCamera() {
+    	if(camera == null) {
+    		camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
+    		camera.setResolution(320, 240);
+    		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+    	}
     }
+    
+    public void getRectangles(Rect rectOne, Rect rectTwo) {
+    	AxisCameraSubsystem.startCamera();
+		Mat mat = new Mat(); //define mat in order to reuse it
+		if(AxisCameraSubsystem.cvSink.grabFrame(mat) != 0) {
+			TestBoundingRectangles tbr = new TestBoundingRectangles();
+			tbr.process(mat);
+			if(tbr.filterContoursOutput().size() == 2) {
+				MatOfPoint mop1 = tbr.filterContoursOutput().get(0);
+				MatOfPoint mop2 = tbr.filterContoursOutput().get(1);
+				Rect r1 = Imgproc.boundingRect(mop1); //get the first MatOfPoint (contour), calculate bounding rectangle
+				Rect r2 = Imgproc.boundingRect(mop2); //get the second MatOfPoint (contour)
+				
+				rectOne = r1;
+				rectTwo = r2;
+				
+				System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
+				System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
+
+				//rect.x is the left edge afaik
+				//rect.y is the top edge afaik
+				int centerXOne = rectOne.x + (rectOne.width/2); //returns the center of the bounding rectangle
+				int centerYOne = rectOne.y + (rectOne.height/2); //returns the center of the bounding rectangle
+				int centerXTwo = rectTwo.x + (rectTwo.width/2);
+				int centerYTwo = rectTwo.y + (rectTwo.height/2);
+				int centerYAvg = (centerYOne + centerYTwo)/2;
+				int centerXAvg = (centerXOne + centerXTwo)/2;
+
+				System.out.println(centerXAvg);
+			}
+			else {
+				System.out.println("NO");
+			}
+		}
+
+    }
+//    public void FindBoundingRectangles(){
+//   	System.out.println(pipeline.filterContoursOutput().size());
+//    	if(pipeline.filterContoursOutput().size()==2){
+//    		Rect rectOne = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+//    		Rect rectTwo = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+//    		System.out.println(rectOne.area());
+//    		System.out.println(rectTwo.area());
+//    	}
+//    }
 }
 

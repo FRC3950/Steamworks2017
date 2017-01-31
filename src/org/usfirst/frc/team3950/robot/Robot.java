@@ -121,7 +121,7 @@ public class Robot extends IterativeRobot {
         _sb.append(RobotMap.shooterMotor.getClosedLoopError());
         _sb.append("\ttrg:");
         _sb.append(ShooterStartCommand.targetRPM);
-        System.out.println(_sb);
+//        System.out.println(_sb);
         _sb.setLength(0);
     }
     

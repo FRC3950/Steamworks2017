@@ -23,6 +23,8 @@ public class OI {
     public Button driveStick4Button = new JoystickButton(driveStick, 4);
     public Button driveStick1Button = new JoystickButton(driveStick, 1);
     public Button driveStick2Button = new JoystickButton(driveStick, 2);
+    public Button driveStick5Button = new JoystickButton(driveStick, 5);
+    public Button driveStick6Button = new JoystickButton(driveStick, 6);
     public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
     // Button button = new JoystickButton(stick, buttonNumber);
     // There are a few additional built in buttons you can use. Additionally,
@@ -49,6 +51,8 @@ public class OI {
     	driveStick4Button.whenPressed(new AutoGearCommand());
     	driveStick1Button.whenPressed(new ShooterStartSmartDashboardCommand());
     	driveStick2Button.whenPressed(new ShooterEndCommand());
+    	driveStick5Button.whenPressed(new ShooterStartCommand());
+    	driveStick6Button.whenPressed(new CameraStartCommand());
     	
     }
 }

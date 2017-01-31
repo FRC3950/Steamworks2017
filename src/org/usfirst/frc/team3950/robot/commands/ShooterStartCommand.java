@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3950.robot.commands;
 
+import org.opencv.core.Rect;
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.subsystems.AxisCameraSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -13,6 +15,7 @@ public class ShooterStartCommand extends Command {
     public ShooterStartCommand() {
         // Use requires() here to declare subsystem dependencies    	
         requires(Robot.shooterSubsystem);
+        requires(Robot.axisCameraSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -22,6 +25,13 @@ public class ShooterStartCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	AxisCameraSubsystem axisCameraSubsystem = Robot.axisCameraSubsystem;
+		Rect rectOne = new Rect();
+		Rect rectTwo = new Rect();
+    	axisCameraSubsystem.getRectangles(rectOne, rectTwo);
+		System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
+		System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
+
     	//System.out.println("Shooter Start Command Initialized");
     	double counts = targetRPM*4096.0/600.0;
     	System.out.println(.9*1023.0/counts);
@@ -29,7 +39,7 @@ public class ShooterStartCommand extends Command {
     	Robot.shooterSubsystem.setP(.02); //.15); //.03
     	Robot.shooterSubsystem.setI(.0003); //.0003
     	Robot.shooterSubsystem.setD(.08); //.45); //0
-       	Robot.shooterSubsystem.setTargetRPM(targetRPM);
+//       	Robot.shooterSubsystem.setTargetRPM(targetRPM);
        	//System.out.println("Shooter Start Command Complete, targetRPM = " + targetRPM);
     }
 
