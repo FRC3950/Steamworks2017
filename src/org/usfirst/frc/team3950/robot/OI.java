@@ -51,7 +51,7 @@ public class OI {
     	driveStick4Button.whenPressed(new AutoGearCommand());
     	driveStick1Button.whenPressed(new ShooterStartSmartDashboardCommand());
     	driveStick2Button.whenPressed(new ShooterEndCommand());
-    	//driveStick5Button.whenPressed(new ShooterStartCommand());
+    	driveStick5Button.whenPressed(new ShooterStartCommand());
     	driveStick6Button.whenPressed(new CameraStartCommand());
     	
     }

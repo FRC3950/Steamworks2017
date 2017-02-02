@@ -5,6 +5,7 @@ import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.subsystems.AxisCameraSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -25,6 +26,11 @@ public class ShooterStartCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double P = SmartDashboard.getNumber("Proportion", .2);
+    	double I = SmartDashboard.getNumber("Integral", 0);
+    	double D = SmartDashboard.getNumber("Derivative", 1.0);
+    	double F = SmartDashboard.getNumber("Feed Forward", .025);
+
     	AxisCameraSubsystem axisCameraSubsystem = Robot.axisCameraSubsystem;
 		Rect rectOne = new Rect();
 		Rect rectTwo = new Rect();
@@ -35,10 +41,10 @@ public class ShooterStartCommand extends Command {
     	//System.out.println("Shooter Start Command Initialized");
     	double counts = targetRPM*4096.0/600.0;
     	System.out.println(.9*1023.0/counts);
-    	Robot.shooterSubsystem.setF(.05); //1023.0/counts); //.15
-    	Robot.shooterSubsystem.setP(.02); //.15); //.03
-    	Robot.shooterSubsystem.setI(.0003); //.0003
-    	Robot.shooterSubsystem.setD(.08); //.45); //0
+    	Robot.shooterSubsystem.setF(F); //1023.0/counts); //.15
+    	Robot.shooterSubsystem.setP(P); //.15); //.03
+    	Robot.shooterSubsystem.setI(I); //.0003
+    	Robot.shooterSubsystem.setD(D); //.45); //0
 //       	Robot.shooterSubsystem.setTargetRPM(targetRPM);
        	//System.out.println("Shooter Start Command Complete, targetRPM = " + targetRPM);
     }
@@ -57,3 +63,4 @@ public class ShooterStartCommand extends Command {
     protected void interrupted() {
     }
 }
+
