@@ -41,16 +41,16 @@ public class TestBoundingRectangles {
 	public void process(Mat source0) {
 		// Step Resize_Image0:
 		Mat resizeImageInput = source0;
-		double resizeImageWidth = 640;
-		double resizeImageHeight = 480;
+		double resizeImageWidth = 960;
+		double resizeImageHeight = 720;
 		int resizeImageInterpolation = Imgproc.INTER_CUBIC;
 		resizeImage(resizeImageInput, resizeImageWidth, resizeImageHeight, resizeImageInterpolation, resizeImageOutput);
 
 		// Step HSL_Threshold0:
 		Mat hslThresholdInput = resizeImageOutput;
-		double[] hslThresholdHue = {59.89208633093525, 100};
-		double[] hslThresholdSaturation = {114.65827338129496, 255.0};
-		double[] hslThresholdLuminance = {110.07194244604317, 255.0};
+		double[] hslThresholdHue = {84, 178};
+		double[] hslThresholdSaturation = {135, 255.0};
+		double[] hslThresholdLuminance = {108, 201.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:
@@ -60,7 +60,7 @@ public class TestBoundingRectangles {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 50.0;
+		double filterContoursMinArea = 100.0;
 		double filterContoursMinPerimeter = 0;
 		double filterContoursMinWidth = 0;
 		double filterContoursMaxWidth = 1000;
