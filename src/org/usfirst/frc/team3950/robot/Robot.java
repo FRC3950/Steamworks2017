@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
 	public static ShooterIndexerSubsystem shooterIndexerSubsystem = new ShooterIndexerSubsystem();
 	public static AxisCameraSubsystem axisCameraSubsystem = new AxisCameraSubsystem();
 	public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(); 
+	public static USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
 	
 
     Command autonomousCommand;
