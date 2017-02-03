@@ -1,0 +1,35 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Shooter speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="192" y="23"/>
+		<width>1166</width>
+		<height>660</height>
+	</widget>
+	<widget field="Target RPM" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="191"/>
+	</widget>
+	<widget field="Feed Forward" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="170"/>
+	</widget>
+	<widget field="Derivative" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="149"/>
+	</widget>
+	<widget field="Integral" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="128"/>
+	</widget>
+	<widget field="Proportion" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="107"/>
+	</widget>
+	<widget field="High Gear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="86"/>
+	</widget>
+	<widget field="Auto Selector" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="65"/>
+	</widget>
+	<widget field="Auto mode" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="0"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>
