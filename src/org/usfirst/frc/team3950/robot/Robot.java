@@ -102,6 +102,7 @@ public class Robot extends IterativeRobot {
         RobotMap.ahrs.reset();
     }
     StringBuilder _sb = new StringBuilder();
+    double test;
     /**
      * This function is called periodically during operator control
      */
@@ -117,6 +118,7 @@ public class Robot extends IterativeRobot {
         _sb.append("\tspd:");
         _sb.append(RobotMap.shooterMotor.getSpeed() );
         SmartDashboard.putNumber("Shooter speed", RobotMap.shooterMotor.getSpeed());
+        test = SmartDashboard.getNumber("Test", 0);
         _sb.append("\terr:");
         _sb.append(RobotMap.shooterMotor.getClosedLoopError());
         _sb.append("\ttrg:");

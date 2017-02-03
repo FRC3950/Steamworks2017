@@ -42,10 +42,10 @@ public class ShooterSubsystem extends Subsystem {
     	motor.setD(D);
     	motor.set(0);
 
-    	//SmartDashboard.putNumber("Proportion", P);
-    	//SmartDashboard.putNumber("Integral", I);
-    	//SmartDashboard.putNumber("Derivative", D);
-    	//SmartDashboard.putNumber("Feed Forward", F);
+    	SmartDashboard.putNumber("Proportion", P);
+    	SmartDashboard.putNumber("Integral", I);
+    	SmartDashboard.putNumber("Derivative", D);
+    	SmartDashboard.putNumber("Feed Forward", F);
 
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
