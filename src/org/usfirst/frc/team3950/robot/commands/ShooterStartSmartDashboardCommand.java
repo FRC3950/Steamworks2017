@@ -19,7 +19,6 @@ public class ShooterStartSmartDashboardCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	targetRPM = (float) SmartDashboard.getNumber("Target RPM", 2000);
     	counts = targetRPM*4096.0/600.0;
     }
 
@@ -28,6 +27,7 @@ public class ShooterStartSmartDashboardCommand extends Command {
     	System.out.println("Shooter Start Smart Dashboard Command Initialized");
     	
     	System.out.println(.9*1023.0/counts);
+    	targetRPM = (float) SmartDashboard.getNumber("Target RPM", 2000);
     	Robot.shooterSubsystem.setFSmartDashboard(); //1023.0/counts); //.15
     	Robot.shooterSubsystem.setPSmartDashboard(); //.15); //.03
     	Robot.shooterSubsystem.setISmartDashboard(); //.0003

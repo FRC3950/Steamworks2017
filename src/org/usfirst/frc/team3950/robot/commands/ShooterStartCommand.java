@@ -37,7 +37,9 @@ public class ShooterStartCommand extends Command {
     	axisCameraSubsystem.getRectangles(rectOne, rectTwo);
 		System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
 		System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
-
+		//double avg = (((double)rectOne.height)+((double)(rectTwo.height)))/2;
+		//System.out.println(avg);
+		
     	//System.out.println("Shooter Start Command Initialized");
     	double counts = targetRPM*4096.0/600.0;
     	System.out.println(.9*1023.0/counts);
