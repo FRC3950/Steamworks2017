@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ShooterStartCommand extends Command {
 
+	int rectWidthAverage;
+	double boilerDistance;
+	double RPM;
+	
 	public static float targetRPM = 2000;
     public ShooterStartCommand() {
         // Use requires() here to declare subsystem dependencies    	
@@ -37,9 +41,12 @@ public class ShooterStartCommand extends Command {
     	axisCameraSubsystem.getRectangles(rectOne, rectTwo);
 		System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
 		System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
-		//double avg = (((double)rectOne.height)+((double)(rectTwo.height)))/2;
-		//System.out.println(avg);
-		
+		rectWidthAverage = (rectTwo.width + rectOne.width)/2;
+		System.out.println("RectWidthAverage: " + rectWidthAverage);
+		boilerDistance = axisCameraSubsystem.getBoilerDistance(rectWidthAverage);
+		System.out.println("Boiler Distance: " + boilerDistance);
+		RPM = Robot.axisCameraSubsystem.getBoilerRPM60(boilerDistance);
+		System.out.println("Calculated RPM: " + RPM);
     	//System.out.println("Shooter Start Command Initialized");
     	double counts = targetRPM*4096.0/600.0;
     	System.out.println(.9*1023.0/counts);
@@ -47,7 +54,7 @@ public class ShooterStartCommand extends Command {
     	Robot.shooterSubsystem.setP(P); //.15); //.03
     	Robot.shooterSubsystem.setI(I); //.0003
     	Robot.shooterSubsystem.setD(D); //.45); //0
-//       	Robot.shooterSubsystem.setTargetRPM(targetRPM);
+    	Robot.shooterSubsystem.setTargetRPM(RPM);
        	//System.out.println("Shooter Start Command Complete, targetRPM = " + targetRPM);
     }
 
@@ -64,5 +71,6 @@ public class ShooterStartCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+    
 }
 

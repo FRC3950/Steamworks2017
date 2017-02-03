@@ -24,7 +24,7 @@ public class ShooterStartSmartDashboardCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("Shooter Start Smart Dashboard Command Initialized");
+    	/*System.out.println("Shooter Start Smart Dashboard Command Initialized");
     	
     	System.out.println(.9*1023.0/counts);
     	targetRPM = (float) SmartDashboard.getNumber("Target RPM", 2000);
@@ -33,7 +33,7 @@ public class ShooterStartSmartDashboardCommand extends Command {
     	Robot.shooterSubsystem.setISmartDashboard(); //.0003
     	Robot.shooterSubsystem.setDSmartDashboard(); //.45); //0
        	Robot.shooterSubsystem.setTargetRPM(targetRPM);
-       	System.out.println("Shooter Start Smart Dashboard Command Complete, targetRPM = " + targetRPM);
+       	System.out.println("Shooter Start Smart Dashboard Command Complete, targetRPM = " + targetRPM);*/
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -49,9 +49,9 @@ public class OI {
     	System.out.println("Hello from OI Constructor.");
     	driveStick3Button.whenPressed(new DriveGearShiftCommand());
     	driveStick4Button.whenPressed(new AutoGearCommand());
-    	driveStick1Button.whenPressed(new ShooterStartSmartDashboardCommand());
+    	driveStick1Button.whenPressed(new ShooterStartCommand());
     	driveStick2Button.whenPressed(new ShooterEndCommand());
-    	driveStick5Button.whenPressed(new ShooterStartCommand());
+    	//driveStick5Button.whenPressed(new ShooterStartCommand());
     	driveStick6Button.whenPressed(new CameraStartCommand());
     	
     }

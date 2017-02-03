@@ -34,6 +34,16 @@ public class AxisCameraSubsystem extends Subsystem {
     	}
     }
     
+    public double getBoilerDistance(int width) {
+    	double distance = 506.8/(width - 15.28);
+    	return distance;
+    }
+    
+    public double getBoilerRPM60(double distance){
+    	double RPM = (100*distance) + 3500;
+    	return RPM;
+    }
+    
     public void getRectangles(Rect rectOne, Rect rectTwo) {
     	AxisCameraSubsystem.startCamera();
 		Mat mat = new Mat(); //define mat in order to reuse it
@@ -51,6 +61,7 @@ public class AxisCameraSubsystem extends Subsystem {
 				
 				System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
 				System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
+				System.out.println((((int)rectOne.height) + ((int)rectTwo.height)) / 2); 
 
 				//rect.x is the left edge afaik
 				//rect.y is the top edge afaik

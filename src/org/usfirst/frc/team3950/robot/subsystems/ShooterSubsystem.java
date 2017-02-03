@@ -47,9 +47,7 @@ public class ShooterSubsystem extends Subsystem {
     	SmartDashboard.putNumber("Derivative", D);
     	SmartDashboard.putNumber("Feed Forward", F);
     	SmartDashboard.putNumber("Target RPM", targetRPM);
-    	
-    	
-    	
+
 
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
