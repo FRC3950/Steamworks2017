@@ -46,5 +46,9 @@ public class USBCameraSubsystem extends Subsystem {
     	}
     	}).start();
     }
+    
+    public void getGearRectangles(){
+    	
+    }
 }
 
