@@ -1,30 +1,40 @@
 <xml version="1.0">
 <dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="0" y="327"/>
+		<property name="Camera Choice" value="USB Camera 0"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="0" y="206"/>
+		<property name="Camera Choice" value="Axis Camera"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="0" y="44"/>
+	</static-widget>
 	<widget field="Shooter speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="192" y="23"/>
-		<width>1166</width>
-		<height>660</height>
+		<location x="262" y="14"/>
+		<width>747</width>
+		<height>413</height>
 	</widget>
 	<widget field="Target RPM" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="191"/>
+		<location x="30" y="185"/>
 	</widget>
 	<widget field="Feed Forward" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="170"/>
+		<location x="31" y="156"/>
+		<height>20</height>
 	</widget>
 	<widget field="Derivative" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="149"/>
+		<location x="30" y="125"/>
+		<height>20</height>
 	</widget>
 	<widget field="Integral" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="128"/>
+		<location x="30" y="94"/>
 	</widget>
 	<widget field="Proportion" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="107"/>
+		<location x="30" y="65"/>
 	</widget>
 	<widget field="High Gear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="86"/>
-	</widget>
-	<widget field="Auto Selector" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="65"/>
+		<location x="29" y="35"/>
 	</widget>
 	<widget field="Auto mode" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="0" y="0"/>

@@ -39,11 +39,15 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	usbCameraSubsystem.initCamera();
 		oi = new OI();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new DriveCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
+        SmartDashboard.putNumber("Proportion", 0.2);
+        SmartDashboard.putNumber("Derivative", 1.0);
+        SmartDashboard.putNumber("Integral", 0.0);
+        SmartDashboard.putNumber("Feed Forward", 0.025);
         System.out.println("I am in robotInit");
     }
 	
