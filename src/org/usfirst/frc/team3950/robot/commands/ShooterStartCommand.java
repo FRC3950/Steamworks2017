@@ -32,7 +32,7 @@ public class ShooterStartCommand extends Command {
     protected void execute() {
     	double P = SmartDashboard.getNumber("Proportion", .2);
     	double I = SmartDashboard.getNumber("Integral", 0);
-    	double D = SmartDashboard.getNumber("Derivative", 1.0);
+    	double D = SmartDashboard.getNumber("Differential", 1.0);
     	double F = SmartDashboard.getNumber("Feed Forward", .025);
 
     	AxisCameraSubsystem axisCameraSubsystem = Robot.axisCameraSubsystem;

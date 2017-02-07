@@ -1,8 +1,12 @@
 package org.usfirst.frc.team3950.robot;
 
+import org.opencv.core.Mat;
 import org.usfirst.frc.team3950.robot.commands.*;
 import org.usfirst.frc.team3950.robot.subsystems.*;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -39,7 +43,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	usbCameraSubsystem.initCamera();
+//    	usbCameraSubsystem.initCamera();
 		oi = new OI();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new DriveCommand());
@@ -49,6 +53,41 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Integral", 0.0);
         SmartDashboard.putNumber("Feed Forward", 0.025);
         System.out.println("I am in robotInit");
+
+//		CameraServer.getInstance().removeCamera("USB");
+//		CameraServer.getInstance().removeCamera("Axis Camera");
+//		CameraServer.getInstance().removeCamera("USB Camera 0");
+        /*        new Thread(() -> {
+            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+            camera.setResolution(640, 480);
+            
+            CvSink cvSink = CameraServer.getInstance().getVideo();
+            CvSource outputStream = CameraServer.getInstance().putVideo("USB", 640, 480);
+            
+            Mat source = new Mat();
+            Mat oldsource = new Mat();
+  
+            long t1 = (new java.util.Date().getTime())/1000;
+            long t2 = t1;
+            while(!Thread.interrupted()) {
+            	try {
+					Thread.sleep(250);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+//					e.printStackTrace();
+				}
+               // t2 = (new java.util.Date().getTime())/1000;
+           		if((t2 - t1) >= 1) 
+            	{
+	                cvSink.grabFrame(source);
+	                oldsource = source;
+	                outputStream.putFrame(source);
+	                t1 = t2;
+            	}
+           		//outputStream.putFrame(oldsource);
+           	}
+        }).start();
+*/
     }
 	
 	/**
