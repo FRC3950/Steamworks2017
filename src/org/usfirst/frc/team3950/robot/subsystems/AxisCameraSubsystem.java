@@ -26,13 +26,27 @@ public class AxisCameraSubsystem extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public static void startCamera() {
-    	if(camera == null) {
+    public static void startCamera()
+    {
+    	System.out.println("started");
+    	if(camera == null)
+    	{
     		camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
     		camera.setResolution(320, 240);
     		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
     	}
     }
+    
+    public static void stopCamera()
+    {    	
+    	//System.out.println("null");
+    	//camera = null;
+    	
+    	//System.out.println("free");
+    	//camera.setVideoMode(null);
+    	
+    	System.out.println("I HAVE STOPPED");
+    	}
     
     public double getBoilerDistance(int width) {
     	double distance = 506.8/(width - 15.28);
