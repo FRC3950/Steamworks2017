@@ -1,37 +1,6 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="Photo Sensor value (Volts)" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="257" y="428"/>
-	</widget>
-	<widget field="Drive Motor Current" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="21" y="0"/>
-	</widget>
-	<widget field="Back Right Drive Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="532"/>
-	</widget>
-	<widget field="Back Left Drive Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="511"/>
-	</widget>
-	<widget field="Front Right Drive Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="490"/>
-	</widget>
-	<widget field="Front Left Drive Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="469"/>
-	</widget>
-	<widget field="Auto Modes" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="0" y="21"/>
-	</widget>
-	<widget field="Shooter Rotations per Second" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="26" y="448"/>
-	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="0" y="327"/>
-		<property name="Camera Choice" value="USB Camera 0"/>
-	</static-widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="2" y="207"/>
-		<property name="Camera Choice" value="Axis Camera"/>
-	</static-widget>
+
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
 		<location x="0" y="44"/>
 	</static-widget>

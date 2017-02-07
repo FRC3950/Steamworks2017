@@ -2,21 +2,17 @@ package org.usfirst.frc.team3950.robot.commands;
 
 import org.usfirst.frc.team3950.robot.Robot;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class GearIntakeCommand extends Command {
-	
-	XboxController controller = Robot.oi.xboxController;
+public class GearDistanceCommand extends Command {
 
-    public GearIntakeCommand() {
+    public GearDistanceCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.gearintakesubsystem);
+    	requires(Robot.usbCameraSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,17 +21,6 @@ public class GearIntakeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.gearintakesubsystem.GearBumperSwitchGet() != true){
-//    		System.out.println("GearBumperSwitch is not true.");
-    		Robot.gearintakesubsystem.GearIntake(controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft));
-    	}
-    	else if(Robot.gearintakesubsystem.GearBumperSwitchGet() == true){
-//    		System.out.println("GearBumperSwitch is true.");
-    		Robot.gearintakesubsystem.GearIntake(-(controller.getTriggerAxis(Hand.kLeft)));
-    	}
-    	else{
-//    		System.out.println("GearBumperSwitch is neither true nor false.");
-    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

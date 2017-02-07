@@ -26,14 +26,19 @@ public class AxisCameraSubsystem extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public static void startCamera()
-    {
-    	System.out.println("started");
-    	if(camera == null)
-    	{
+    static boolean cameraEnabled = true;
+    
+    public static void startCamera() {
+    	if(camera == null) {
     		camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
     		camera.setResolution(320, 240);
     		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+            System.out.println("I have enabled camera");
+    	}
+    	else {
+    		CameraServer.getInstance().removeCamera("10.39.50.11");
+            System.out.println("I have disabled camera");
+            camera = null;
     	}
     }
     
@@ -57,6 +62,20 @@ public class AxisCameraSubsystem extends Subsystem {
     	double RPM = (100*distance) + 3500;
     	return RPM;
     }
+    
+    public int getBoilerCenterX(Rect rectOne, Rect rectTwo){
+    	Rect rectHigh = rectOne;
+    	Rect rectLow = rectTwo;
+    	if(rectOne.y < rectTwo.y){
+    		 rectHigh = rectTwo;
+    		 rectLow = rectOne;
+    	}
+    	
+    	Rect rectTotal = new Rect(rectHigh.tl(), rectLow.br());
+    	int RectCenter = rectTotal.x + (rectTotal.width/2);
+    	return RectCenter;
+    }
+    
     
     public void getRectangles(Rect rectOne, Rect rectTwo) {
     	AxisCameraSubsystem.startCamera();

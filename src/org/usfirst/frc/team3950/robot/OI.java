@@ -25,7 +25,11 @@ public class OI {
     public Button driveStick2Button = new JoystickButton(driveStick, 2);
     public Button driveStick5Button = new JoystickButton(driveStick, 5);
     public Button driveStick6Button = new JoystickButton(driveStick, 6);
-    public Button driveStick9Button = new JoystickButton(driveStick, 9);
+    public Button xboxControllerAButton = new JoystickButton(xboxController, 1);
+    public Button xboxControllerBButton = new JoystickButton(xboxController, 2);
+    public Button xboxControllerXButton = new JoystickButton(xboxController, 3);
+    public Button xboxControllerYButton = new JoystickButton(xboxController, 4);
+    public Button xboxControllerLBButton = new JoystickButton(xboxController, 5);
     public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
     // Button button = new JoystickButton(stick, buttonNumber);
     // There are a few additional built in buttons you can use. Additionally,
@@ -54,8 +58,10 @@ public class OI {
     	driveStick2Button.whenPressed(new ShooterEndCommand());
     	driveStick5Button.whenPressed(new USBCameraDoCommand());
     	driveStick6Button.whenPressed(new CameraStartCommand());
-    	driveStick9Button.whenPressed(new CameraStopCommand());
-    	
+    	xboxControllerAButton.whenPressed(new BallIntakeCommand());
+    	xboxControllerBButton.whenPressed(new BallOuttakeCommand());
+    	xboxControllerYButton.whenPressed(new ShootCommand());
+    	xboxControllerLBButton.whenPressed(new ClimberDoCommand());
     }
 }
 

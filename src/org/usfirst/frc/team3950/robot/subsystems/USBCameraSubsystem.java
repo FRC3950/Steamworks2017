@@ -40,5 +40,9 @@ public class USBCameraSubsystem extends Subsystem {
     		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
     	}
     }
+    
+    public void getGearRectangles(){
+    	
+    }
 }
 
