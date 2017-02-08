@@ -62,6 +62,8 @@ public class OI {
     	xboxControllerBButton.whenPressed(new BallOuttakeCommand());
     	xboxControllerYButton.whenPressed(new ShootCommand());
     	xboxControllerLBButton.whenPressed(new ClimberDoCommand());
+    	
+    	xboxControllerXButton.whenPressed(new GearDistanceCommand());
     }
 }
 
