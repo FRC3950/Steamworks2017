@@ -64,6 +64,7 @@ public class OI {
     	xboxControllerLBButton.whenPressed(new ClimberDoCommand());
     	
     	xboxControllerXButton.whenPressed(new GearDistanceCommand());
+    	
     }
 }
 

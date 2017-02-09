@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
@@ -46,13 +47,34 @@ public class USBCameraSubsystem extends Subsystem {
     	}
     
     }
-     
+ 
     public Rect testRectOne = new Rect(4, 2, 3, 6);
     public Rect testRectTwo = new Rect(5, 4, 1, 2);
     public Rect testRectThree = new Rect(8, 2, 4, 3);
     public Rect testRectFour = new Rect(6, 3, 5, 7);
     public Rect testRectFive = new Rect(1, 10, 1, 1);
+   
+    public static Rect getRectContainer(ArrayList<Rect> rectList, int cameraWidth, int cameraHeight) {
+    	Rect rect = new Rect(0, 0, 0, 0);
+    	Point tl = new Point(cameraWidth - 1, cameraHeight - 1);
+    	Point br = new Point(0, 0);
+    	    	
+    	for(Rect x: rectList) {
+    		System.out.println(x.toString());
+    		tl.x = Math.min(tl.x, x.tl().x);
+    		tl.y = Math.min(tl.y, x.tl().y);
+    		br.x = Math.max(br.x, x.br().x);
+    		br.y = Math.max(br.y, x.br().y);
+    	}
+    	rect.x = (int) tl.x;
+    	rect.y = (int) tl.y;
+    	rect.width = (int) (br.x - tl.x);
+    	rect.height = (int) (br.y - tl.y);
+    	
+    	return rect;
+    }
     
+    /*
     public Rect getGearTotalRect(Rect rectOne, Rect rectTwo) {
     	int x, y, width, height;
     	//find x and width
@@ -93,7 +115,9 @@ public class USBCameraSubsystem extends Subsystem {
     	Rect rectTotal = new Rect(x, y, width - x, height - y);
     	return rectTotal;
     }
+    */
 
+    private CvSource outputStream = null;
     public ArrayList<Rect> getGearRectangles(){
 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
     	USBCameraSubsystem.startCamera();
@@ -102,16 +126,32 @@ public class USBCameraSubsystem extends Subsystem {
     	if(cvSink.grabFrame(mat) == 0) {
     		System.out.println(cvSink.getError());
     	} else {
+    		System.out.println(mat.toString());
     		System.out.println("i am in gear rectangle else");
     		GearPipeline gtbr = new GearPipeline();
     		gtbr.process(mat);
-    		System.out.println("processde mat");
+    		System.out.println("processed mat");
     		System.out.println("size: " + gtbr.filterContoursOutput().size());
-    		if((gtbr.filterContoursOutput().size() >= 2) && (gtbr.filterContoursOutput().size() < 4)){
+//    		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+//				System.out.println(Imgproc.boundingRect(mop).toString());
+//			}
+    		//if((gtbr.filterContoursOutput().size() >= 2) && (gtbr.filterContoursOutput().size() < 4))
+    		{
+    			System.out.println("inside else inside if");
     			for(MatOfPoint mop : gtbr.filterContoursOutput()) {
-    				gearRects.add(Imgproc.boundingRect(mop));
+    				Rect rect = Imgproc.boundingRect(mop);
+    				System.out.println(rect.toString());
+    				gearRects.add(rect);
     			}
     		}
+//    		else {
+//				gearRects.add(new Rect());
+//				gearRects.add(new Rect());
+//    		}
+    		System.out.println("inside else but outisde of if");
+    			
+    		
+    		//}
     	} 
     	
     	return gearRects;
