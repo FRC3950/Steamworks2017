@@ -48,9 +48,9 @@ public class ShooterStartCommand extends Command {
 			System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
 			rectWidthAverage = (rectTwo.width + rectOne.width) / 2;
 			System.out.println("RectWidthAverage: " + rectWidthAverage);
-			boilerDistance = axisCameraSubsystem.getBoilerDistance(rectWidthAverage);
+			boilerDistance = VisionUtility.getBoilerDistance(rectWidthAverage);
 			System.out.println("Boiler Distance: " + boilerDistance);
-			RPM = Robot.axisCameraSubsystem.getBoilerRPM60(boilerDistance);
+			RPM = VisionUtility.getBoilerRPM60(boilerDistance);
 			System.out.println("Calculated RPM: " + RPM);
 			// System.out.println("Shooter Start Command Initialized");
 			double counts = targetRPM * 4096.0 / 600.0;
