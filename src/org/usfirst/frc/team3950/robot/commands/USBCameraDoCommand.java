@@ -9,6 +9,7 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.GearPipeline;
+import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
@@ -30,7 +31,7 @@ public class USBCameraDoCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Mat mat = Robot.usbCameraSubsystem.getFrame();
-		GearPipeline gtbr = new GearPipeline();
+		GearPipelinePublishVideo gtbr = new GearPipelinePublishVideo();
 		gtbr.process(mat);
 		gtbr.process(mat);
 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
