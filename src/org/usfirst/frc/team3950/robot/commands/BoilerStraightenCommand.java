@@ -17,6 +17,7 @@ public class BoilerStraightenCommand extends Command {
 		// eg. requires(chassis);
 		requires(Robot.axisCameraSubsystem);
 		requires(Robot.drivetrainsubsystem);
+		requires(Robot.visionUtilitySubsystem);
 	}
 
 	// Called just before this Command runs the first time
@@ -30,15 +31,15 @@ public class BoilerStraightenCommand extends Command {
 		if (boilerRects.size() >= 2) {
 			Rect rectOne = boilerRects.get(0);
 			Rect rectTwo = boilerRects.get(1);
-			Rect rectTotal = Robot.axisCameraSubsystem.getBoilerTotalRect(rectOne, rectTwo);
+			Rect rectTotal = Robot.visionUtilitySubsystem.getBoilerTotalRect(rectOne, rectTwo);
 			System.out.println("TotalRect: " + rectTotal.x + " " + rectTotal.y + " " + rectTotal.width + " " + rectTotal.height);
-			 double distance = Robot.axisCameraSubsystem.getBoilerDistance(rectTotal.width);
+			 double distance = Robot.visionUtilitySubsystem.getBoilerDistance(rectTotal.width);
 			 double boilerAngle = 0;
 			 if (rectTotal.width != 0)
 				 System.out.println("Boiler width not zero");
 			 	 System.out.println("rectTotal centerX: " + (rectTotal.x + (rectTotal.width/2)));
 			 	 System.out.println("Distance: " + distance);
-				 boilerAngle = Robot.axisCameraSubsystem.getBoilerAngle((rectTotal.x + (rectTotal.width/2)), rectTotal.width, 67, 639, distance);
+				 boilerAngle = Robot.visionUtilitySubsystem.getBoilerAngle((rectTotal.x + (rectTotal.width/2)), rectTotal.width, 67, 639, distance);
 			 System.out.println("Angle: " + boilerAngle);
 			 double initialAngle = Robot.drivetrainsubsystem.getCurrentAngle();
 			 double desiredAngle = initialAngle + boilerAngle;
