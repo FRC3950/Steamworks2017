@@ -6,13 +6,34 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
 public class VisionUtility {
+	
+	  //Axis Camera Offset in Pixels
+	  static int AxisCameraOffset = 0;
+	  
+	  //Boiler Distance Constants for Axis Camera
+	  static double BoilerDistanceSlope = 506.8;  //a
+	  static double BoilerDistanceYInt = -15.28;  //b
+	  
+	  //Gear Distance Constants for USB Camera
+	  static double GearDistanceSlope;	//a
+	  static double GearDistanceYInt;	//b
+	  
+	  //RPM Distance Constants
+	  static double RPMSlope = 100;
+	  static double RPMYInt = 3500;
+	
 	  public static double getBoilerDistance(int width) {
-	    	double distance = 506.8/(width - 15.28);
+	    	double distance = BoilerDistanceSlope/(width - BoilerDistanceYInt);
 	    	return distance;
 	    }
+	  
+	  public static double getGearDistance(int width) {
+		  double distance = GearDistanceSlope/(width - GearDistanceYInt);
+		  return distance;
+	  }
 	    
 	    public static double getBoilerRPM60(double distance){
-	    	double RPM = (100*distance) + 3500;
+	    	double RPM = (RPMSlope*distance) + RPMYInt;
 	    	return RPM;
 	    }
 	    
@@ -35,7 +56,7 @@ public class VisionUtility {
 	    	double feet = inch/12;
 	    	System.out.println("Inch: " + inch);
 	    	System.out.println("Feet: " + feet);
-	    	int pixelDistance = boilerRectCenterX - (cameraXRes/2);
+	    	int pixelDistance = boilerRectCenterX - ((cameraXRes/2) - AxisCameraOffset);
 	    	double feetDistance = pixelDistance * feet;
 	    	double angle = Math.asin(feetDistance/boilerDistance);
 	    	double degreeAngle = angle * (180/Math.PI);
