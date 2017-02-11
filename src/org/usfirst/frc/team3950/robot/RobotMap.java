@@ -25,7 +25,7 @@ public class RobotMap {
     public static CANTalon shooterIndexerMotor = new CANTalon(6);
     public static CANTalon shooterMotor = new CANTalon(7);
     public static CANTalon climberMotor = new CANTalon(8);
-    public static CANTalon ballIndexerMotor = new CANTalon(9);
+    public static CANTalon hopperMotor = new CANTalon(9);
     public static Solenoid driveGearShiftSolenoid = new Solenoid(0);
     public static Solenoid gearIntakeSolenoid1 = new Solenoid(1);
     public static Solenoid gearIntakeSolenoid2 = new Solenoid(2);

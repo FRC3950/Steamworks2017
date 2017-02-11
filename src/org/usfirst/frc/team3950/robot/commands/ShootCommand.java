@@ -23,9 +23,11 @@ public class ShootCommand extends Command {
     protected void execute() {
     	if (Robot.shooterIndexerSubsystem.detectLimitSwitch() && Robot.shooterSubsystem.speedInRange())  {
     		Robot.shooterIndexerSubsystem.indexerMotorForward();
+    		Robot.shooterIndexerSubsystem.hopperMotorForward();
     	}
     	else if(Robot.shooterIndexerSubsystem.detectLimitSwitch()){
     		Robot.shooterIndexerSubsystem.indexerMotorStop();
+    		Robot.shooterIndexerSubsystem.hopperMotorStop();
     	}
     }
 

@@ -10,6 +10,7 @@ import com.ctre.CANTalon;
  */
 public class ShooterIndexerSubsystem extends Subsystem {
 	private CANTalon indexerMotor;
+	private CANTalon hopperMotor;
 	private DigitalInput limSwitch;
 	
 
@@ -19,6 +20,7 @@ public class ShooterIndexerSubsystem extends Subsystem {
     public void initDefaultCommand() {
     	indexerMotor = RobotMap.shooterIndexerMotor;
     	limSwitch = RobotMap.shooterIndexerSwitch;
+    	hopperMotor = RobotMap.hopperMotor;
     	
     			
         // Set the default command for a subsystem here.
@@ -35,5 +37,14 @@ public class ShooterIndexerSubsystem extends Subsystem {
     }
     public boolean detectLimitSwitch() {
     	return limSwitch.get();
+    }
+    public void hopperMotorForward(){
+    	hopperMotor.set(1);
+    }
+    public void hopperMotorBackward(){
+    	hopperMotor.set(-1);
+    }
+    public void hopperMotorStop(){
+    	hopperMotor.set(0);
     }
 }
