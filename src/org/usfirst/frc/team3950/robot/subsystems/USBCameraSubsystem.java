@@ -16,6 +16,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team3950.robot.GearPipeline;
+import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
 
 
@@ -144,7 +145,7 @@ public class USBCameraSubsystem extends Subsystem {
     	} else {
     		System.out.println(mat.toString());
     		System.out.println("i am in gear rectangle else");
-    		GearPipeline gtbr = new GearPipeline();
+    		GearPipelinePublishVideo gtbr = new GearPipelinePublishVideo();
     		gtbr.process(mat);
     		System.out.println("processed mat");
     		System.out.println("size: " + gtbr.filterContoursOutput().size());
