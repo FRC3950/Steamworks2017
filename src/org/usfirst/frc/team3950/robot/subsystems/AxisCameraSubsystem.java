@@ -86,12 +86,19 @@ public class AxisCameraSubsystem extends Subsystem {
     }
     
     public double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
-    	double inch = (15/boilerRectWidth);
+    	System.out.println("Boiler rect width: " + boilerRectWidth);
+    	double width = boilerRectWidth;
+    	double inch = (15/width);
+    	System.out.println("inches: " + inch);
     	double feet = inch/12;
+    	System.out.println("Inch: " + inch);
+    	System.out.println("Feet: " + feet);
     	int pixelDistance = boilerRectCenterX - (cameraXRes/2);
     	double feetDistance = pixelDistance * feet;
     	double angle = Math.asin(feetDistance/boilerDistance);
-    	return angle;
+    	double degreeAngle = angle * (180/Math.PI);
+    	return degreeAngle;
+    	
     }
     
     

@@ -57,7 +57,7 @@ public class OI {
     	driveStick1Button.whenPressed(new ShooterStartCommand());
     	driveStick2Button.whenPressed(new ShooterEndCommand());
     	driveStick5Button.whenPressed(new USBCameraDoCommand());
-    	driveStick6Button.whileHeld(new BoilerStraightenCommand());
+    	driveStick6Button.whenPressed(new BoilerStraightenCommand());
     	xboxControllerAButton.whenPressed(new BallIntakeCommand());
     	xboxControllerBButton.whenPressed(new BallOuttakeCommand());
     	xboxControllerYButton.whenPressed(new ShootCommand());
