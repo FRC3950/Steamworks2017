@@ -46,7 +46,7 @@ public class USBCameraDoCommand extends Command {
     	System.out.println("initialized1 usb");
     	Robot.usbCameraSubsystem.startCamera();
     	System.out.println("initializing2 usb");
-    	ArrayList<Rect> gearRects = Robot.usbCameraSubsystem.getGearRectangles();
+    	gearRects = Robot.usbCameraSubsystem.getGearRectangles();
     	// operate on gear rectangles
     }
 
