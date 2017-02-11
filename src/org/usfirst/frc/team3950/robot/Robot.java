@@ -153,10 +153,10 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        double motorOutputVoltage = RobotMap.shooterMotor.getOutputVoltage();
-        double motorOutputBus = RobotMap.shooterMotor.getBusVoltage();
+     //   double motorOutputVoltage = RobotMap.shooterMotor.getOutputVoltage();
+     //  double motorOutputBus = RobotMap.shooterMotor.getBusVoltage();
     	/* prepare line to print */
-		_sb.append("\toutVoltage:");
+		/*_sb.append("\toutVoltage:");
 		_sb.append(motorOutputVoltage);
 		_sb.append("\toutBus:");
 		_sb.append(motorOutputBus);
@@ -169,7 +169,7 @@ public class Robot extends IterativeRobot {
         _sb.append("\ttrg:");
         _sb.append(ShooterStartCommand.targetRPM);
 //        System.out.println(_sb);
-        _sb.setLength(0);
+        _sb.setLength(0);*/
     }
     
     /**
