@@ -31,10 +31,26 @@ public class USBCameraSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+		camera = CameraServer.getInstance().startAutomaticCapture(0);
+		System.out.println("camera server has started automatic capture");
+		camera.setResolution(640, 360);
+		System.out.println("camera has set resolution");
+		camera.setWhiteBalanceManual(4500);
+		camera.setExposureManual(-11);
+		
+		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+		System.out.println("system has established cvsink");
+    }
+    
+    public Mat getFrame() {
+    	Mat mat = new Mat();
+    	if(cvSink != null)
+    		cvSink.grabFrame(mat);
+    	return mat;
     }
     
     public static void startCamera() {
-    	if(camera == null) {
+/*    	if(camera == null) {
     		camera = CameraServer.getInstance().startAutomaticCapture(0);
     		System.out.println("camera server has started automatic capture");
     		camera.setResolution(640, 360);
@@ -44,7 +60,7 @@ public class USBCameraSubsystem extends Subsystem {
     		
     		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
     		System.out.println("system has established cvsink");
-    	}
+    	} */
     
     }
  

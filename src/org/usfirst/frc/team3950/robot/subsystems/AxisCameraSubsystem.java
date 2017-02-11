@@ -8,6 +8,7 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
+import org.usfirst.frc.team3950.robot.NewBoilerPipeline;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -29,12 +30,17 @@ public class AxisCameraSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
+    	camera.setResolution(320, 240);
+    	cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+        System.out.println("I have enabled camera");
     }
     
     static boolean cameraEnabled = true;
     
+    
     public static void startCamera() {
-    	if(camera == null) {
+/*    	if(camera == null) {
     		camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
     		camera.setResolution(320, 240);
     		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
@@ -44,7 +50,7 @@ public class AxisCameraSubsystem extends Subsystem {
     		CameraServer.getInstance().removeCamera("10.39.50.11");
             System.out.println("I have disabled camera");
             camera = null;
-    	}
+    	} */
     }
     
     public static void stopCamera()
@@ -80,12 +86,19 @@ public class AxisCameraSubsystem extends Subsystem {
     }
     
     public double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
-    	double inch = (15/boilerRectWidth);
+    	System.out.println("Boiler rect width: " + boilerRectWidth);
+    	double width = boilerRectWidth;
+    	double inch = (15/width);
+    	System.out.println("inches: " + inch);
     	double feet = inch/12;
+    	System.out.println("Inch: " + inch);
+    	System.out.println("Feet: " + feet);
     	int pixelDistance = boilerRectCenterX - (cameraXRes/2);
     	double feetDistance = pixelDistance * feet;
     	double angle = Math.asin(feetDistance/boilerDistance);
-    	return angle;
+    	double degreeAngle = angle * (180/Math.PI);
+    	return degreeAngle;
+    	
     }
     
     
@@ -94,7 +107,7 @@ public class AxisCameraSubsystem extends Subsystem {
 		Mat mat = new Mat(); //define mat in order to reuse it
 		ArrayList<Rect> boilerRects = new ArrayList<Rect>();
 		if(AxisCameraSubsystem.cvSink.grabFrame(mat) != 0) {
-			TestBoundingRectangles tbr = new TestBoundingRectangles();
+			NewBoilerPipeline tbr = new NewBoilerPipeline();
 			tbr.process(mat);
 			if(tbr.filterContoursOutput().size() == 2) {
 				MatOfPoint mop1 = tbr.filterContoursOutput().get(0);

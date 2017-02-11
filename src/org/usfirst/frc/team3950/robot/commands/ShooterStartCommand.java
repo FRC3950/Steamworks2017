@@ -18,7 +18,7 @@ public class ShooterStartCommand extends Command {
 	double boilerDistance;
 	double RPM;
 
-	public static float targetRPM = 2000;
+	public static float targetRPM = 0;
 
 	public ShooterStartCommand() {
 		// Use requires() here to declare subsystem dependencies

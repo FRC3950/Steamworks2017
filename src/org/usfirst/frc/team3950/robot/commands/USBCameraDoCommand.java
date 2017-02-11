@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import java.util.ArrayList;
 
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team3950.robot.GearPipeline;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
@@ -25,16 +29,28 @@ public class USBCameraDoCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Mat mat = Robot.usbCameraSubsystem.getFrame();
+		GearPipeline gtbr = new GearPipeline();
+		gtbr.process(mat);
+		gtbr.process(mat);
+		ArrayList<Rect> gearRects = new ArrayList<Rect>();
+		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+			Rect rect = Imgproc.boundingRect(mop);
+			System.out.println(rect.toString());
+			gearRects.add(rect);
+		}
+		Rect totalRect = Robot.usbCameraSubsystem.getRectContainer(gearRects, 640, 360);
+
     	System.out.println("Hello from the USB camera");
     	USBCameraSubsystem.startCamera();
     	System.out.println("initialized1 usb");
     	Robot.usbCameraSubsystem.startCamera();
     	System.out.println("initializing2 usb");
-    	ArrayList<Rect> gearRects = Robot.usbCameraSubsystem.getGearRectangles();
+    	gearRects = Robot.usbCameraSubsystem.getGearRectangles();
     	// operate on gear rectangles
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    // Make this return true when this Command no longer needs to run execute() 
     protected boolean isFinished() {
         return true;
     }

@@ -42,7 +42,7 @@ public class DrivetrainSubsystem extends Subsystem {
     }
     
     public void Drive(double y, double twist){
-    	drivetrain.arcadeDrive(y, twist);
+    	drivetrain.arcadeDrive(-y, -twist);
     }
     
     public void GearShift(){
