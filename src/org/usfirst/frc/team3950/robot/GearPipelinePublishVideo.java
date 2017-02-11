@@ -16,6 +16,9 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.*;
 
+import edu.wpi.cscore.CvSource;
+import edu.wpi.first.wpilibj.CameraServer;
+
 /**
 * GearPipelinePublishVideo class.
 *
@@ -33,6 +36,8 @@ public class GearPipelinePublishVideo {
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
+	
+	private static CvSource findContoursSource = CameraServer.getInstance().putVideo("USBContours", 640, 360);
 
 	/**
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
@@ -49,6 +54,8 @@ public class GearPipelinePublishVideo {
 		Mat findContoursInput = hslThresholdOutput;
 		boolean findContoursExternalOnly = true;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
+		System.out.println("Putting Contours in CvSource or something");
+		findContoursSource.putFrame(findContoursInput);
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
