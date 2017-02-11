@@ -33,15 +33,15 @@ public class USBCameraDoCommand extends Command {
     	Mat mat = Robot.usbCameraSubsystem.getFrame();
 		GearPipelinePublishVideo gtbr = new GearPipelinePublishVideo();
 		gtbr.process(mat);
-		gtbr.process(mat);
 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
 		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
 			Rect rect = Imgproc.boundingRect(mop);
 			System.out.println(rect.toString());
 			gearRects.add(rect);
 		}
+		System.out.println("gearRects size: " + gearRects.size());
 		Rect totalRect = Robot.usbCameraSubsystem.getRectContainer(gearRects, 640, 360);
-
+/*
     	System.out.println("Hello from the USB camera");
     	USBCameraSubsystem.startCamera();
     	System.out.println("initialized1 usb");
@@ -49,6 +49,7 @@ public class USBCameraDoCommand extends Command {
     	System.out.println("initializing2 usb");
     	gearRects = Robot.usbCameraSubsystem.getGearRectangles();
     	// operate on gear rectangles
+    	 */
     }
 
     // Make this return true when this Command no longer needs to run execute() 
