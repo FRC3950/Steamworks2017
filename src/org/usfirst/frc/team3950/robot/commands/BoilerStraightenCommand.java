@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.opencv.core.Rect;
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.VisionUtility;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -31,15 +32,15 @@ public class BoilerStraightenCommand extends Command {
 		if (boilerRects.size() >= 2) {
 			Rect rectOne = boilerRects.get(0);
 			Rect rectTwo = boilerRects.get(1);
-			Rect rectTotal = Robot.visionUtilitySubsystem.getBoilerTotalRect(rectOne, rectTwo);
+			Rect rectTotal = VisionUtility.getBoilerTotalRect(rectOne, rectTwo);
 			System.out.println("TotalRect: " + rectTotal.x + " " + rectTotal.y + " " + rectTotal.width + " " + rectTotal.height);
-			 double distance = Robot.visionUtilitySubsystem.getBoilerDistance(rectTotal.width);
+			 double distance = VisionUtility.getBoilerDistance(rectTotal.width);
 			 double boilerAngle = 0;
 			 if (rectTotal.width != 0)
 				 System.out.println("Boiler width not zero");
 			 	 System.out.println("rectTotal centerX: " + (rectTotal.x + (rectTotal.width/2)));
 			 	 System.out.println("Distance: " + distance);
-				 boilerAngle = Robot.visionUtilitySubsystem.getBoilerAngle((rectTotal.x + (rectTotal.width/2)), rectTotal.width, 67, 639, distance);
+				 boilerAngle = VisionUtility.getBoilerAngle((rectTotal.x + (rectTotal.width/2)), rectTotal.width, 67, 639, distance);
 			 System.out.println("Angle: " + boilerAngle);
 			 double initialAngle = Robot.drivetrainsubsystem.getCurrentAngle();
 			 double desiredAngle = initialAngle + boilerAngle;
