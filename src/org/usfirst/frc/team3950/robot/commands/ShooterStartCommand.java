@@ -6,7 +6,6 @@ import org.opencv.core.Rect;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.VisionUtility;
 import org.usfirst.frc.team3950.robot.subsystems.AxisCameraSubsystem;
-import org.usfirst.frc.team3950.robot.subsystems.VisionUtilitySubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

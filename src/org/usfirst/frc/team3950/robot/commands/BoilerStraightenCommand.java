@@ -18,7 +18,6 @@ public class BoilerStraightenCommand extends Command {
 		// eg. requires(chassis);
 		requires(Robot.axisCameraSubsystem);
 		requires(Robot.drivetrainsubsystem);
-		requires(Robot.visionUtilitySubsystem);
 	}
 
 	// Called just before this Command runs the first time
