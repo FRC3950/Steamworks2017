@@ -43,6 +43,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        System.out.println("I am in robotInit");
 //    	usbCameraSubsystem.initCamera();
 		oi = new OI();
         chooser = new SendableChooser();
@@ -52,7 +53,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Derivative", 1.0);
         SmartDashboard.putNumber("Integral", 0.0);
         SmartDashboard.putNumber("Feed Forward", 0.025);
-        System.out.println("I am in robotInit");
+//        System.out.println("I am in robotInit");
 
 //		CameraServer.getInstance().removeCamera("USB");
 //		CameraServer.getInstance().removeCamera("Axis Camera");
