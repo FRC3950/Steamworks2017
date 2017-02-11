@@ -16,7 +16,7 @@ public class BoilerStraightenCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.axisCameraSubsystem);
-    	requires(Robot.drivetrainsubsystem);
+    	//requires(Robot.drivetrainsubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -30,18 +30,23 @@ public class BoilerStraightenCommand extends Command {
     	Rect rectTwo = boilerRects.get(1);
     	Rect rectTotal = Robot.axisCameraSubsystem.getBoilerTotalRect(rectOne, rectTwo);
     	System.out.println("TotalRect: " + rectTotal.x + " " + rectTotal.y + " " + rectTotal.width + " " + rectTotal.height);
-    	double distance = Robot.axisCameraSubsystem.getBoilerDistance(rectTotal.width);
-    	double angle = 0;
+    /*	double distance = Robot.axisCameraSubsystem.getBoilerDistance(rectTotal.width);
+    	double boilerAngle = 0;
     	if (rectTotal.width != 0)
-    		angle = Robot.axisCameraSubsystem.getBoilerAngle((rectTotal.x + (rectTotal.width/2)), rectTotal.width, 67, 639, distance);
-    	System.out.println("Angle: " + angle);
-    	double initialAngle = Robot.drivetrainsubsystem.getCurrentAngle();
-    	
+    		boilerAngle = Robot.axisCameraSubsystem.getBoilerAngle((rectTotal.x + (rectTotal.width/2)), rectTotal.width, 67, 639, distance);
+    	System.out.println("Angle: " + boilerAngle);
+    	/*double initialAngle = Robot.drivetrainsubsystem.getCurrentAngle();
+    	double desiredAngle = initialAngle + boilerAngle;
+    	if((initialAngle != desiredAngle) && (desiredAngle > 0)){
+    		//move drivetrain right
+    	}
+    	else if ((initialAngle != desiredAngle) && (desiredAngle < 0));
+    		//move drivetrain left*/
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

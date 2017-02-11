@@ -109,4 +109,3 @@ public class ShooterSubsystem extends Subsystem {
 		motor.disable();
 	}
 }
-

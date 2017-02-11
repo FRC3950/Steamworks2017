@@ -37,7 +37,7 @@ public class DrivetrainSubsystem extends Subsystem {
     	gearShiftSolenoid = RobotMap.driveGearShiftSolenoid;
     	navx = RobotMap.ahrs;
     	
-    	setDefaultCommand(new DriveCommand());
+    	//setDefaultCommand(new DriveCommand());
         
     }
     
