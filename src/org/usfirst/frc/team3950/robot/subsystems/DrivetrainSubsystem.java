@@ -4,6 +4,7 @@ import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.commands.*;
 
 import com.ctre.CANTalon;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -22,6 +23,7 @@ public class DrivetrainSubsystem extends Subsystem {
     CANTalon rightBack;
     RobotDrive drivetrain;
     Solenoid gearShiftSolenoid;
+    AHRS navx;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -33,6 +35,7 @@ public class DrivetrainSubsystem extends Subsystem {
     	rightBack = RobotMap.rightBackDriveMotor;
     	drivetrain = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
     	gearShiftSolenoid = RobotMap.driveGearShiftSolenoid;
+    	navx = RobotMap.ahrs;
     	
     	setDefaultCommand(new DriveCommand());
         
@@ -46,4 +49,9 @@ public class DrivetrainSubsystem extends Subsystem {
     	gearShiftSolenoid.set(!gearShiftSolenoid.get());
     	SmartDashboard.putBoolean("High Gear", gearShiftSolenoid.get());
     }
+    
+    public double getCurrentAngle(){
+    	return navx.getAngle();
+    }
+    
 }

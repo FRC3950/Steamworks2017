@@ -1,10 +1,15 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
+
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
@@ -63,23 +68,31 @@ public class AxisCameraSubsystem extends Subsystem {
     	return RPM;
     }
     
-    public int getBoilerCenterX(Rect rectOne, Rect rectTwo){
+    public Rect getBoilerTotalRect(Rect rectOne, Rect rectTwo){
     	Rect rectHigh = rectOne;
     	Rect rectLow = rectTwo;
     	if(rectOne.y < rectTwo.y){
     		 rectHigh = rectTwo;
     		 rectLow = rectOne;
     	}
-    	
     	Rect rectTotal = new Rect(rectHigh.tl(), rectLow.br());
-    	int RectCenter = rectTotal.x + (rectTotal.width/2);
-    	return RectCenter;
+    	return rectTotal;
+    }
+    
+    public double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
+    	double inch = (15/boilerRectWidth);
+    	double feet = inch/12;
+    	int pixelDistance = boilerRectCenterX - (cameraXRes/2);
+    	double feetDistance = pixelDistance * feet;
+    	double angle = Math.asin(feetDistance/boilerDistance);
+    	return angle;
     }
     
     
-    public void getRectangles(Rect rectOne, Rect rectTwo) {
+    public ArrayList<Rect> getRectangles() {
     	AxisCameraSubsystem.startCamera();
 		Mat mat = new Mat(); //define mat in order to reuse it
+		ArrayList<Rect> boilerRects = new ArrayList<Rect>();
 		if(AxisCameraSubsystem.cvSink.grabFrame(mat) != 0) {
 			TestBoundingRectangles tbr = new TestBoundingRectangles();
 			tbr.process(mat);
@@ -89,8 +102,11 @@ public class AxisCameraSubsystem extends Subsystem {
 				Rect r1 = Imgproc.boundingRect(mop1); //get the first MatOfPoint (contour), calculate bounding rectangle
 				Rect r2 = Imgproc.boundingRect(mop2); //get the second MatOfPoint (contour)
 				
-				rectOne = r1;
-				rectTwo = r2;
+				Rect rectOne = r1;
+				Rect rectTwo = r2;
+				
+				boilerRects.add(r1);
+				boilerRects.add(r2);
 				
 				System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
 				System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
@@ -111,7 +127,7 @@ public class AxisCameraSubsystem extends Subsystem {
 				System.out.println("NO");
 			}
 		}
-
+		return boilerRects;
     }
 //    public void FindBoundingRectangles(){
 //   	System.out.println(pipeline.filterContoursOutput().size());

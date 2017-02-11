@@ -40,7 +40,7 @@ public class USBCameraSubsystem extends Subsystem {
     		camera.setResolution(640, 360);
     		System.out.println("camera has set resolution");
     		camera.setWhiteBalanceManual(4500);
-    		camera.setExposureManual(-10);
+    		camera.setExposureManual(-11);
     		
     		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
     		System.out.println("system has established cvsink");
@@ -129,6 +129,9 @@ public class USBCameraSubsystem extends Subsystem {
     		System.out.println(mat.toString());
     		System.out.println("i am in gear rectangle else");
     		GearPipeline gtbr = new GearPipeline();
+    		gtbr.process(mat);
+    		System.out.println("processed mat");
+    		System.out.println("size: " + gtbr.filterContoursOutput().size());
     		gtbr.process(mat);
     		System.out.println("processed mat");
     		System.out.println("size: " + gtbr.filterContoursOutput().size());
