@@ -20,7 +20,7 @@ public class BallIntakeSubsystem extends Subsystem {
     	ballIntake = RobotMap.ballIntakeMotor;
     	ballIntake.set(0);
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        //setDefaultmmand(new MySpecialCommand());
     }
     
 	public enum State{
