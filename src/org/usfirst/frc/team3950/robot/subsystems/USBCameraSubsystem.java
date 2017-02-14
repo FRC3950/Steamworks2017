@@ -8,6 +8,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
+import org.usfirst.frc.team3950.robot.commands.USBCameraDoCommand;
 
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team3950.robot.GearPipeline;
 import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
+import org.usfirst.frc.team3950.robot.GearPipelineRGB;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
 
 
@@ -35,19 +37,27 @@ public class USBCameraSubsystem extends Subsystem {
 		camera = CameraServer.getInstance().startAutomaticCapture(0);
 		System.out.println("camera server has started automatic capture");
 		camera.setResolution(640, 360);
-		System.out.println("camera has set resolution");
+//		System.out.println("camera has set resolution");
 		camera.setWhiteBalanceManual(4500);
-		camera.setExposureManual(-11);
+//		camera.setExposureManual(-10);
+		camera.setBrightness(10);
 		
-		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+		cvSink = CameraServer.getInstance().getVideo(camera); //capture mats from camera
 		System.out.println("system has established cvsink");
+		
+		setDefaultCommand(new USBCameraDoCommand());
     }
     
+
+    private int idx = 0;
     public Mat getFrame() {
     	Mat mat = new Mat();
-    	if(cvSink != null)
+    	if(cvSink != null) {
     		cvSink.grabFrame(mat);
-    	return mat;
+ //   		System.out.println(mat.toString());
+    		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
+    	}
+    		return mat;
     }
     
     public static void startCamera() {
@@ -65,7 +75,7 @@ public class USBCameraSubsystem extends Subsystem {
     
     }
  
-    public Rect testRectOne = new Rect(4, 2, 3, 6);
+   /* public Rect testRectOne = new Rect(4, 2, 3, 6);
     public Rect testRectTwo = new Rect(5, 4, 1, 2);
     public Rect testRectThree = new Rect(8, 2, 4, 3);
     public Rect testRectFour = new Rect(6, 3, 5, 7);
@@ -89,8 +99,7 @@ public class USBCameraSubsystem extends Subsystem {
     	rect.height = (int) (br.y - tl.y);
     	
     	return rect;
-    }
-    
+    } */    
     /*
     public Rect getGearTotalRect(Rect rectOne, Rect rectTwo) {
     	int x, y, width, height;
@@ -134,7 +143,7 @@ public class USBCameraSubsystem extends Subsystem {
     }
     */
 
-    private CvSource outputStream = null;
+/*    private CvSource outputStream = null;
     public ArrayList<Rect> getGearRectangles(){
 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
     	USBCameraSubsystem.startCamera();
@@ -145,7 +154,7 @@ public class USBCameraSubsystem extends Subsystem {
     	} else {
     		System.out.println(mat.toString());
     		System.out.println("i am in gear rectangle else");
-    		GearPipelinePublishVideo gtbr = new GearPipelinePublishVideo();
+    		GearPipelineRGB gtbr = new GearPipelineRGB();
     		gtbr.process(mat);
     		System.out.println("processed mat");
     		System.out.println("size: " + gtbr.filterContoursOutput().size());
@@ -175,7 +184,7 @@ public class USBCameraSubsystem extends Subsystem {
     	} 
     	
     	return gearRects;
-    } 
+    } */
 }
    
 

@@ -22,10 +22,10 @@ public class GearDistanceCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	System.out.println("hello from the geardistance command");
-    	ArrayList<Rect> gearRects = Robot.usbCameraSubsystem.getGearRectangles();
+//    	ArrayList<Rect> gearRects = Robot.usbCameraSubsystem.getGearRectangles();
     	System.out.println("ArrayList of gearRect made");
-    	Rect totalRect = Robot.usbCameraSubsystem.getRectContainer(gearRects, 639, 359);
-    	System.out.println("Total Rect: " + totalRect.x + " " + totalRect.y + " " + totalRect.width + " " + totalRect.height);
+//    	Rect totalRect = Robot.usbCameraSubsystem.getRectContainer(gearRects, 639, 359);
+//    	System.out.println("Total Rect: " + totalRect.x + " " + totalRect.y + " " + totalRect.width + " " + totalRect.height);
     	
     	/*Rect zeroRect = new Rect(0,0,0,0);
     	Rect totalRect = new Rect(0,0,0,0);

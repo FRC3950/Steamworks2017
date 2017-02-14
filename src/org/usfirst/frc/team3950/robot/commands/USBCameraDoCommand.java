@@ -1,5 +1,9 @@
 package org.usfirst.frc.team3950.robot.commands;
 
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.VideoMode;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 
 import java.util.ArrayList;
@@ -10,7 +14,9 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.GearPipeline;
 import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
+import org.usfirst.frc.team3950.robot.GearPipelineRGB;
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.VisionUtility;
 import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
 /**
@@ -24,23 +30,40 @@ public class USBCameraDoCommand extends Command {
     	
     }
 
-    // Called just before this Command runs the first time
+  	private static CvSource cvSource;
+//  // Called just before this Command runs the first time
     protected void initialize() {
+    	
+//    	cvSource = new CvSource("USBContours",  VideoMode.PixelFormat.kMJPEG, 640, 360, 30);
+//    	CvSource cvSource = new CvSource("USBContours", VideoMode.PixelFormat.kMJPEG, 320, 240, 30);
+//    	CameraServer.getInstance().addCamera(cvSource);
+//    	VideoSink server = CameraServer.getInstance().addServer("serve_" + cvSource.getName());
+//    	server.setSource(cvSource);
     }
 
+    private static long deltaMilliseconds = 1000;
+    private static GearPipelineRGB gtbr = new GearPipelineRGB();
+    private static long previousTime = System.currentTimeMillis();
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Mat mat = Robot.usbCameraSubsystem.getFrame();
-		GearPipelinePublishVideo gtbr = new GearPipelinePublishVideo();
-		gtbr.process(mat);
-		ArrayList<Rect> gearRects = new ArrayList<Rect>();
-		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
-			Rect rect = Imgproc.boundingRect(mop);
-			System.out.println(rect.toString());
-			gearRects.add(rect);
-		}
-		System.out.println("gearRects size: " + gearRects.size());
-		Rect totalRect = Robot.usbCameraSubsystem.getRectContainer(gearRects, 640, 360);
+        long currentTime = System.currentTimeMillis();
+    	
+        
+        if((currentTime - previousTime) > deltaMilliseconds) {
+	    	Mat mat = Robot.usbCameraSubsystem.getFrame();
+	//		GearPipelineRGB gtbr = new GearPipelineRGB();
+			gtbr.process(mat);
+	//		cvSource.putFrame(gtbr.getHslThresholdOutput());
+			ArrayList<Rect> gearRects = new ArrayList<Rect>();
+			for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+				Rect rect = Imgproc.boundingRect(mop);
+//				System.out.println(rect.toString());
+				gearRects.add(rect);
+			}
+			System.out.println("gearRects size: " + gearRects.size());
+			Rect totalRect = VisionUtility.getRectContainer(gearRects, 640, 360);
+			previousTime = currentTime;
+        }
 /*
     	System.out.println("Hello from the USB camera");
     	USBCameraSubsystem.startCamera();

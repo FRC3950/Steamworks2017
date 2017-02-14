@@ -70,7 +70,7 @@ public class VisionUtility {
 	    	Point br = new Point(0, 0);
 	    	    	
 	    	for(Rect x: rectList) {
-	    		System.out.println(x.toString());
+//	    		System.out.println(x.toString());
 	    		tl.x = Math.min(tl.x, x.tl().x);
 	    		tl.y = Math.min(tl.y, x.tl().y);
 	    		br.x = Math.max(br.x, x.br().x);
