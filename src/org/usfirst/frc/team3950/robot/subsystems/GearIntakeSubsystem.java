@@ -6,6 +6,7 @@ import org.usfirst.frc.team3950.robot.commands.GearIntakeCommand;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -14,8 +15,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearIntakeSubsystem extends Subsystem {
 	CANTalon intakeMotor = RobotMap.gearIntakeMotor;
-	Solenoid solenoid1 = RobotMap.gearIntakeSolenoid1;
-	Solenoid solenoid2 = RobotMap.gearIntakeSolenoid2;
+	Solenoid singleSolenoid1 = RobotMap.gearIntakeSolenoid1;
+	Solenoid singleSolenoid2 = RobotMap.gearIntakeSolenoid2;
+	DoubleSolenoid doubleSolenoid1 = RobotMap.gearIntakeDoubleSolenoid1;
+	DoubleSolenoid doubleSolenoid2 = RobotMap.gearIntakeDoubleSolenoid2;
 	DigitalInput bumperSwitch = RobotMap.gearBumperSwitch;
 
     // Put methods for controlling this subsystem
@@ -28,8 +31,9 @@ public class GearIntakeSubsystem extends Subsystem {
     }
     
     public enum State{
-    	up,
-    	down
+    	start,
+    	gear,
+    	floor
     }
     
     private State gearliftstate;
@@ -42,16 +46,27 @@ public class GearIntakeSubsystem extends Subsystem {
     	return bumperSwitch.get();
     }
     
-    public void GearIntakeLiftUp(){
-    	solenoid1.set(true);
-    	solenoid2.set(true);
-    	gearliftstate = State.up;
+    public void IntakePositionStart(){
+    	singleSolenoid1.set(false);
+    	singleSolenoid2.set(false);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kReverse);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kReverse);
+    	gearliftstate = State.start;
     }
     
-    public void GearIntakeLiftDown(){
-    	solenoid1.set(false);
-    	solenoid2.set(false);
-    	gearliftstate = State.down;
+    public void IntakePositionGear(){
+    	singleSolenoid1.set(false);
+    	singleSolenoid2.set(false);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
+    	gearliftstate = State.gear;  	
+    }
+    public void IntakePositionFloor(){
+    	singleSolenoid1.set(true);
+    	singleSolenoid2.set(true);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
+    	gearliftstate = State.floor;
     }
     
     public State GearLiftStateGet(){

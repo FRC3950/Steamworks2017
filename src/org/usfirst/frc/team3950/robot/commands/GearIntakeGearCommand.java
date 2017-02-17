@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class GearLiftCommand extends Command {
+public class GearIntakeGearCommand extends Command {
 
-    public GearLiftCommand() {
+    public GearIntakeGearCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.gearintakesubsystem);
@@ -22,12 +22,7 @@ public class GearLiftCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.gearintakesubsystem.GearLiftStateGet() == State.down){
-    		Robot.gearintakesubsystem.GearIntakeLiftUp();
-    	}
-    	else{
-    		Robot.gearintakesubsystem.GearIntakeLiftDown();
-    	}
+    		Robot.gearintakesubsystem.IntakePositionGear();
     }
 
     // Make this return true when this Command no longer needs to run execute()

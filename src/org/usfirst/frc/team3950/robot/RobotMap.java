@@ -29,7 +29,8 @@ public class RobotMap {
     public static Solenoid driveGearShiftSolenoid = new Solenoid(0);
     public static Solenoid gearIntakeSolenoid1 = new Solenoid(1);
     public static Solenoid gearIntakeSolenoid2 = new Solenoid(2);
-    public static Solenoid shooterAngleShiftSolenoid = new Solenoid(3);
+    public static DoubleSolenoid gearIntakeDoubleSolenoid1 = new DoubleSolenoid(3, 4);
+    public static DoubleSolenoid gearIntakeDoubleSolenoid2 = new DoubleSolenoid(5, 6);
     public static DigitalInput shooterIndexerSwitch = new DigitalInput(0);
     public static DigitalInput gearBumperSwitch = new DigitalInput(1);
     public static AHRS ahrs = new AHRS(SerialPort.Port.kMXP);

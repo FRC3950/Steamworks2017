@@ -42,14 +42,15 @@ public class USBCameraDoCommand extends Command {
     }
 
     private static long deltaMilliseconds = 1000;
-    private static GearPipelineRGB gtbr = new GearPipelineRGB();
+    private static GearPipeline gtbr = new GearPipeline();
     private static long previousTime = System.currentTimeMillis();
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         long currentTime = System.currentTimeMillis();
     	
         
-        if((currentTime - previousTime) > deltaMilliseconds) {
+        //if((currentTime - previousTime) > deltaMilliseconds)
+        {
 	    	Mat mat = Robot.usbCameraSubsystem.getFrame();
 	//		GearPipelineRGB gtbr = new GearPipelineRGB();
 			gtbr.process(mat);
@@ -57,7 +58,7 @@ public class USBCameraDoCommand extends Command {
 			ArrayList<Rect> gearRects = new ArrayList<Rect>();
 			for(MatOfPoint mop : gtbr.filterContoursOutput()) {
 				Rect rect = Imgproc.boundingRect(mop);
-//				System.out.println(rect.toString());
+				System.out.println(rect.toString());
 				gearRects.add(rect);
 			}
 			System.out.println("gearRects size: " + gearRects.size());

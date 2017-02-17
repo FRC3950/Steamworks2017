@@ -30,6 +30,11 @@ public class OI {
     public Button xboxControllerXButton = new JoystickButton(xboxController, 3);
     public Button xboxControllerYButton = new JoystickButton(xboxController, 4);
     public Button xboxControllerLBButton = new JoystickButton(xboxController, 5);
+    public Button xboxControllerUpDPadButton = new JoystickButton(xboxController, 12);
+    public Button xboxControllerDownDPadButton = new JoystickButton(xboxController, 13);
+    public Button xboxControllerRightDPadButton = new JoystickButton(xboxController, 15);
+    
+    
     public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
     // Button button = new JoystickButton(stick, buttonNumber);
     // There are a few additional built in buttons you can use. Additionally,
@@ -62,8 +67,10 @@ public class OI {
     	xboxControllerBButton.whenPressed(new BallOuttakeCommand());
     	xboxControllerYButton.whenPressed(new ShootCommand());
     	xboxControllerLBButton.whenPressed(new ClimberDoCommand());
-    	
     	xboxControllerXButton.whenPressed(new GearDistanceCommand());
+    	xboxControllerUpDPadButton.whenPressed(new GearIntakeStartCommand());
+    	xboxControllerRightDPadButton.whenPressed(new GearIntakeGearCommand());
+    	xboxControllerDownDPadButton.whenPressed(new GearIntakeFloorCommand());
     	
     }
 }

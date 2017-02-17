@@ -45,19 +45,34 @@ public class USBCameraSubsystem extends Subsystem {
 		cvSink = CameraServer.getInstance().getVideo(camera); //capture mats from camera
 		System.out.println("system has established cvsink");
 		
-		setDefaultCommand(new USBCameraDoCommand());
+//		setDefaultCommand(new USBCameraDoCommand());
     }
     
 
     private int idx = 0;
+    
     public Mat getFrame() {
     	Mat mat = new Mat();
     	if(cvSink != null) {
     		cvSink.grabFrame(mat);
  //   		System.out.println(mat.toString());
-    		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
+//    		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
     	}
     		return mat;
+    }
+    
+    public Mat getNthFrame(int N){
+    	Mat mat = new Mat();
+    	if(N <= 0){
+    		return null;
+    	}
+    	while(N --> 0){
+    		if(cvSink != null) {
+    			cvSink.grabFrame(mat);
+//    			org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
+    		}
+    	}
+    	return mat;
     }
     
     public static void startCamera() {

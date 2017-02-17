@@ -12,7 +12,7 @@ public class GearDistanceCommand extends Command {
     public GearDistanceCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.usbCameraSubsystem);
+   	requires(Robot.usbCameraSubsystem);
     }
 
     // Called just before this Command runs the first time

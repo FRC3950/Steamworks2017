@@ -1,8 +1,20 @@
 package org.usfirst.frc.team3950.robot;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.opencv.core.Mat;
 import org.usfirst.frc.team3950.robot.commands.*;
+import org.usfirst.frc.team3950.robot.config.RobotConfig;
 import org.usfirst.frc.team3950.robot.subsystems.*;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -24,6 +36,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	//public static Logger robotLogger = LogManager.getLogger(Robot.class);
+	
 	public static OI oi;
 	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();
 	public static BallIntakeSubsystem ballintakesubsystem = new BallIntakeSubsystem();
@@ -43,6 +57,27 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	ObjectMapper mapper = new ObjectMapper();
+    	RobotConfig robotConfig = new RobotConfig();
+		try {
+			robotConfig = mapper.readValue(new File("/home/lvuser/FRCUserProgram.cfg"), RobotConfig.class);
+			String jsonInString = mapper.writeValueAsString(robotConfig);
+	        System.out.println(jsonInString);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        System.out.println(robotConfig.shooterConfig.cameraPipeline.filterContours.minArea);
+        
+        //robotLogger.log(Level.INFO, "I am in robotInit");
+    	
         System.out.println("I am in robotInit");
 //    	usbCameraSubsystem.initCamera();
 		oi = new OI();
@@ -53,6 +88,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Derivative", 1.0);
         SmartDashboard.putNumber("Integral", 0.0);
         SmartDashboard.putNumber("Feed Forward", 0.025);
+//        Robot.robotLogger.info("hello from the robot init");
+   
 //        System.out.println("I am in robotInit");
 
 //		CameraServer.getInstance().removeCamera("USB");
