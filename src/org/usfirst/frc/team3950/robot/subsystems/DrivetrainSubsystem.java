@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.commands.*;
 
@@ -48,9 +49,11 @@ public class DrivetrainSubsystem extends Subsystem {
     public void GearShift(){
     	gearShiftSolenoid.set(!gearShiftSolenoid.get());
     	SmartDashboard.putBoolean("High Gear", gearShiftSolenoid.get());
+    	Robot.robotLogger.debug("gear state" + gearShiftSolenoid.get());
     }
     
     public double getCurrentAngle(){
+    	Robot.robotLogger.debug("navX angle" + navx.getAngle());
     	return navx.getAngle();
     }
     

@@ -62,6 +62,7 @@ public class USBCameraDoCommand extends Command {
 				gearRects.add(rect);
 			}
 			System.out.println("gearRects size: " + gearRects.size());
+			Robot.robotLogger.debug("gearRects size: " + gearRects.size());
 			Rect totalRect = VisionUtility.getRectContainer(gearRects, 640, 360);
 			previousTime = currentTime;
         }

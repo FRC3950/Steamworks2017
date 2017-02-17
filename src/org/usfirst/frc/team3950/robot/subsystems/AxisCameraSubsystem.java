@@ -9,6 +9,7 @@ import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
 import org.usfirst.frc.team3950.robot.NewBoilerPipeline;
+import org.usfirst.frc.team3950.robot.Robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -33,6 +34,7 @@ public class AxisCameraSubsystem extends Subsystem {
     	camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
     	camera.setResolution(320, 240);
     	cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+    	Robot.robotLogger.info("CAMERA ENABLED");
         System.out.println("I have enabled camera");
     }
     
@@ -135,6 +137,7 @@ public class AxisCameraSubsystem extends Subsystem {
 				int centerXAvg = (centerXOne + centerXTwo)/2;
 
 				System.out.println(centerXAvg);
+				Robot.robotLogger.debug("The boiler centerX average is" + centerXAvg);
 			}
 			else {
 				System.out.println("NO");

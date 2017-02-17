@@ -3,9 +3,8 @@ package org.usfirst.frc.team3950.robot;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.opencv.core.Mat;
 import org.usfirst.frc.team3950.robot.commands.*;
 import org.usfirst.frc.team3950.robot.config.RobotConfig;
@@ -36,7 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	//public static Logger robotLogger = LogManager.getLogger(Robot.class);
+	public static Logger robotLogger = LoggerFactory.getLogger(Robot.class);
 	
 	public static OI oi;
 	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();

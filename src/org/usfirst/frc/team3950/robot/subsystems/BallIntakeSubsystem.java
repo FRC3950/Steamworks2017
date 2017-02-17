@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
 
 import com.ctre.CANTalon;
@@ -48,6 +49,7 @@ public class BallIntakeSubsystem extends Subsystem {
     }
     
     public double getCurrentSetSpeed() {
+    	Robot.robotLogger.info("ball intake current speed" + ballIntake.get());
     	return ballIntake.get();
     }
     

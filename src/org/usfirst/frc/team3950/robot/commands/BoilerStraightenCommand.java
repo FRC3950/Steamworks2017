@@ -27,6 +27,7 @@ public class BoilerStraightenCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		ArrayList<Rect> boilerRects = Robot.axisCameraSubsystem.getRectangles();
+		Robot.robotLogger.debug("size of boilerRects" + boilerRects.size());
 		System.out.println(boilerRects.size());
 		if (boilerRects.size() >= 2) {
 			Rect rectOne = boilerRects.get(0);

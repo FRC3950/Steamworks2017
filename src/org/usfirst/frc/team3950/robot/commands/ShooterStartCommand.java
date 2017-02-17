@@ -51,6 +51,7 @@ public class ShooterStartCommand extends Command {
 			boilerDistance = VisionUtility.getBoilerDistance(rectWidthAverage);
 			System.out.println("Boiler Distance: " + boilerDistance);
 			RPM = VisionUtility.getBoilerRPM60(boilerDistance);
+			Robot.robotLogger.debug("Calculated RPM:" + RPM);
 			System.out.println("Calculated RPM: " + RPM);
 			// System.out.println("Shooter Start Command Initialized");
 			double counts = targetRPM * 4096.0 / 600.0;

@@ -3,6 +3,7 @@ package org.usfirst.frc.team3950.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
 
 import com.ctre.CANTalon;
@@ -22,7 +23,7 @@ public class ShooterSubsystem extends Subsystem {
 	private int range = 10;
 	private CANTalon motor;
 	private int targetRPM = 0;
-	private boolean running = false; // not set up yet.
+	private boolean running = false; // not set up yet
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -66,6 +67,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setPSmartDashboard(){
 		P = SmartDashboard.getNumber("Proportion", 0);
+		Robot.robotLogger.debug("The proportion from smartDashboard" + P);
 		motor.setP(P);
 	}
 	public double getI() {
@@ -77,6 +79,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setISmartDashboard(){
 		I = SmartDashboard.getNumber("Integral", 0);
+		Robot.robotLogger.debug("The integral from smartDashboard" + I);
 		motor.setI(I);
 	}
 	public double getD() {
@@ -88,6 +91,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setDSmartDashboard(){
 		D = SmartDashboard.getNumber("Derivative", 0);
+		Robot.robotLogger.debug("The derivative from smartDashboard" + D);
 		motor.setD(D);
 	}
 	public double getF() {
@@ -99,9 +103,11 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setFSmartDashboard(){
 		F = SmartDashboard.getNumber("Feed Forward", 0);
+		Robot.robotLogger.debug("The feed forward from smartDashboard" + F);
 		motor.setF(F);
 	}
 	public boolean speedInRange() {
+		Robot.robotLogger.info("SPEED IS IN RANGE");
 		return (motor.getEncVelocity() > targetRPM - range) && (motor.getEncVelocity() < targetRPM - range);
 	}
 	public void shutOffMotor() {

@@ -3,11 +3,14 @@ package org.usfirst.frc.team3950.robot.config;
 public class ShooterConfig {
 	public PIDF pidf;
 	public CameraPipeline cameraPipeline;
+	public LinearEquationParameters shooterRPMParameters;
 	public int axisCameraOffset;
+
 	
 	public ShooterConfig() {
 		pidf = new PIDF();
 		cameraPipeline = new CameraPipeline();
+		shooterRPMParameters = new LinearEquationParameters();
 		axisCameraOffset = 0;
 	}
 	
@@ -35,4 +38,11 @@ public class ShooterConfig {
 		return this.cameraPipeline;
 	}
 	
+	public LinearEquationParameters getShooterRPMParameters() {
+		return this.shooterRPMParameters;
+	}
+	
+	public void setShooterRPMParameters(LinearEquationParameters lep) {
+		this.shooterRPMParameters = lep;
+	}
 }
