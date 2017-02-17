@@ -3,10 +3,10 @@ package org.usfirst.frc.team3950.robot;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.opencv.core.Mat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.usfirst.frc.team3950.robot.commands.*;
 import org.usfirst.frc.team3950.robot.config.RobotConfig;
 import org.usfirst.frc.team3950.robot.subsystems.*;
@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	//public static Logger robotLogger = LogManager.getLogger(Robot.class);
+	public static Logger robotLogger = LoggerFactory.getLogger(Robot.class);
 	
 	public static OI oi;
 	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();
@@ -73,7 +73,14 @@ public class Robot extends IterativeRobot {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		robotLogger.info("Helllo world");
+		robotLogger.debug("Helllo world");
+		robotLogger.warn("Helllo world");
+		robotLogger.error("Helllo world");
+		robotLogger.trace("Helllo world");
 
+		
         System.out.println(robotConfig.shooterConfig.cameraPipeline.filterContours.minArea);
         
         //robotLogger.log(Level.INFO, "I am in robotInit");
