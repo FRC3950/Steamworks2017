@@ -37,10 +37,10 @@ public class ShooterSubsystem extends Subsystem {
     	motor.configNominalOutputVoltage(+0.0f, -0.0f);
     	motor.configPeakOutputVoltage(+12.0f, -12.0f);
     	motor.setProfile(0);
-    	motor.setF(F);
-    	motor.setP(P);
-    	motor.setI(I);
-    	motor.setD(D);
+    	motor.setF(Robot.robotConfig.shooterConfig.pidf.f);
+    	motor.setP(Robot.robotConfig.shooterConfig.pidf.p);
+    	motor.setI(Robot.robotConfig.shooterConfig.pidf.i);
+    	motor.setD(Robot.robotConfig.shooterConfig.pidf.d);
     	motor.set(0);
 
     	SmartDashboard.putNumber("Proportion", P);
@@ -67,7 +67,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setPSmartDashboard(){
 		P = SmartDashboard.getNumber("Proportion", 0);
-		Robot.robotLogger.debug("The proportion from smartDashboard" + P);
+		Robot.robotLogger.debug("The proportion" + Robot.robotConfig.shooterConfig.pidf.p);
 		motor.setP(P);
 	}
 	public double getI() {
@@ -79,7 +79,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setISmartDashboard(){
 		I = SmartDashboard.getNumber("Integral", 0);
-		Robot.robotLogger.debug("The integral from smartDashboard" + I);
+		Robot.robotLogger.debug("The integral" + Robot.robotConfig.shooterConfig.pidf.i);
 		motor.setI(I);
 	}
 	public double getD() {
@@ -91,7 +91,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setDSmartDashboard(){
 		D = SmartDashboard.getNumber("Derivative", 0);
-		Robot.robotLogger.debug("The derivative from smartDashboard" + D);
+		Robot.robotLogger.debug("The derivative" + Robot.robotConfig.shooterConfig.pidf.d);
 		motor.setD(D);
 	}
 	public double getF() {
@@ -103,7 +103,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setFSmartDashboard(){
 		F = SmartDashboard.getNumber("Feed Forward", 0);
-		Robot.robotLogger.debug("The feed forward from smartDashboard" + F);
+		Robot.robotLogger.debug("The feed forward" + Robot.robotConfig.shooterConfig.pidf.f);
 		motor.setF(F);
 	}
 	public boolean speedInRange() {

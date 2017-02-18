@@ -5,20 +5,14 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.opencv.core.Mat;
 import org.usfirst.frc.team3950.robot.commands.*;
 import org.usfirst.frc.team3950.robot.config.RobotConfig;
 import org.usfirst.frc.team3950.robot.subsystems.*;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static Logger robotLogger = LoggerFactory.getLogger(Robot.class);
+	public static RobotConfig robotConfig = RobotConfig.getInstance();
 	
 	public static OI oi;
 	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();
@@ -47,6 +42,7 @@ public class Robot extends IterativeRobot {
 	public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(); 
 	public static USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
 	
+	
 
     Command autonomousCommand;
     SendableChooser chooser;
@@ -56,29 +52,9 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	ObjectMapper mapper = new ObjectMapper();
-    	RobotConfig robotConfig = new RobotConfig();
-		try {
-			robotConfig = mapper.readValue(new File("/home/lvuser/FRCUserProgram.cfg"), RobotConfig.class);
-			String jsonInString = mapper.writeValueAsString(robotConfig);
-	        System.out.println(jsonInString);
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-        System.out.println(robotConfig.shooterConfig.cameraPipeline.filterContours.minArea);
-        
-        //robotLogger.log(Level.INFO, "I am in robotInit");
+    	Robot.robotLogger.debug("I am in robotInit");
+    	Robot.robotLogger.info(Robot.robotConfig.toString());
     	
-        System.out.println("I am in robotInit");
-//    	usbCameraSubsystem.initCamera();
 		oi = new OI();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new DriveCommand());
@@ -87,44 +63,6 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Derivative", 1.0);
         SmartDashboard.putNumber("Integral", 0.0);
         SmartDashboard.putNumber("Feed Forward", 0.025);
-//        Robot.robotLogger.info("hello from the robot init");
-   
-//        System.out.println("I am in robotInit");
-
-//		CameraServer.getInstance().removeCamera("USB");
-//		CameraServer.getInstance().removeCamera("Axis Camera");
-//		CameraServer.getInstance().removeCamera("USB Camera 0");
-        /*        new Thread(() -> {
-            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            camera.setResolution(640, 480);
-            
-            CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("USB", 640, 480);
-            
-            Mat source = new Mat();
-            Mat oldsource = new Mat();
-  
-            long t1 = (new java.util.Date().getTime())/1000;
-            long t2 = t1;
-            while(!Thread.interrupted()) {
-            	try {
-					Thread.sleep(250);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-//					e.printStackTrace();
-				}
-               // t2 = (new java.util.Date().getTime())/1000;
-           		if((t2 - t1) >= 1) 
-            	{
-	                cvSink.grabFrame(source);
-	                oldsource = source;
-	                outputStream.putFrame(source);
-	                t1 = t2;
-            	}
-           		//outputStream.putFrame(oldsource);
-           	}
-        }).start();
-*/
     }
 	
 	/**

@@ -41,40 +41,29 @@ public class USBCameraDoCommand extends Command {
 //    	server.setSource(cvSource);
     }
 
-    private static long deltaMilliseconds = 1000;
+    private static long deltaMilliseconds = 0;
     private static GearPipeline gtbr = new GearPipeline();
     private static long previousTime = System.currentTimeMillis();
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.robotLogger.debug("USBCameraDoCommand.execute");
         long currentTime = System.currentTimeMillis();
     	
-        
-        //if((currentTime - previousTime) > deltaMilliseconds)
+        if((currentTime - previousTime) > deltaMilliseconds)
         {
-	    	Mat mat = Robot.usbCameraSubsystem.getFrame();
-	//		GearPipelineRGB gtbr = new GearPipelineRGB();
+	    	Mat mat = Robot.usbCameraSubsystem.getNthFrame(5);
 			gtbr.process(mat);
-	//		cvSource.putFrame(gtbr.getHslThresholdOutput());
 			ArrayList<Rect> gearRects = new ArrayList<Rect>();
 			for(MatOfPoint mop : gtbr.filterContoursOutput()) {
 				Rect rect = Imgproc.boundingRect(mop);
-				System.out.println(rect.toString());
 				gearRects.add(rect);
+				Robot.robotLogger.trace(rect.toString());
 			}
-			System.out.println("gearRects size: " + gearRects.size());
 			Robot.robotLogger.debug("gearRects size: " + gearRects.size());
 			Rect totalRect = VisionUtility.getRectContainer(gearRects, 640, 360);
 			previousTime = currentTime;
         }
-/*
-    	System.out.println("Hello from the USB camera");
-    	USBCameraSubsystem.startCamera();
-    	System.out.println("initialized1 usb");
-    	Robot.usbCameraSubsystem.startCamera();
-    	System.out.println("initializing2 usb");
-    	gearRects = Robot.usbCameraSubsystem.getGearRectangles();
-    	// operate on gear rectangles
-    	 */
     }
 
     // Make this return true when this Command no longer needs to run execute() 

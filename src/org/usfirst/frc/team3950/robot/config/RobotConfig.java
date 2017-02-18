@@ -1,12 +1,51 @@
 package org.usfirst.frc.team3950.robot.config;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.usfirst.frc.team3950.robot.Robot;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class RobotConfig {
 
 	public ShooterConfig shooterConfig;
 	public GearConfig gearConfig;
 	public DrivetrainConfig drivetrainConfig;
 	
-	public RobotConfig() {
+	private static RobotConfig instance = null;
+	private static ObjectMapper mapper = null;
+	
+	public static RobotConfig getInstance() {
+		if (instance != null)
+			return instance;
+		mapper = new ObjectMapper();
+		try {
+			instance = mapper.readValue(new File("/home/lvuser/FRCUserProgram.cfg"), RobotConfig.class);
+		} catch (JsonParseException e) {
+			Robot.robotLogger.error(e.getMessage());
+		} catch (JsonMappingException e) {
+			Robot.robotLogger.error(e.getMessage());
+		} catch (IOException e) {
+			Robot.robotLogger.error(e.getMessage());
+		}
+		return instance;
+	}
+	
+	public String toString() {
+		try {
+			return mapper.writeValueAsString(instance);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			Robot.robotLogger.error(e.getMessage());
+		}
+		return "";
+	}
+	
+	private RobotConfig() {
 		shooterConfig = new ShooterConfig();
 	}
 	
