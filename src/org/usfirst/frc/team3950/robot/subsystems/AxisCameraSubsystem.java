@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3950.robot.subsystems;
+ package org.usfirst.frc.team3950.robot.subsystems;
 
 import java.util.ArrayList;
 
@@ -6,8 +6,11 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.NewBoilerPipeline;
 import org.usfirst.frc.team3950.robot.Robot;
 
@@ -22,6 +25,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class AxisCameraSubsystem extends Subsystem {
+	private static RobotLogger logger = new RobotLogger(AxisCameraSubsystem.class);
 	
 	private static AxisCamera camera = null;
     // Put methods for controlling this subsystem
@@ -34,8 +38,7 @@ public class AxisCameraSubsystem extends Subsystem {
     	camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
     	camera.setResolution(320, 240);
     	cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-    	Robot.robotLogger.info("CAMERA ENABLED");
-        System.out.println("I have enabled camera");
+    	logger.log(RobotLogger.LoggerLevel.info, "CAMERA ENABLED");
     }
     
     static boolean cameraEnabled = true;
@@ -62,17 +65,16 @@ public class AxisCameraSubsystem extends Subsystem {
     	
     	//System.out.println("free");
     	//camera.setVideoMode(null);
-    	
-    	System.out.println("I HAVE STOPPED");
+    	logger.log(RobotLogger.LoggerLevel.info, "I HAVE STOPPED");
     	}
     
     public double getBoilerDistance(int width) {
-    	double distance = 506.8/(width - 15.28);
+    	double distance = Robot.robotConfig.shooterConfig.distanceParameters.m/(width + Robot.robotConfig.shooterConfig.distanceParameters.b);
     	return distance;
     }
     
     public double getBoilerRPM60(double distance){
-    	double RPM = (100*distance) + 3500;
+    	double RPM = (Robot.robotConfig.shooterConfig.shooterRPMParameters.m*distance) + Robot.robotConfig.shooterConfig.shooterRPMParameters.b;
     	return RPM;
     }
     
@@ -88,13 +90,13 @@ public class AxisCameraSubsystem extends Subsystem {
     }
     
     public double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
-    	System.out.println("Boiler rect width: " + boilerRectWidth);
+    	logger.log(RobotLogger.LoggerLevel.debug, "Boiler rect width: " + boilerRectWidth);
     	double width = boilerRectWidth;
-    	double inch = (15/width);
-    	System.out.println("inches: " + inch);
-    	double feet = inch/12;
-    	System.out.println("Inch: " + inch);
-    	System.out.println("Feet: " + feet);
+    	double inch = (15.0/width);
+    	logger.log(RobotLogger.LoggerLevel.debug, "inches: " + inch);
+    	double feet = inch/12.0;
+    	logger.log(RobotLogger.LoggerLevel.debug, "Inch: " + inch);
+    	logger.log(RobotLogger.LoggerLevel.debug, "Feet: " + feet);
     	int pixelDistance = boilerRectCenterX - (cameraXRes/2);
     	double feetDistance = pixelDistance * feet;
     	double angle = Math.asin(feetDistance/boilerDistance);
@@ -123,12 +125,12 @@ public class AxisCameraSubsystem extends Subsystem {
 				boilerRects.add(r1);
 				boilerRects.add(r2);
 				
-				System.out.println("RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
-				System.out.println("RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
-				System.out.println((((int)rectOne.height) + ((int)rectTwo.height)) / 2); 
+				logger.log(RobotLogger.LoggerLevel.debug, "RectOne: " + rectOne.height + "  " + rectOne.width + "  " + rectOne.area());
+				logger.log(RobotLogger.LoggerLevel.debug, "RectTwo: " + rectTwo.height + "  " + rectTwo.width + "  " + rectTwo.area());
+				logger.log(RobotLogger.LoggerLevel.debug, "Average" + (((int)rectOne.height) + ((int)rectTwo.height)) / 2);
 
-				//rect.x is the left edge afaik
-				//rect.y is the top edge afaik
+				//rect.x is the left edge 
+				//rect.y is the top edge 
 				int centerXOne = rectOne.x + (rectOne.width/2); //returns the center of the bounding rectangle
 				int centerYOne = rectOne.y + (rectOne.height/2); //returns the center of the bounding rectangle
 				int centerXTwo = rectTwo.x + (rectTwo.width/2);
@@ -136,11 +138,10 @@ public class AxisCameraSubsystem extends Subsystem {
 				int centerYAvg = (centerYOne + centerYTwo)/2;
 				int centerXAvg = (centerXOne + centerXTwo)/2;
 
-				System.out.println(centerXAvg);
-				Robot.robotLogger.debug("The boiler centerX average is" + centerXAvg);
+				logger.log(RobotLogger.LoggerLevel.debug, "The boiler centerX average is" + centerXAvg);
 			}
 			else {
-				System.out.println("NO");
+				logger.log(RobotLogger.LoggerLevel.debug, "NO");
 			}
 		}
 		return boilerRects;

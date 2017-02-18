@@ -1,5 +1,8 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
 
@@ -11,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class BallIntakeSubsystem extends Subsystem {
-
+	private static RobotLogger logger = new RobotLogger(BallIntakeSubsystem.class);
 	private CANTalon ballIntake;
 	
     // Put methods for controlling this subsystem
@@ -49,7 +52,7 @@ public class BallIntakeSubsystem extends Subsystem {
     }
     
     public double getCurrentSetSpeed() {
-    	Robot.robotLogger.info("ball intake current speed" + ballIntake.get());
+    	logger.log(RobotLogger.LoggerLevel.info, "ball intake current speed" + ballIntake.get());
     	return ballIntake.get();
     }
     

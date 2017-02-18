@@ -60,17 +60,17 @@ public class NewBoilerPipeline {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 50.0;
-		double filterContoursMinPerimeter = 0.0;
-		double filterContoursMinWidth = 0.0;
-		double filterContoursMaxWidth = 1000.0;
-		double filterContoursMinHeight = 0.0;
-		double filterContoursMaxHeight = 1000.0;
-		double[] filterContoursSolidity = {0, 100};
-		double filterContoursMaxVertices = 1000000.0;
-		double filterContoursMinVertices = 0.0;
-		double filterContoursMinRatio = 0.0;
-		double filterContoursMaxRatio = 1000.0;
+		double filterContoursMinArea = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.minArea;
+		double filterContoursMinPerimeter = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.minPerimeter;
+		double filterContoursMinWidth = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.minWidth;
+		double filterContoursMaxWidth = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.maxWidth;
+		double filterContoursMinHeight = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.minHeight;
+		double filterContoursMaxHeight = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.maxHeight;
+		double[] filterContoursSolidity = {Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.solidity.lower, Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.solidity.upper};
+		double filterContoursMaxVertices = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.maxVertices;
+		double filterContoursMinVertices = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.minVertices;
+		double filterContoursMinRatio = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.minRatio;
+		double filterContoursMaxRatio = Robot.robotConfig.shooterConfig.cameraPipeline.filterContours.maxRatio;
 		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 
 	}

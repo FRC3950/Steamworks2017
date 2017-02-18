@@ -3,11 +3,16 @@ package org.usfirst.frc.team3950.robot.commands;
 import java.util.ArrayList;
 
 import org.opencv.core.Rect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class GearDistanceCommand extends Command {
+	private static RobotLogger logger = new RobotLogger(GearDistanceCommand.class);
 
     public GearDistanceCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -21,9 +26,9 @@ public class GearDistanceCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("hello from the geardistance command");
+    	logger.log(RobotLogger.LoggerLevel.info, "hello from the geardistance command");
 //    	ArrayList<Rect> gearRects = Robot.usbCameraSubsystem.getGearRectangles();
-    	System.out.println("ArrayList of gearRect made");
+    	logger.log(RobotLogger.LoggerLevel.info, "ArrayList of gearRect made");
 //    	Rect totalRect = Robot.usbCameraSubsystem.getRectContainer(gearRects, 639, 359);
 //    	System.out.println("Total Rect: " + totalRect.x + " " + totalRect.y + " " + totalRect.width + " " + totalRect.height);
     	

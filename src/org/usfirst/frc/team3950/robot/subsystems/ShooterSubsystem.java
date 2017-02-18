@@ -3,6 +3,9 @@ package org.usfirst.frc.team3950.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
 
@@ -16,6 +19,7 @@ import edu.wpi.first.wpilibj.*;
  *
  */
 public class ShooterSubsystem extends Subsystem {
+	private static RobotLogger logger =new RobotLogger(ShooterSubsystem.class);
 	private double P = 0;
 	private double I = 0;
 	private double D = 0;
@@ -67,7 +71,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setPSmartDashboard(){
 		P = SmartDashboard.getNumber("Proportion", 0);
-		Robot.robotLogger.debug("The proportion" + Robot.robotConfig.shooterConfig.pidf.p);
+		logger.log(RobotLogger.LoggerLevel.debug, "The proportion" + Robot.robotConfig.shooterConfig.pidf.p);
 		motor.setP(P);
 	}
 	public double getI() {
@@ -79,7 +83,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setISmartDashboard(){
 		I = SmartDashboard.getNumber("Integral", 0);
-		Robot.robotLogger.debug("The integral" + Robot.robotConfig.shooterConfig.pidf.i);
+		logger.log( RobotLogger.LoggerLevel.debug, "the integral" + Robot.robotConfig.shooterConfig.pidf.i);
 		motor.setI(I);
 	}
 	public double getD() {
@@ -91,7 +95,7 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setDSmartDashboard(){
 		D = SmartDashboard.getNumber("Derivative", 0);
-		Robot.robotLogger.debug("The derivative" + Robot.robotConfig.shooterConfig.pidf.d);
+		logger.log(RobotLogger.LoggerLevel.debug, "The derivative" + Robot.robotConfig.shooterConfig.pidf.d);
 		motor.setD(D);
 	}
 	public double getF() {
@@ -103,11 +107,11 @@ public class ShooterSubsystem extends Subsystem {
 	}
 	public void setFSmartDashboard(){
 		F = SmartDashboard.getNumber("Feed Forward", 0);
-		Robot.robotLogger.debug("The feed forward" + Robot.robotConfig.shooterConfig.pidf.f);
+		logger.log(RobotLogger.LoggerLevel.debug, "The feed forward" + Robot.robotConfig.shooterConfig.pidf.f);
 		motor.setF(F);
 	}
 	public boolean speedInRange() {
-		Robot.robotLogger.info("SPEED IS IN RANGE");
+		logger.log(RobotLogger.LoggerLevel.info, "THE SPEED IS IN RANGE");
 		return (motor.getEncVelocity() > targetRPM - range) && (motor.getEncVelocity() < targetRPM - range);
 	}
 	public void shutOffMotor() {

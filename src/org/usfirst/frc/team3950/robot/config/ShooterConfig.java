@@ -5,6 +5,8 @@ public class ShooterConfig {
 	public CameraPipeline cameraPipeline;
 	public LinearEquationParameters shooterRPMParameters;
 	public int axisCameraOffset;
+	public int nthFrame;
+	public LinearEquationParameters distanceParameters;
 
 	
 	public ShooterConfig() {
@@ -12,6 +14,7 @@ public class ShooterConfig {
 		cameraPipeline = new CameraPipeline();
 		shooterRPMParameters = new LinearEquationParameters();
 		axisCameraOffset = 0;
+		nthFrame = 5;
 	}
 	
 	public int getAxisCameraOffset() {
@@ -44,5 +47,19 @@ public class ShooterConfig {
 	
 	public void setShooterRPMParameters(LinearEquationParameters lep) {
 		this.shooterRPMParameters = lep;
+	}
+	public LinearEquationParameters getDistanceParameters() {
+		return this.distanceParameters;
+	}
+	
+	public void setDistanceParameters(LinearEquationParameters lep) {
+		this.distanceParameters = lep;
+	}
+	public int getNthFrame() {
+		return this.nthFrame;
+	}
+
+	public void setNthFrame(int nthFrame) {
+		this.nthFrame = nthFrame;
 	}
 }

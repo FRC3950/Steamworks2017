@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Logger robotLogger = LoggerFactory.getLogger(Robot.class);
+	public static RobotLogger logger = new RobotLogger(Robot.class);
 	public static RobotConfig robotConfig = RobotConfig.getInstance();
 	
 	public static OI oi;
@@ -46,23 +46,30 @@ public class Robot extends IterativeRobot {
 
     Command autonomousCommand;
     SendableChooser chooser;
+    SendableChooser myLoggerChooser;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-    	Robot.robotLogger.debug("I am in robotInit");
-    	Robot.robotLogger.info(Robot.robotConfig.toString());
+    	logger.log(RobotLogger.LoggerLevel.info, "I am in robotInit");
+    	logger.log(RobotLogger.LoggerLevel.info, Robot.robotConfig.toString());
     	
 		oi = new OI();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new DriveCommand());
+        
+        myLoggerChooser = new SendableChooser();
+        myLoggerChooser.addObject("trace", new LoggerLevelSet(RobotLogger.LoggerLevel.trace));
+        myLoggerChooser.addObject("debug", new LoggerLevelSet(RobotLogger.LoggerLevel.debug));
+        myLoggerChooser.addDefault("info", new LoggerLevelSet(RobotLogger.LoggerLevel.info));
+        SmartDashboard.putData("Logger Level", myLoggerChooser);
 //        chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putNumber("Proportion", 0.2);
-        SmartDashboard.putNumber("Derivative", 1.0);
-        SmartDashboard.putNumber("Integral", 0.0);
-        SmartDashboard.putNumber("Feed Forward", 0.025);
+//        SmartDashboard.putNumber("Proportion", 0.2);
+//        SmartDashboard.putNumber("Derivative", 1.0);
+//        SmartDashboard.putNumber("Integral", 0.0);
+//        SmartDashboard.putNumber("Feed Forward", 0.025);
     }
 	
 	/**
@@ -120,30 +127,16 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.cancel();
         RobotMap.ahrs.reset();
     }
-    StringBuilder _sb = new StringBuilder();
-    double test;
+
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	LoggerLevelSet x = (LoggerLevelSet) myLoggerChooser.getSelected();
+    	RobotLogger.setLoggerLevel(x.getLevel());
         Scheduler.getInstance().run();
-     //   double motorOutputVoltage = RobotMap.shooterMotor.getOutputVoltage();
-     //  double motorOutputBus = RobotMap.shooterMotor.getBusVoltage();
-    	/* prepare line to print */
-		/*_sb.append("\toutVoltage:");
-		_sb.append(motorOutputVoltage);
-		_sb.append("\toutBus:");
-		_sb.append(motorOutputBus);
-        _sb.append("\tspd:");
-        _sb.append(RobotMap.shooterMotor.getSpeed() );
-        SmartDashboard.putNumber("Shooter speed", RobotMap.shooterMotor.getSpeed());
-        test = SmartDashboard.getNumber("Test", 0);
-        _sb.append("\terr:");
-        _sb.append(RobotMap.shooterMotor.getClosedLoopError());
-        _sb.append("\ttrg:");
-        _sb.append(ShooterStartCommand.targetRPM);
-//        System.out.println(_sb);
-        _sb.setLength(0);*/
+        
+    
     }
     
     /**

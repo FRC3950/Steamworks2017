@@ -1,5 +1,8 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.commands.*;
@@ -18,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *Attire!
  */
 public class DrivetrainSubsystem extends Subsystem {
+	private static RobotLogger logger = new RobotLogger(DrivetrainSubsystem.class);
     CANTalon leftFront;
     CANTalon leftBack;
     CANTalon rightFront;
@@ -49,11 +53,11 @@ public class DrivetrainSubsystem extends Subsystem {
     public void GearShift(){
     	gearShiftSolenoid.set(!gearShiftSolenoid.get());
     	SmartDashboard.putBoolean("High Gear", gearShiftSolenoid.get());
-    	Robot.robotLogger.debug("gear state" + gearShiftSolenoid.get());
+    	logger.log(RobotLogger.LoggerLevel.info, "gear state" + gearShiftSolenoid.get());
     }
     
     public double getCurrentAngle(){
-    	Robot.robotLogger.debug("navX angle" + navx.getAngle());
+    	logger.log(RobotLogger.LoggerLevel.info, "navX angle" + navx.getAngle());
     	return navx.getAngle();
     }
     

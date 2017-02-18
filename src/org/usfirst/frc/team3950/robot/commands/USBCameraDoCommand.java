@@ -12,9 +12,12 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.GearPipeline;
 import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
 import org.usfirst.frc.team3950.robot.GearPipelineRGB;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.VisionUtility;
 import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
@@ -23,6 +26,7 @@ import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
  *
  */
 public class USBCameraDoCommand extends Command {
+	private static RobotLogger logger = new RobotLogger(USBCameraDoCommand.class);
 
     public USBCameraDoCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -33,13 +37,7 @@ public class USBCameraDoCommand extends Command {
   	private static CvSource cvSource;
 //  // Called just before this Command runs the first time
     protected void initialize() {
-    	
-//    	cvSource = new CvSource("USBContours",  VideoMode.PixelFormat.kMJPEG, 640, 360, 30);
-//    	CvSource cvSource = new CvSource("USBContours", VideoMode.PixelFormat.kMJPEG, 320, 240, 30);
-//    	CameraServer.getInstance().addCamera(cvSource);
-//    	VideoSink server = CameraServer.getInstance().addServer("serve_" + cvSource.getName());
-//    	server.setSource(cvSource);
-    }
+        }
 
     private static long deltaMilliseconds = 0;
     private static GearPipeline gtbr = new GearPipeline();
@@ -47,21 +45,22 @@ public class USBCameraDoCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.robotLogger.debug("USBCameraDoCommand.execute");
+    	logger.log(RobotLogger.LoggerLevel.debug, "USBCameraDoCommand.execute");
         long currentTime = System.currentTimeMillis();
     	
         if((currentTime - previousTime) > deltaMilliseconds)
         {
-	    	Mat mat = Robot.usbCameraSubsystem.getNthFrame(5);
+	    	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
 			gtbr.process(mat);
 			ArrayList<Rect> gearRects = new ArrayList<Rect>();
 			for(MatOfPoint mop : gtbr.filterContoursOutput()) {
 				Rect rect = Imgproc.boundingRect(mop);
 				gearRects.add(rect);
-				Robot.robotLogger.trace(rect.toString());
+				logger.log(RobotLogger.LoggerLevel.trace, rect.toString());
 			}
-			Robot.robotLogger.debug("gearRects size: " + gearRects.size());
-			Rect totalRect = VisionUtility.getRectContainer(gearRects, 640, 360);
+			logger.log(RobotLogger.LoggerLevel.trace, "gearRects size: " + gearRects.size());
+			Rect totalRect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
+			logger.log(RobotLogger.LoggerLevel.trace, "TotalRect is: " + totalRect);
 			previousTime = currentTime;
         }
     }

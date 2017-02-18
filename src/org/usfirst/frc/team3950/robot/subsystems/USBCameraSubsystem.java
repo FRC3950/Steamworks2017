@@ -7,6 +7,8 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
 import org.usfirst.frc.team3950.robot.commands.USBCameraDoCommand;
 
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team3950.robot.GearPipeline;
 import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
 import org.usfirst.frc.team3950.robot.GearPipelineRGB;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
 
@@ -27,7 +30,7 @@ import org.usfirst.frc.team3950.robot.TestBoundingRectangles;
  *
  */
 public class USBCameraSubsystem extends Subsystem {
-	
+	private static RobotLogger logger = new RobotLogger(USBCameraSubsystem.class);
 	private static UsbCamera camera = null;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -36,15 +39,14 @@ public class USBCameraSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
 		camera = CameraServer.getInstance().startAutomaticCapture(0);
-		Robot.robotLogger.info("camera server has started automatic capture");
-		camera.setResolution(640, 360);
+		logger.log(RobotLogger.LoggerLevel.info, "camera server has started automatic capture");
+		camera.setResolution(Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
 //		System.out.println("camera has set resolution");
-		camera.setWhiteBalanceManual(4500);
+		camera.setWhiteBalanceManual(Robot.robotConfig.usbCameraSettings.whiteBalance);
 //		camera.setExposureManual(-10);
-		camera.setBrightness(10);
-		
+		camera.setBrightness(Robot.robotConfig.usbCameraSettings.cameraBrightness);
 		cvSink = CameraServer.getInstance().getVideo(camera); //capture mats from camera
-		Robot.robotLogger.info("system has established cvsink");
+		logger.log(RobotLogger.LoggerLevel.info, "system has established cvsink");
 		
 //		setDefaultCommand(new USBCameraDoCommand());
     }

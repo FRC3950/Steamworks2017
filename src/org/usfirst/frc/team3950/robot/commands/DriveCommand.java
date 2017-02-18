@@ -1,6 +1,10 @@
 package org.usfirst.frc.team3950.robot.commands;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveCommand extends Command {
+	private static RobotLogger logger = new RobotLogger(DriveCommand.class);
 	
 	Joystick stick = Robot.oi.driveStick;
 	
@@ -23,7 +28,7 @@ public class DriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.robotLogger.trace("stick Y: " + stick.getY() + "stick twist: " + stick.getTwist());
+    	logger.log(RobotLogger.LoggerLevel.trace, "stick Y: " + stick.getY() + "stick twist: " + stick.getTwist());
     	Robot.drivetrainsubsystem.Drive(stick.getY(), stick.getTwist());
     }
 

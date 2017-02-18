@@ -1,26 +1,30 @@
-package org.usfirst.frc.team3950.robot;
+ package org.usfirst.frc.team3950.robot;
 
 import java.util.ArrayList;
 
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
 public class VisionUtility {
+	private static RobotLogger logger = new RobotLogger(VisionUtility.class);
 	
 	  //Axis Camera Offset in Pixels
 	  static int AxisCameraOffset = 0;
 	  
 	  //Boiler Distance Constants for Axis Camera
-	  static double BoilerDistanceSlope = 506.8;  //a
-	  static double BoilerDistanceYInt = -15.28;  //b
+	  static double BoilerDistanceSlope = Robot.robotConfig.shooterConfig.distanceParameters.m;  //a
+	  static double BoilerDistanceYInt = Robot.robotConfig.shooterConfig.distanceParameters.b;  //b
 	  
 	  //Gear Distance Constants for USB Camera
 	  static double GearDistanceSlope;	//a
 	  static double GearDistanceYInt;	//b
 	  
 	  //RPM Distance Constants
-	  static double RPMSlope = 100;
-	  static double RPMYInt = 3500;
+	  static double RPMSlope = Robot.robotConfig.shooterConfig.shooterRPMParameters.m;
+	  static double RPMYInt = Robot.robotConfig.shooterConfig.shooterRPMParameters.b;
 	
 	  public static double getBoilerDistance(int width) {
 	    	double distance = BoilerDistanceSlope/(width - BoilerDistanceYInt);
@@ -49,13 +53,13 @@ public class VisionUtility {
 	    }
 	    
 	    public static double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
-	    	System.out.println("Boiler rect width: " + boilerRectWidth);
+	    	logger.log(RobotLogger.LoggerLevel.debug, "Boiler rect width: " + boilerRectWidth);
 	    	double width = boilerRectWidth;
 	    	double inch = (15/width);
-	    	System.out.println("inches: " + inch);
+	    	logger.log(RobotLogger.LoggerLevel.debug, "inches: " + inch);
 	    	double feet = inch/12;
-	    	System.out.println("Inch: " + inch);
-	    	System.out.println("Feet: " + feet);
+	    	logger.log(RobotLogger.LoggerLevel.debug, "Inch: " + inch);
+	    	logger.log(RobotLogger.LoggerLevel.debug, "Feet: " + feet);
 	    	int pixelDistance = boilerRectCenterX - ((cameraXRes/2) - AxisCameraOffset);
 	    	double feetDistance = pixelDistance * feet;
 	    	double angle = Math.asin(feetDistance/boilerDistance);

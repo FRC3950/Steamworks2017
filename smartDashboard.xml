@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Logger Level" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="1478" y="281"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
 		<location x="0" y="327"/>
 		<property name="Camera Choice" value="USBContours"/>
@@ -9,7 +12,9 @@
 		<property name="Camera Choice" value="USB Camera 0"/>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
-		<location x="0" y="44"/>
+		<location x="1482" y="272"/>
+		<width>61</width>
+		<property name="Text" value="Logger Level"/>
 	</static-widget>
 	<widget field="Shooter speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
 		<location x="262" y="14"/>
@@ -34,7 +39,8 @@
 		<location x="30" y="65"/>
 	</widget>
 	<widget field="High Gear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="29" y="35"/>
+		<location x="55" y="41"/>
+		<height>20</height>
 	</widget>
 	<widget field="Auto mode" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="0" y="0"/>
