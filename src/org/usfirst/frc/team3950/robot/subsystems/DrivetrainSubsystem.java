@@ -21,6 +21,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *Attire!
  */
 public class DrivetrainSubsystem extends Subsystem {
+	private double P = 0;
+	private double I = 0;
+	private double D = 0;
+	private double F = 0; 
 	private static RobotLogger logger = new RobotLogger(DrivetrainSubsystem.class);
     CANTalon leftFront;
     CANTalon leftBack;
@@ -41,6 +45,10 @@ public class DrivetrainSubsystem extends Subsystem {
     	drivetrain = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
     	gearShiftSolenoid = RobotMap.driveGearShiftSolenoid;
     	navx = RobotMap.ahrs;
+    	P = Robot.robotConfig.drivetrainConfig.pidf.p;
+    	I = Robot.robotConfig.drivetrainConfig.pidf.i;
+    	D = Robot.robotConfig.drivetrainConfig.pidf.d;
+    	F = Robot.robotConfig.drivetrainConfig.pidf.f;
     	
     	setDefaultCommand(new DriveCommand());
         
@@ -60,5 +68,34 @@ public class DrivetrainSubsystem extends Subsystem {
     	logger.log(RobotLogger.LoggerLevel.info, "navX angle" + navx.getAngle());
     	return navx.getAngle();
     }
+    public void autoDrive(double distanceCounts) {
+    	leftFront.enable();
+    	leftBack.enable();
+    	rightFront.enable();
+    	rightBack.enable();
+    	
+    	leftFront.setP(P);
+    	leftFront.setI(I);
+    	leftFront.setD(D);
+    	leftFront.setF(F);
+    	rightBack.setP(P);
+    	rightBack.setI(I);
+    	rightBack.setD(D);
+    	rightBack.setF(F);
+    	leftFront.changeControlMode(CANTalon.TalonControlMode.Position);
+    	rightBack.changeControlMode(CANTalon.TalonControlMode.Position);
+    	leftBack.changeControlMode(CANTalon.TalonControlMode.Follower);
+    	rightFront.changeControlMode(CANTalon.TalonControlMode.Follower);
+    	rightFront.set(rightBack.getDeviceID()); // not sure if correct just an assumption please test
+    	leftBack.set(leftFront.getDeviceID()); // same as above
+    	rightBack.set(distanceCounts);
+    	leftFront.set(distanceCounts);    	
+    }
+    
+    public void returnToTeleop() {
+    	
+    }
+    
+
     
 }

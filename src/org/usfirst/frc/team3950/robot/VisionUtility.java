@@ -1,4 +1,4 @@
- package org.usfirst.frc.team3950.robot;
+package org.usfirst.frc.team3950.robot;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.commands.USBCameraDoCommand;
 import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
 public class VisionUtility {
@@ -19,8 +20,8 @@ public class VisionUtility {
 	  static double BoilerDistanceYInt = Robot.robotConfig.shooterConfig.distanceParameters.b;  //b
 	  
 	  //Gear Distance Constants for USB Camera
-	  static double GearDistanceSlope;	//a
-	  static double GearDistanceYInt;	//b
+	  static double GearDistanceSlope = Robot.robotConfig.gearConfig.gearDistanceParameters.m;	//a
+	  static double GearDistanceYInt = Robot.robotConfig.gearConfig.gearDistanceParameters.b;	//b
 	  
 	  //RPM Distance Constants
 	  static double RPMSlope = Robot.robotConfig.shooterConfig.shooterRPMParameters.m;
@@ -31,9 +32,10 @@ public class VisionUtility {
 	    	return distance;
 	    }
 	  
-	  public static double getGearDistance(int width) {
-		  double distance = GearDistanceSlope/(width - GearDistanceYInt);
-		  return distance;
+	  public static double getGearDistance(double width) {
+		  logger.log(RobotLogger.LoggerLevel.debug,"width: " + width + "  GearDistanceSlope: " + GearDistanceSlope + "  GearDistanceYInt: " + GearDistanceYInt);
+		  double inverseDistance = (width - GearDistanceYInt) / GearDistanceSlope;
+		  return 1.0 / inverseDistance;
 	  }
 	    
 	    public static double getBoilerRPM60(double distance){
@@ -68,6 +70,16 @@ public class VisionUtility {
 	    	
 	    }
 	    
+	    public static double getRectWidthAvg(ArrayList<Rect> rectList) {
+	    	double sum = 0.0;
+	    	for(Rect x: rectList) {
+	    		logger.log(RobotLogger.LoggerLevel.debug, x.toString() );
+	    		sum += x.width;
+	    	}
+	    	
+	    	return sum / rectList.size();
+	    }
+
 	    public static Rect getRectContainer(ArrayList<Rect> rectList, int cameraWidth, int cameraHeight) {
 	    	Rect rect = new Rect(0, 0, 0, 0);
 	    	Point tl = new Point(cameraWidth - 1, cameraHeight - 1);
@@ -75,15 +87,19 @@ public class VisionUtility {
 	    	    	
 	    	for(Rect x: rectList) {
 //	    		System.out.println(x.toString());
+	    		logger.log(RobotLogger.LoggerLevel.debug, x.toString() );
 	    		tl.x = Math.min(tl.x, x.tl().x);
 	    		tl.y = Math.min(tl.y, x.tl().y);
 	    		br.x = Math.max(br.x, x.br().x);
 	    		br.y = Math.max(br.y, x.br().y);
 	    	}
+	    	logger.log(RobotLogger.LoggerLevel.debug, tl.toString());
+	    	logger.log(RobotLogger.LoggerLevel.debug, br.toString());
 	    	rect.x = (int) tl.x;
 	    	rect.y = (int) tl.y;
 	    	rect.width = (int) (br.x - tl.x);
 	    	rect.height = (int) (br.y - tl.y);
+	    	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
 	    	
 	    	return rect;
 	    }
