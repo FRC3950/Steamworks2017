@@ -22,11 +22,11 @@ public class AutoDriveCommand extends Command {
 	private double distanceCounts;
 	private boolean finished = false;
 
-    public AutoDriveCommand(double distanceFeet) {
+    public AutoDriveCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	//divide by twelve if needed in inches
-    	distanceCounts = distanceFeet * 2607.5;
+    	//distanceCounts = distanceFeet * 2607.5;
     	requires(Robot.usbCameraSubsystem);
     	requires(Robot.drivetrainsubsystem);
     }

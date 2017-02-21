@@ -25,7 +25,8 @@ public class GearIntakeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.gearintakesubsystem.GearBumperSwitchGet() != true){
+		Robot.gearintakesubsystem.GearIntake(controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft));
+/*    	if(Robot.gearintakesubsystem.GearBumperSwitchGet() != true){
 //    		System.out.println("GearBumperSwitch is not true.");
     		Robot.gearintakesubsystem.GearIntake(controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft));
     	}
@@ -35,7 +36,7 @@ public class GearIntakeCommand extends Command {
     	}
     	else{
 //    		System.out.println("GearBumperSwitch is neither true nor false.");
-    	}
+    	} */
     }
 
     // Make this return true when this Command no longer needs to run execute()

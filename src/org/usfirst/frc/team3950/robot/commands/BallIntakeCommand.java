@@ -21,15 +21,16 @@ public class BallIntakeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	switch(Robot.ballintakesubsystem.getState()){
-    	case intake: 
-    		Robot.ballintakesubsystem.ballIntakeStop();
-    		break;
-    	case stop:
-    	case outtake:
-    		Robot.ballintakesubsystem.ballIntakeIn();
-    		break;
-    	}
+    	Robot.ballintakesubsystem.ballIntakeIn();
+ //   	switch(Robot.ballintakesubsystem.getState()){
+  //  	case intake: 
+ //   		Robot.ballintakesubsystem.ballIntakeStop();
+  //  		break;
+ //   	case stop:
+ //   	case outtake:
+ //   		Robot.ballintakesubsystem.ballIntakeIn();
+ //  		break;
+  //  	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

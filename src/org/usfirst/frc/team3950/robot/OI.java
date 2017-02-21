@@ -30,12 +30,13 @@ public class OI {
     public Button xboxControllerXButton = new JoystickButton(xboxController, 3);
     public Button xboxControllerYButton = new JoystickButton(xboxController, 4);
     public Button xboxControllerLBButton = new JoystickButton(xboxController, 5);
-    //public Button xboxControllerUpDPadButton = new JoystickButton(xboxController, 12);
+    public Button xboxControllerRBButton = new JoystickButton(xboxController, 6);
+    public Button xboxControllerUpDPadButton = new JoystickButton(xboxController, 12);
     //public Button xboxControllerDownDPadButton = new JoystickButton(xboxController, 13);
     //public Button xboxControllerRightDPadButton = new JoystickButton(xboxController, 15);
     
     
-    public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
+//    public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
     // Button button = new JoystickButton(stick, buttonNumber);
     // There are a few additional built in buttons you can use. Additionally,
     // by subclassing Button you can create custom triggers and bind those to
@@ -59,16 +60,17 @@ public class OI {
     	System.out.println("Hello from OI Constructor.");
     	driveStick3Button.whenPressed(new DriveGearShiftCommand());
     	driveStick4Button.whenPressed(new AutoGearCommand());
-    	driveStick1Button.whenPressed(new ShooterStartCommand());
+//    	driveStick1Button.whenPressed(new ShooterStartCommand());
     	driveStick2Button.whenPressed(new ShooterEndCommand());
     	driveStick5Button.whenPressed(new USBCameraDoCommand());
     	driveStick6Button.whenPressed(new BoilerStraightenCommand());
     	xboxControllerAButton.whenPressed(new BallIntakeCommand());
     	xboxControllerBButton.whenPressed(new BallOuttakeCommand());
-    	xboxControllerYButton.whenPressed(new ShootCommand());
+    	xboxControllerYButton.whenPressed(new ShooterIndexerCommand());
     	xboxControllerLBButton.whenPressed(new ClimberDoCommand());
     	xboxControllerXButton.whenPressed(new GearDistanceCommand());
-    	//xboxControllerUpDPadButton.whenPressed(new GearIntakeStartCommand());
+    	xboxControllerRBButton.whenPressed(new StraightenShootCommandGroup());
+    	xboxControllerUpDPadButton.whenPressed(new GearIntakeStartCommand());
     	//xboxControllerRightDPadButton.whenPressed(new GearIntakeGearCommand());
     	//xboxControllerDownDPadButton.whenPressed(new GearIntakeFloorCommand());
     	

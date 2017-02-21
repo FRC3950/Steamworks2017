@@ -1,9 +1,5 @@
 package org.usfirst.frc.team3950.robot.commands;
 
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.VideoMode;
-import edu.wpi.cscore.VideoSink;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 
 import java.util.ArrayList;
@@ -12,15 +8,10 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.GearPipeline;
-import org.usfirst.frc.team3950.robot.GearPipelinePublishVideo;
-import org.usfirst.frc.team3950.robot.GearPipelineRGB;
 import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.VisionUtility;
-import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
 
 /**
  *
@@ -34,10 +25,9 @@ public class USBCameraDoCommand extends Command {
     	
     }
 
-  	private static CvSource cvSource;
 //  // Called just before this Command runs the first time
     protected void initialize() {
-        }
+    }
 
     private static long deltaMilliseconds = 0;
     private static GearPipeline gtbr = new GearPipeline();

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3950.robot.commands;
 
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -8,9 +9,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ShootCommand extends Command {
+public class ShooterIndexerCommand extends Command {
+	private static RobotLogger logger = new RobotLogger(ShooterIndexerCommand.class);
 
-    public ShootCommand() {
+    public ShooterIndexerCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooterIndexerSubsystem);
     }
@@ -21,15 +23,16 @@ public class ShootCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.shooterIndexerSubsystem.detectLimitSwitch() && Robot.shooterSubsystem.speedInRange())  {
+/*    	if (Robot.shooterIndexerSubsystem.detectLimitSwitch() && Robot.shooterSubsystem.speedInRange())  {
     		Robot.shooterIndexerSubsystem.indexerMotorForward();
     		Robot.shooterIndexerSubsystem.hopperMotorForward();
     	}
     	else if(Robot.shooterIndexerSubsystem.detectLimitSwitch()){
     		Robot.shooterIndexerSubsystem.indexerMotorStop();
     		Robot.shooterIndexerSubsystem.hopperMotorStop();
-    	}
+    	}*/
     }
+    
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
@@ -44,4 +47,14 @@ public class ShootCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+
+	public void startShooterIndexer() {
+		Robot.shooterIndexerSubsystem.setMotorVoltage(Robot.robotConfig.shooterConfig.indexerVoltage);
+		
+	}
+
+	public void stopShooterIndexer() {
+		Robot.shooterIndexerSubsystem.setMotorVoltage(0.0);
+		
+	}
 }

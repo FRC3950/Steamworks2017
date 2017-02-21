@@ -39,18 +39,12 @@ public class NewBoilerPipeline {
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
 	public void process(Mat source0) {
-		// Step Resize_Image0:
-		Mat resizeImageInput = source0;
-		double resizeImageWidth = 640.0;
-		double resizeImageHeight = 480.0;
-		int resizeImageInterpolation = Imgproc.INTER_CUBIC;
-		resizeImage(resizeImageInput, resizeImageWidth, resizeImageHeight, resizeImageInterpolation, resizeImageOutput);
 
 		// Step HSL_Threshold0:
-		Mat hslThresholdInput = resizeImageOutput;
-		double[] hslThresholdHue = {66.36690647482014, 92.45733788395904};
-		double[] hslThresholdSaturation = {33.480215827338135, 255.0};
-		double[] hslThresholdLuminance = {34.39748201438849, 255.0};
+		Mat hslThresholdInput = source0;
+		double[] hslThresholdHue = {70.0, 94.0};
+		double[] hslThresholdSaturation = {255.0, 255.0};
+		double[] hslThresholdLuminance = {16.0, 255.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:

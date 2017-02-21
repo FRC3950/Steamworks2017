@@ -3,8 +3,6 @@ package org.usfirst.frc.team3950.robot.commands;
 import java.util.ArrayList;
 
 import org.opencv.core.Rect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.VisionUtility;
@@ -32,22 +30,19 @@ public class BoilerStraightenCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		ArrayList<Rect> boilerRects = Robot.axisCameraSubsystem.getRectangles();
-		logger.log( RobotLogger.LoggerLevel.debug, "size of boilerRects" + boilerRects.size());
-		if (boilerRects.size() >= 2) {
-			Rect rectOne = boilerRects.get(0);
-			Rect rectTwo = boilerRects.get(1);
-			Rect rectTotal = VisionUtility.getBoilerTotalRect(rectOne, rectTwo);
-			logger.log( RobotLogger.LoggerLevel.debug,
-					"TotalRect: " + rectTotal.x + " " + rectTotal.y + " " + rectTotal.width + " " + rectTotal.height);
-			double distance = VisionUtility.getBoilerDistance(rectTotal.width);
+		if (boilerRects.size() == 2) {
+			double rectWidthAverage = VisionUtility.getRectWidthAvg(boilerRects);
+			logger.log(RobotLogger.LoggerLevel.debug, "RectWidthAverage: " + rectWidthAverage);
+			double boilerDistance = VisionUtility.getBoilerDistance(rectWidthAverage);
+			logger.log(RobotLogger.LoggerLevel.debug, "Boiler Distance: " + boilerDistance);
+			
+			Rect rectTotal = VisionUtility.getRectContainer(boilerRects, Robot.robotConfig.axisCameraSettings.width, Robot.robotConfig.axisCameraSettings.height);
 			double boilerAngle = 0;
 			if (rectTotal.width != 0)
 				logger.log(RobotLogger.LoggerLevel.info, "Boiler width not zero");
 			logger.log(RobotLogger.LoggerLevel.info, "rectTotal centerX: " + (rectTotal.x + (rectTotal.width / 2)));
-			logger.log(RobotLogger.LoggerLevel.info, "Distance: " + distance);
-			boilerAngle = VisionUtility.getBoilerAngle((rectTotal.x + (rectTotal.width / 2)), rectTotal.width,
-					Robot.robotConfig.axisCameraSettings.visionAngle, Robot.robotConfig.axisCameraSettings.width - 1,
-					distance);
+			logger.log(RobotLogger.LoggerLevel.info, "Distance: " + boilerDistance);
+			boilerAngle = VisionUtility.getBoilerAngle((rectTotal.x + (rectTotal.width / 2)), rectTotal.width, Robot.robotConfig.axisCameraSettings.visionAngle, Robot.robotConfig.axisCameraSettings.width - 1, boilerDistance);
 			logger.log(RobotLogger.LoggerLevel.debug, "Angle: " + boilerAngle);
 			double initialAngle = Robot.drivetrainsubsystem.getCurrentAngle();
 			double desiredAngle = initialAngle + boilerAngle;

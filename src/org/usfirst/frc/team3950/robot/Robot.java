@@ -5,15 +5,21 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.RobotLogger.LoggerLevel;
 import org.usfirst.frc.team3950.robot.commands.*;
 import org.usfirst.frc.team3950.robot.config.RobotConfig;
 import org.usfirst.frc.team3950.robot.subsystems.*;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -41,6 +47,7 @@ public class Robot extends IterativeRobot {
 	public static AxisCameraSubsystem axisCameraSubsystem = new AxisCameraSubsystem();
 	public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(); 
 	public static USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
+	public static AgitatorSubsystem agitatorSubsystem = new AgitatorSubsystem();
 	
 	
 
@@ -70,6 +77,18 @@ public class Robot extends IterativeRobot {
 //        SmartDashboard.putNumber("Derivative", 1.0);
 //        SmartDashboard.putNumber("Integral", 0.0);
 //        SmartDashboard.putNumber("Feed Forward", 0.025);
+        RobotMap.shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        RobotMap.shooterMotor.reverseSensor(false);
+        RobotMap.shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
+        RobotMap.shooterMotor.configPeakOutputVoltage(+12.0f, -12.0f);
+        RobotMap.shooterMotor.setProfile(0);
+        RobotMap.shooterMotor.setF(0.1);
+        RobotMap.shooterMotor.setP(0.1);
+        RobotMap.shooterMotor.setI(0.0);
+        RobotMap.shooterMotor.setD(0.0);
+        _talon = RobotMap.shooterMotor;
+        _joy = oi.driveStick;
+        _loops = 0;
     }
 	
 	/**
@@ -96,7 +115,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
 //        autonomousCommand = (Command) chooser.getSelected();
-        autonomousCommand = new AutoDriveCommand(0);
+        autonomousCommand = new AutoDriveCommand();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -129,15 +148,37 @@ public class Robot extends IterativeRobot {
         RobotMap.ahrs.reset();
     }
 
+    private CANTalon _talon = RobotMap.shooterMotor;
+    private Joystick _joy;
+    private int _loops;
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	LoggerLevelSet x = (LoggerLevelSet) myLoggerChooser.getSelected();
-    	RobotLogger.setLoggerLevel(x.getLevel());
+//    	LoggerLevelSet x = (LoggerLevelSet) myLoggerChooser.getSelected();
+//    	RobotLogger.setLoggerLevel(x.getLevel());
         Scheduler.getInstance().run();
         
-    
+        /*double leftYStick = _joy.getAxis(AxisType.kY);
+        double motorOutput = _talon.getOutputVoltage() / _talon.getBusVoltage();
+        
+        logger.log(LoggerLevel.debug, "\tout:" + motorOutput + "\tspd:" + _talon.getSpeed());
+        
+        if(_joy.getRawButton(1)) {
+        	double targetSpeed = leftYStick * 1500;
+        	_talon.changeControlMode (TalonControlMode.Speed);
+        	_talon.set(targetSpeed);
+        	
+            logger.log(LoggerLevel.debug, "\terr:" + _talon.getClosedLoopError() + "\ttrg:" + targetSpeed);
+        }
+//        else {
+//        	_talon.changeControlMode (TalonControlMode.PercentVbus);
+//        	_talon.set(leftYStick);
+//        }
+        
+        if(++_loops >= 10) {
+        	_loops = 0;
+        } */
     }
     
     /**

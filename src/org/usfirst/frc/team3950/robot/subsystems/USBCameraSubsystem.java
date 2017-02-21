@@ -51,8 +51,6 @@ public class USBCameraSubsystem extends Subsystem {
 //		setDefaultCommand(new USBCameraDoCommand());
     }
     
-
-    
     public Mat getFrame() {
     	Mat mat = new Mat();
     	if(cvSink != null) {

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3950.robot.commands;
 
 import org.usfirst.frc.team3950.robot.Robot;
+import org.usfirst.frc.team3950.robot.RobotLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ShooterStartSmartDashboardCommand extends Command {
+	private static RobotLogger logger = new RobotLogger(ShooterStartCommand.class);
 	public static float targetRPM = 2000;
 	private double counts = targetRPM*4096.0/600.0;
     public ShooterStartSmartDashboardCommand() {
@@ -20,6 +22,7 @@ public class ShooterStartSmartDashboardCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	counts = targetRPM*4096.0/600.0;
+    	logger.log(RobotLogger.LoggerLevel.info, "counts" + counts);
     }
 
     // Called repeatedly when this Command is scheduled to run

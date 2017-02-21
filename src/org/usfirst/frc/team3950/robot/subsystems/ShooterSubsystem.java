@@ -20,14 +20,9 @@ import edu.wpi.first.wpilibj.*;
  */
 public class ShooterSubsystem extends Subsystem {
 	private static RobotLogger logger =new RobotLogger(ShooterSubsystem.class);
-	private double P = 0;
-	private double I = 0;
-	private double D = 0;
-	private double F = 0;
 	private int range = 10;
 	private CANTalon motor;
-	private int targetRPM = 0;
-	private boolean running = false; // not set up yet
+	private int targetRPM; 
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -36,82 +31,52 @@ public class ShooterSubsystem extends Subsystem {
     	motor = RobotMap.shooterMotor;
 //    	motor.configEncoderCodesPerRev(1024);
     	motor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-    	motor.reverseSensor(true);
+    	motor.reverseSensor(false);
     	motor.changeControlMode(TalonControlMode.Speed);
     	motor.configNominalOutputVoltage(+0.0f, -0.0f);
-    	motor.configPeakOutputVoltage(+12.0f, -12.0f);
+    	motor.configPeakOutputVoltage(+0.0f, -12.0f);
     	motor.setProfile(0);
-    	motor.setF(Robot.robotConfig.shooterConfig.pidf.f);
-    	motor.setP(Robot.robotConfig.shooterConfig.pidf.p);
-    	motor.setI(Robot.robotConfig.shooterConfig.pidf.i);
-    	motor.setD(Robot.robotConfig.shooterConfig.pidf.d);
-    	motor.set(0);
-
-    	SmartDashboard.putNumber("Proportion", P);
-    	SmartDashboard.putNumber("Integral", I);
-    	SmartDashboard.putNumber("Derivative", D);
-    	SmartDashboard.putNumber("Feed Forward", F);
-    	SmartDashboard.putNumber("Target RPM", targetRPM);
+//    	motor.setF(Robot.robotConfig.shooterConfig.pidf.f);
+//    	motor.setP(Robot.robotConfig.shooterConfig.pidf.p);
+//    	motor.setI(Robot.robotConfig.shooterConfig.pidf.i);
+//    	motor.setD(Robot.robotConfig.shooterConfig.pidf.d);
+//    	motor.set(1000);
+//    	motor.enable();
 
 
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
     public void setTargetRPM(double rpm) {
+    	logger.log(RobotLogger.LoggerLevel.debug, "sets targetRPM= " + rpm);
+    	targetRPM = (int)rpm;
+    	SmartDashboard.putNumber("Target RPM", targetRPM);
+
     	//targetRPM = (int) rpm;
-    	motor.enable();
+//    	motor.enable();
     	motor.set(rpm);
     }
-	public double getP() {
-		return P;
-	}
 	public void setP(double p) {
-		P = p;
+		logger.log(RobotLogger.LoggerLevel.debug, "sets proportion value= " + p);
+    	SmartDashboard.putNumber("Proportion", p);
 		motor.setP(p);
 	}
-	public void setPSmartDashboard(){
-		P = SmartDashboard.getNumber("Proportion", 0);
-		logger.log(RobotLogger.LoggerLevel.debug, "The proportion" + Robot.robotConfig.shooterConfig.pidf.p);
-		motor.setP(P);
-	}
-	public double getI() {
-		return I;
-	}
 	public void setI(double i) {
+		logger.log(RobotLogger.LoggerLevel.debug, "sets integral value= " + i);
+    	SmartDashboard.putNumber("Integral", i);
 		motor.setI(i);
-		I = i;
-	}
-	public void setISmartDashboard(){
-		I = SmartDashboard.getNumber("Integral", 0);
-		logger.log( RobotLogger.LoggerLevel.debug, "the integral" + Robot.robotConfig.shooterConfig.pidf.i);
-		motor.setI(I);
-	}
-	public double getD() {
-		return D;
 	}
 	public void setD(double d) {
+		logger.log(RobotLogger.LoggerLevel.debug, "sets derivative value= " + d);
+    	SmartDashboard.putNumber("Derivative", d);
 		motor.setD(d);
-		D = d;
-	}
-	public void setDSmartDashboard(){
-		D = SmartDashboard.getNumber("Derivative", 0);
-		logger.log(RobotLogger.LoggerLevel.debug, "The derivative" + Robot.robotConfig.shooterConfig.pidf.d);
-		motor.setD(D);
-	}
-	public double getF() {
-		return F;
 	}
 	public void setF(double f) {
+		logger.log(RobotLogger.LoggerLevel.debug, "sets the feed forward= " + f) ;
+    	SmartDashboard.putNumber("Feed Forward", f);
 		motor.setF(f);
-		F = f;
-	}
-	public void setFSmartDashboard(){
-		F = SmartDashboard.getNumber("Feed Forward", 0);
-		logger.log(RobotLogger.LoggerLevel.debug, "The feed forward" + Robot.robotConfig.shooterConfig.pidf.f);
-		motor.setF(F);
 	}
 	public boolean speedInRange() {
-		logger.log(RobotLogger.LoggerLevel.info, "THE SPEED IS IN RANGE");
 		return (motor.getEncVelocity() > targetRPM - range) && (motor.getEncVelocity() < targetRPM - range);
 	}
 	public void shutOffMotor() {

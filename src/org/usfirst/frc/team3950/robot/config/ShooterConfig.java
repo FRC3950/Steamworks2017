@@ -7,6 +7,8 @@ public class ShooterConfig {
 	public int axisCameraOffset;
 	public int nthFrame;
 	public LinearEquationParameters distanceParameters;
+	public double agitatorVoltage;
+	public double indexerVoltage;
 
 	
 	public ShooterConfig() {
@@ -15,6 +17,8 @@ public class ShooterConfig {
 		shooterRPMParameters = new LinearEquationParameters();
 		axisCameraOffset = 0;
 		nthFrame = 5;
+		agitatorVoltage = 0.2;
+		indexerVoltage = -1;
 	}
 	
 	public int getAxisCameraOffset() {
@@ -62,4 +66,19 @@ public class ShooterConfig {
 	public void setNthFrame(int nthFrame) {
 		this.nthFrame = nthFrame;
 	}
+	public double getAgitatorVoltage() {
+		return this.agitatorVoltage;
+	}
+
+	public void setAgitatorVoltage(double agitatorVoltage) {
+		this.agitatorVoltage = agitatorVoltage;
+	}
+	public double getIndexerVoltage() {
+		return this.indexerVoltage;
+	}
+
+	public void setIndexerVoltage(double indexerVoltage) {
+		this.indexerVoltage = indexerVoltage;
+	}
+	
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotMap;
+import org.usfirst.frc.team3950.robot.commands.BallIntakeCommand;
 
 import com.ctre.CANTalon;
 
@@ -25,6 +26,7 @@ public class BallIntakeSubsystem extends Subsystem {
     	ballIntake.set(0);
         // Set the default command for a subsystem here.
         //setDefaultmmand(new MySpecialCommand());
+    	setDefaultCommand(new BallIntakeCommand());
     }
     
 	public enum State{
@@ -57,6 +59,7 @@ public class BallIntakeSubsystem extends Subsystem {
     }
     
     public State getState(){
+    	logger.log(RobotLogger.LoggerLevel.info, "state of ball intake" + state);
     	return state;
     }
     

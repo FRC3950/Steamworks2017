@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3950.robot.subsystems;
 
+import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.commands.GearIntakeCommand;
 
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class GearIntakeSubsystem extends Subsystem {
+	private static RobotLogger logger =new RobotLogger(GearIntakeSubsystem.class);
 	CANTalon intakeMotor = RobotMap.gearIntakeMotor;
 	Solenoid singleSolenoid1 = RobotMap.gearIntakeSolenoid1;
 	Solenoid singleSolenoid2 = RobotMap.gearIntakeSolenoid2;
@@ -43,33 +45,35 @@ public class GearIntakeSubsystem extends Subsystem {
     }
     
     public boolean GearBumperSwitchGet(){
-    	return bumperSwitch.get();
+    	return true;
+//    	return bumperSwitch.get();
     }
     
     public void IntakePositionStart(){
     	singleSolenoid1.set(false);
     	singleSolenoid2.set(false);
-    	doubleSolenoid1.set(DoubleSolenoid.Value.kReverse);
-    	doubleSolenoid2.set(DoubleSolenoid.Value.kReverse);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
     	gearliftstate = State.start;
     }
     
     public void IntakePositionGear(){
-    	singleSolenoid1.set(false);
-    	singleSolenoid2.set(false);
-    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
-    	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kOff);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kOff);
+    	singleSolenoid1.set(true);
+    	singleSolenoid2.set(true);
     	gearliftstate = State.gear;  	
     }
     public void IntakePositionFloor(){
-    	singleSolenoid1.set(true);
-    	singleSolenoid2.set(true);
-    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
-    	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
+    	singleSolenoid1.set(false);
+    	singleSolenoid2.set(false);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kReverse);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kReverse);
     	gearliftstate = State.floor;
     }
     
     public State GearLiftStateGet(){
+    	logger.log(RobotLogger.LoggerLevel.debug, "Gear intake" + gearliftstate);
     	return gearliftstate;
     }
 }

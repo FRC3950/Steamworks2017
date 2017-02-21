@@ -27,9 +27,10 @@ public class VisionUtility {
 	  static double RPMSlope = Robot.robotConfig.shooterConfig.shooterRPMParameters.m;
 	  static double RPMYInt = Robot.robotConfig.shooterConfig.shooterRPMParameters.b;
 	
-	  public static double getBoilerDistance(int width) {
-	    	double distance = BoilerDistanceSlope/(width - BoilerDistanceYInt);
-	    	return distance;
+	  public static double getBoilerDistance(double width) {
+	    	logger.log(RobotLogger.LoggerLevel.debug,"width: " + width + "  BoilerDistanceSlope: " + BoilerDistanceSlope + "  BoilerDistanceYInt: " + BoilerDistanceYInt);
+			  double inverseDistance = (width - BoilerDistanceYInt) / BoilerDistanceSlope;
+			  return 1.0 / inverseDistance;
 	    }
 	  
 	  public static double getGearDistance(double width) {
@@ -39,7 +40,7 @@ public class VisionUtility {
 	  }
 	    
 	    public static double getBoilerRPM60(double distance){
-	    	double RPM = (RPMSlope*distance) + RPMYInt;
+	    	double RPM = (RPMSlope * distance) + RPMYInt;
 	    	return RPM;
 	    }
 	    

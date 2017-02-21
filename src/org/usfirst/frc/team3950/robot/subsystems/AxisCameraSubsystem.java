@@ -36,60 +36,50 @@ public class AxisCameraSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     	camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
-    	camera.setResolution(320, 240);
+    	camera.setResolution(Robot.robotConfig.axisCameraSettings.width, Robot.robotConfig.axisCameraSettings.height);
     	cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
     	logger.log(RobotLogger.LoggerLevel.info, "CAMERA ENABLED");
     }
     
-    static boolean cameraEnabled = true;
-    
-    
-    public static void startCamera() {
-/*    	if(camera == null) {
-    		camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
-    		camera.setResolution(320, 240);
-    		cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-            System.out.println("I have enabled camera");
+    public Mat getFrame() {
+    	Mat mat = new Mat();
+    	if(cvSink != null) {
+    		cvSink.grabFrame(mat);
+//    		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
     	}
-    	else {
-    		CameraServer.getInstance().removeCamera("10.39.50.11");
-            System.out.println("I have disabled camera");
-            camera = null;
-    	} */
+    	return mat;
     }
     
-    public static void stopCamera()
-    {    	
-    	//System.out.println("null");
-    	//camera = null;
-    	
-    	//System.out.println("free");
-    	//camera.setVideoMode(null);
-    	logger.log(RobotLogger.LoggerLevel.info, "I HAVE STOPPED");
+    public Mat getNthFrame(int N){
+    	Mat mat = new Mat();
+    	if(N <= 0){
+    		return null;
     	}
-    
-    public double getBoilerDistance(int width) {
-    	double distance = Robot.robotConfig.shooterConfig.distanceParameters.m/(width + Robot.robotConfig.shooterConfig.distanceParameters.b);
-    	return distance;
-    }
-    
-    public double getBoilerRPM60(double distance){
-    	double RPM = (Robot.robotConfig.shooterConfig.shooterRPMParameters.m*distance) + Robot.robotConfig.shooterConfig.shooterRPMParameters.b;
-    	return RPM;
-    }
-    
-    public Rect getBoilerTotalRect(Rect rectOne, Rect rectTwo){
-    	Rect rectHigh = rectOne;
-    	Rect rectLow = rectTwo;
-    	if(rectOne.y < rectTwo.y){
-    		 rectHigh = rectTwo;
-    		 rectLow = rectOne;
+    	while(N --> 0){
+    		if(cvSink != null) {
+    			cvSink.grabFrame(mat);
+//    			org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
+    		}
     	}
-    	Rect rectTotal = new Rect(rectHigh.tl(), rectLow.br());
-    	return rectTotal;
+    	return mat;
     }
     
-    public double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
+    private static NewBoilerPipeline gtbr = new NewBoilerPipeline();
+
+    public ArrayList<Rect> getRectangles() {
+    	logger.log(RobotLogger.LoggerLevel.debug, "getRectangles - Nth frame is: " + Robot.robotConfig.shooterConfig.nthFrame);
+		Mat mat = Robot.axisCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
+		gtbr.process(mat);
+		ArrayList<Rect> boilerRects = new ArrayList<Rect>();
+		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+			Rect rect = Imgproc.boundingRect(mop);
+			boilerRects.add(rect);
+			logger.log(RobotLogger.LoggerLevel.trace, rect.toString());
+		}
+		return boilerRects;
+    }
+
+ /*   public double getBoilerAngle(int boilerRectCenterX, int boilerRectWidth, double cameraAngle, int cameraXRes, double boilerDistance){
     	logger.log(RobotLogger.LoggerLevel.debug, "Boiler rect width: " + boilerRectWidth);
     	double width = boilerRectWidth;
     	double inch = (15.0/width);
@@ -105,9 +95,7 @@ public class AxisCameraSubsystem extends Subsystem {
     	
     }
     
-    
-    public ArrayList<Rect> getRectangles() {
-    	AxisCameraSubsystem.startCamera();
+  public ArrayList<Rect> getRectangles() {
 		Mat mat = new Mat(); //define mat in order to reuse it
 		ArrayList<Rect> boilerRects = new ArrayList<Rect>();
 		if(AxisCameraSubsystem.cvSink.grabFrame(mat) != 0) {
@@ -145,15 +133,6 @@ public class AxisCameraSubsystem extends Subsystem {
 			}
 		}
 		return boilerRects;
-    }
-//    public void FindBoundingRectangles(){
-//   	System.out.println(pipeline.filterContoursOutput().size());
-//    	if(pipeline.filterContoursOutput().size()==2){
-//    		Rect rectOne = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-//    		Rect rectTwo = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
-//    		System.out.println(rectOne.area());
-//    		System.out.println(rectTwo.area());
-//    	}
-//    }
+    } */
 }
 
