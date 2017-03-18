@@ -7,6 +7,7 @@ import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 /**
  *
@@ -20,8 +21,9 @@ public class ShooterIndexerSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-    	
+
     	indexerMotor = RobotMap.shooterIndexerMotor;
+    	indexerMotor.changeControlMode(TalonControlMode.Voltage);
     	indexerMotor.set(0);
     	indexerMotor.configPeakOutputVoltage(0, -12.0);
     	limSwitch = RobotMap.shooterIndexerSwitch;

@@ -1,24 +1,20 @@
 package org.usfirst.frc.team3950.robot.commands;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.Robot;
-import org.usfirst.frc.team3950.robot.subsystems.USBCameraSubsystem;
+import org.usfirst.frc.team3950.robot.RobotLogger;
+import org.usfirst.frc.team3950.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveCommand extends Command {
-	private static RobotLogger logger = new RobotLogger(DriveCommand.class);
-	
-	Joystick stick = Robot.oi.driveStick;
-	
-    public DriveCommand() {
+public class GearShiftCommand extends Command {
+	private static RobotLogger logger = new RobotLogger(GearShiftCommand.class);
+
+    public GearShiftCommand() {
         // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     	requires(Robot.drivetrainSubsystem);
     }
 
@@ -28,15 +24,14 @@ public class DriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	logger.log(RobotLogger.LoggerLevel.trace, "stick Y: " + stick.getY() + "stick twist: " + stick.getTwist());    	
-    	Robot.drivetrainSubsystem.Drive(stick.getY(), stick.getTwist());
-    	
+    	logger.log(RobotLogger.LoggerLevel.debug, "Gear shift solenoid before: " + Robot.drivetrainSubsystem.gearShiftSolenoid.get());
+    	Robot.drivetrainSubsystem.gearShift();   	
+    	logger.log(RobotLogger.LoggerLevel.debug, "Gear shift solenoid after: " + Robot.drivetrainSubsystem.gearShiftSolenoid.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()
-   
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

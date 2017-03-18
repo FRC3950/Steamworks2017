@@ -9,6 +9,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -58,10 +59,11 @@ public class GearIntakeSubsystem extends Subsystem {
     }
     
     public void IntakePositionGear(){
-    	doubleSolenoid1.set(DoubleSolenoid.Value.kOff);
-    	doubleSolenoid2.set(DoubleSolenoid.Value.kOff);
     	singleSolenoid1.set(true);
     	singleSolenoid2.set(true);
+    	Timer.delay(.05);
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
+    	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
     	gearliftstate = State.gear;  	
     }
     public void IntakePositionFloor(){

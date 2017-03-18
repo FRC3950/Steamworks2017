@@ -74,7 +74,7 @@ public class AxisCameraSubsystem extends Subsystem {
 		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
 			Rect rect = Imgproc.boundingRect(mop);
 			boilerRects.add(rect);
-			logger.log(RobotLogger.LoggerLevel.trace, rect.toString());
+			logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
 		}
 		return boilerRects;
     }

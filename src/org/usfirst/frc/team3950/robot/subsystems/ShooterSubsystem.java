@@ -31,7 +31,7 @@ public class ShooterSubsystem extends Subsystem {
     	motor = RobotMap.shooterMotor;
 //    	motor.configEncoderCodesPerRev(1024);
     	motor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-    	motor.reverseSensor(false);
+    	motor.reverseSensor(true);
     	motor.changeControlMode(TalonControlMode.Speed);
     	motor.configNominalOutputVoltage(+0.0f, -0.0f);
     	motor.configPeakOutputVoltage(+0.0f, -12.0f);
@@ -51,9 +51,8 @@ public class ShooterSubsystem extends Subsystem {
     	logger.log(RobotLogger.LoggerLevel.debug, "sets targetRPM= " + rpm);
     	targetRPM = (int)rpm;
     	SmartDashboard.putNumber("Target RPM", targetRPM);
-
-    	//targetRPM = (int) rpm;
-//    	motor.enable();
+//    	targetRPM = (int) rpm;
+    	motor.enable();
     	motor.set(rpm);
     }
 	public void setP(double p) {

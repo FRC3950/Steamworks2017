@@ -2,9 +2,11 @@ package org.usfirst.frc.team3950.robot.commands;
 
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotLogger;
+import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.subsystems.AgitatorSubsystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -14,7 +16,7 @@ public class StraightenShootCommandGroup extends CommandGroup {
 	ShooterIndexerCommand shooterIndexerCommand;
     public StraightenShootCommandGroup() {
     	requires(Robot.axisCameraSubsystem);
-		requires(Robot.drivetrainsubsystem);
+		requires(Robot.drivetrainSubsystem);
 		requires(Robot.shooterIndexerSubsystem);
 		requires(Robot.shooterSubsystem);
         // Add Commands here:
@@ -24,13 +26,13 @@ public class StraightenShootCommandGroup extends CommandGroup {
 
         // To run multiple commands at the same time,
         // use addParallel()
-        // e.g. addParallel(new Command1());
+        // e.g. addParallel(new Command1()); wrote code
         //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
+        // Command1 and Command2 will run in parallel. 
     	//addSequential(new BoilerStraightenCommand());
 		addParallel(new AgitatorCommand());
     	addParallel(new ShooterStartCommand());
-    	//addParallel(shooterIndexerCommand = new ShooterIndexerCommand());
+    	addParallel(new ShooterIndexerCommand());
 
 
 
@@ -44,13 +46,13 @@ public class StraightenShootCommandGroup extends CommandGroup {
     }
     protected void execute() {
 
-    	if (Robot.shooterIndexerSubsystem.detectLimitSwitch()) {
-    		if(Robot.shooterSubsystem.speedInRange())
-    			shooterIndexerCommand.startShooterIndexer();
-    		
-     	}
-    	else {
-			shooterIndexerCommand.stopShooterIndexer();
-    	}  	
+//    	if (Robot.shooterIndexerSubsystem.detectLimitSwitch()) {
+//    		if(Robot.shooterSubsystem.speedInRange())
+//    			shooterIndexerCommand.startShooterIndexer();
+//    		
+//     	}
+//    	else {
+//			shooterIndexerCommand.stopShooterIndexer();
+//    	}  	
     }
 }

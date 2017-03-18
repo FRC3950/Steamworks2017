@@ -28,7 +28,7 @@ public class AutoDriveCommand extends Command {
     	//divide by twelve if needed in inches
     	//distanceCounts = distanceFeet * 2607.5;
     	requires(Robot.usbCameraSubsystem);
-    	requires(Robot.drivetrainsubsystem);
+    	requires(Robot.drivetrainSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -38,7 +38,7 @@ public class AutoDriveCommand extends Command {
     
     private static GearPipeline gtbr = new GearPipeline();
 
-    // Called repeatedly when this Command is scheduled to run
+    // Called repeatedly when this Command is scheduled to run 
     protected void execute() {
     	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
 		gtbr.process(mat);
@@ -60,22 +60,25 @@ public class AutoDriveCommand extends Command {
     	}
     	logger.log(RobotLogger.LoggerLevel.debug, "VALUE OF FINISHED " + finished);
     	logger.log(RobotLogger.LoggerLevel.debug, "DISTANCE " + distance);
-    	//Robot.drivetrainsubsystem.Drive(-.5, 0);
+    	
+    	//Robot.stolenDrivetrainSubsystem.driveStraightNavX(.5);
+    	Robot.drivetrainSubsystem.Drive(-.5, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
+    
     protected boolean isFinished() {
         return finished;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrainsubsystem.Drive(0, 0);
+    	Robot.drivetrainSubsystem.Drive(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drivetrainsubsystem.Drive(0, 0);
+    	Robot.drivetrainSubsystem.Drive(0, 0);
     }
 }
