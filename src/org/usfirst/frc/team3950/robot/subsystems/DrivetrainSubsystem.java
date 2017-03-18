@@ -30,6 +30,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
 	private double I = 0;
 	private double D = 0;
 	private double F = 0; 
+	public double distance;
 	private static RobotLogger logger = new RobotLogger(DrivetrainSubsystem.class);
     CANTalon leftFront;
     CANTalon leftBack;
@@ -37,16 +38,22 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     Victor left;
     Victor right;
     CANTalon rightBack;
-    static RobotDrive drivetrain;
+    RobotDrive drivetrain;
     public Solenoid gearShiftSolenoid;
-    static AHRS navx;
+    AHRS navx;
 	private static PIDController pid;
-	static boolean pidInit;
-	static boolean gyroPID;
+	boolean pidInit;
+	boolean gyroPID;
 
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double d) {
+		distance = d;
+	}
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -65,7 +72,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	//drivetrain = new RobotDrive(right, left);
     	gearShiftSolenoid = RobotMap.driveGearShiftSolenoid;
     	navx = RobotMap.ahrs;
-		pid = new PIDController(0, 0, 0, navx, this);
+		pid = new PIDController(0, 0, 0, this, this);
 		pid.disable();
 		pid.setInputRange(-180.0f,  180.0f);
 		pid.setOutputRange(-0.5f, 0.5f);
@@ -82,19 +89,19 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
         
     }
     
-    public static void Drive(double y, double twist){
+    public void Drive(double y, double twist){
     	drivetrain.arcadeDrive(-y, -twist);
     }
     
-	public static double getNavxAngle() {
+	public double getNavxAngle() {
 		return navx.pidGet();
 	}
 	
-	public static void resetNavx() {
+	public void resetNavx() {
 		navx.reset();
 	}
     
-	public static void driveStraightNavX(double power) {
+	public void driveStraightNavX(double power) {
 		if(getNavxAngle() > Robot.robotConfig.drivetrainConfig.DT_NAVX_ERROR_THRESHOLD){
 			Drive(power, power * -.05);
 		}
@@ -163,6 +170,13 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	leftBack.set(leftFront.getDeviceID()); // same as above
     	rightBack.set(distanceCounts);
     	leftFront.set(distanceCounts);    	
+    	
+    }
+    public void autoDrive() {
+    	pid.enable();
+    	pid.setSetpoint(3);
+    	pid.setPID(P, I, D);
+    	
     }
     
  /*   public void turnAngle(double angle){
@@ -174,22 +188,22 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     }*/
     
     public void returnToTeleop() {
-    	
+    	pid.disable();
     }
 
 	@Override
 	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
-		
+		//drivetrain.drive(output, 0);
+		this.driveStraightNavX(output);
+		logger.log(RobotLogger.LoggerLevel.debug, "Output is: " + output);
 	}
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		// TODO Auto-generated method stub
 		pidtype = pidSource;
 		
 	}
-	private static PIDSourceType pidtype = PIDSourceType.kDisplacement;
+	private PIDSourceType pidtype = PIDSourceType.kDisplacement;
 	@Override
 	public PIDSourceType getPIDSourceType() {
 		// TODO Auto-generated method stub
@@ -198,8 +212,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
 
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
-		return 1;
+		return distance;
 	}
     
 

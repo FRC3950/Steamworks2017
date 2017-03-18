@@ -33,7 +33,7 @@ public class AutoDriveCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	Robot.drivetrainSubsystem.autoDrive();
     }
     
     private static GearPipeline gtbr = new GearPipeline();
@@ -51,18 +51,22 @@ public class AutoDriveCommand extends Command {
     	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
     	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
 //    	double distance = VisionUtility.getGearDistance(rect.width);
-    	double distance = VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects));
-    	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + distance);
+    	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
+    	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
     	
-    	if (distance <= 3) {
-    		finished = true;
-    		
+//    	if (Robot.drivetrainSubsystem.getDistance() <= 3) {
+//    		finished = true;
+//    		
+//    	}
+    	if (gearRects.size() >= 2) {
+//    		//Robot.drivetrainSubsystem.autoDrive();
     	}
+    	
     	logger.log(RobotLogger.LoggerLevel.debug, "VALUE OF FINISHED " + finished);
-    	logger.log(RobotLogger.LoggerLevel.debug, "DISTANCE " + distance);
+    	logger.log(RobotLogger.LoggerLevel.debug, "DISTANCE " + Robot.drivetrainSubsystem.getDistance());
     	
     	//Robot.stolenDrivetrainSubsystem.driveStraightNavX(.5);
-    	Robot.drivetrainSubsystem.Drive(-.5, 0);
+    	//Robot.drivetrainSubsystem.Drive(-.5, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -73,12 +77,15 @@ public class AutoDriveCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.drivetrainSubsystem.returnToTeleop();
     	Robot.drivetrainSubsystem.Drive(0, 0);
+    	
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.drivetrainSubsystem.returnToTeleop();
     	Robot.drivetrainSubsystem.Drive(0, 0);
     }
 }
