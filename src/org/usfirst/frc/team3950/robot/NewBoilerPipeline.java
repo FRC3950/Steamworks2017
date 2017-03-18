@@ -44,7 +44,7 @@ public class NewBoilerPipeline {
 		Mat hslThresholdInput = source0;
 		double[] hslThresholdHue = {70.0, 94.0};
 		double[] hslThresholdSaturation = {255.0, 255.0};
-		double[] hslThresholdLuminance = {16.0, 255.0};
+		double[] hslThresholdLuminance = {60.0, 255.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:

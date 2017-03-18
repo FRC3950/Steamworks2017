@@ -1,10 +1,12 @@
 package org.usfirst.frc.team3950.robot;
 
+import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
+import org.omg.PortableServer.POA;
 import org.usfirst.frc.team3950.robot.commands.*;
 //Hello World!
 
@@ -18,7 +20,7 @@ public class OI {
     // You create one by telling it which joystick it's on and which button
     // number it is.
     public Joystick driveStick = new Joystick(0);
-    public XboxController xboxController = new XboxController(1);
+    public XboxController xboxController = new XboxController(1);        
     public Button driveStick3Button = new JoystickButton(driveStick, 3);
     public Button driveStick4Button = new JoystickButton(driveStick, 4);
     public Button driveStick1Button = new JoystickButton(driveStick, 1);
@@ -31,9 +33,12 @@ public class OI {
     public Button xboxControllerYButton = new JoystickButton(xboxController, 4);
     public Button xboxControllerLBButton = new JoystickButton(xboxController, 5);
     public Button xboxControllerRBButton = new JoystickButton(xboxController, 6);
-    public Button xboxControllerUpDPadButton = new JoystickButton(xboxController, 12);
-    //public Button xboxControllerDownDPadButton = new JoystickButton(xboxController, 13);
-    //public Button xboxControllerRightDPadButton = new JoystickButton(xboxController, 15);
+    public Button driveStick7Button = new JoystickButton(driveStick, 7);
+    public Button driveStick8Button = new JoystickButton(driveStick, 8);    
+    public Button driveStick9Button = new JoystickButton(driveStick, 9);
+    public Button driveStick10Button = new JoystickButton(driveStick, 10);
+    public Button driveStick11Button = new JoystickButton(driveStick, 11);
+    public Button driveStick12Button = new JoystickButton(driveStick, 12);
     
     
 //    public ShooterStartCommand shooterStartCommand = new ShooterStartCommand();
@@ -53,27 +58,28 @@ public class OI {
     // the button is released.
     // button.whileHeld(new ExampleCommand());
     
-    // Start the command when the button is released  and let it run the command
+    // Start the command when the button is released  and it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
     public OI() {
     	System.out.println("Hello from OI Constructor.");
     	driveStick3Button.whenPressed(new DriveGearShiftCommand());
-    	driveStick4Button.whenPressed(new AutoGearCommand());
-//    	driveStick1Button.whenPressed(new ShooterStartCommand());
+    //	driveStick4Button.whenPressed(new AutoGearCommand());
+    	driveStick1Button.whenPressed(new ShooterStartCommand());
     	driveStick2Button.whenPressed(new ShooterEndCommand());
-    	driveStick5Button.whenPressed(new USBCameraDoCommand());
-    	driveStick6Button.whenPressed(new BoilerStraightenCommand());
+    //	driveStick5Button.whenPressed(new USBCameraDoCommand());
+//    	driveStick6Button.whenPressed(new BoilerStraightenCommand());
     	xboxControllerAButton.whenPressed(new BallIntakeCommand());
     	xboxControllerBButton.whenPressed(new BallOuttakeCommand());
     	xboxControllerYButton.whenPressed(new ShooterIndexerCommand());
-    	xboxControllerLBButton.whenPressed(new ClimberDoCommand());
-    	xboxControllerXButton.whenPressed(new GearDistanceCommand());
-    	xboxControllerRBButton.whenPressed(new StraightenShootCommandGroup());
-    	xboxControllerUpDPadButton.whenPressed(new GearIntakeStartCommand());
-    	//xboxControllerRightDPadButton.whenPressed(new GearIntakeGearCommand());
-    	//xboxControllerDownDPadButton.whenPressed(new GearIntakeFloorCommand());
-    	
+    	//xboxControllerLBButton.whenPressed(new ClimberDoCommand());
+    //	xboxControllerXButton.whenPressed(new GearDistanceCommand());
+  	xboxControllerRBButton.whenPressed(new StraightenShootCommandGroup());
+  //  	driveStick7Button.whenPressed(new GearIntakeStartCommand());
+    //	driveStick8Button.whenPressed(new GearIntakeGearCommand());
+//    	driveStick9Button.whenPressed(new GearIntakeFloorCommand());
+  //  	driveStick10Button.whenPressed(new BoilerRectanglesCommand());
+    //	driveStick11Button.whenPressed(new GearShiftCommand());
+    	driveStick12Button.whenPressed(new AgitatorCommand());
     }
 }
-

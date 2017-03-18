@@ -26,7 +26,7 @@ public class BallIntakeSubsystem extends Subsystem {
     	ballIntake.set(0);
         // Set the default command for a subsystem here.
         //setDefaultmmand(new MySpecialCommand());
-    	setDefaultCommand(new BallIntakeCommand());
+//    	setDefaultCommand(new BallIntakeCommand());
     }
     
 	public enum State{

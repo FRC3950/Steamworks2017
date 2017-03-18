@@ -20,7 +20,7 @@ public class BoilerStraightenCommand extends Command {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.axisCameraSubsystem);
-		requires(Robot.drivetrainsubsystem);
+		requires(Robot.drivetrainSubsystem);
 	}
 
 	// Called just before this Command runs the first time
@@ -44,7 +44,7 @@ public class BoilerStraightenCommand extends Command {
 			logger.log(RobotLogger.LoggerLevel.info, "Distance: " + boilerDistance);
 			boilerAngle = VisionUtility.getBoilerAngle((rectTotal.x + (rectTotal.width / 2)), rectTotal.width, Robot.robotConfig.axisCameraSettings.visionAngle, Robot.robotConfig.axisCameraSettings.width - 1, boilerDistance);
 			logger.log(RobotLogger.LoggerLevel.debug, "Angle: " + boilerAngle);
-			double initialAngle = Robot.drivetrainsubsystem.getCurrentAngle();
+			double initialAngle = Robot.drivetrainSubsystem.getCurrentAngle();
 			double desiredAngle = initialAngle + boilerAngle;
 			if ((initialAngle != desiredAngle) && (desiredAngle > 0)) {
 				// movedrivetrain right

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,7 +40,7 @@ public class Robot extends IterativeRobot {
 	public static RobotConfig robotConfig = RobotConfig.getInstance();
 	
 	public static OI oi;
-	public static DrivetrainSubsystem drivetrainsubsystem = new DrivetrainSubsystem();
+	public static DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
 	public static BallIntakeSubsystem ballintakesubsystem = new BallIntakeSubsystem();
 	public static GearIntakeSubsystem gearintakesubsystem = new GearIntakeSubsystem();
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -77,7 +78,7 @@ public class Robot extends IterativeRobot {
 //        SmartDashboard.putNumber("Derivative", 1.0);
 //        SmartDashboard.putNumber("Integral", 0.0);
 //        SmartDashboard.putNumber("Feed Forward", 0.025);
-        RobotMap.shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+/*        RobotMap.shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         RobotMap.shooterMotor.reverseSensor(false);
         RobotMap.shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
         RobotMap.shooterMotor.configPeakOutputVoltage(+12.0f, -12.0f);
@@ -88,7 +89,7 @@ public class Robot extends IterativeRobot {
         RobotMap.shooterMotor.setD(0.0);
         _talon = RobotMap.shooterMotor;
         _joy = oi.driveStick;
-        _loops = 0;
+        _loops = 0; */
     }
 	
 	/**
@@ -115,7 +116,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
 //        autonomousCommand = (Command) chooser.getSelected();
-        autonomousCommand = new AutoDriveCommand();
+//        autonomousCommand = new AutoDriveCommand();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -148,9 +149,6 @@ public class Robot extends IterativeRobot {
         RobotMap.ahrs.reset();
     }
 
-    private CANTalon _talon = RobotMap.shooterMotor;
-    private Joystick _joy;
-    private int _loops;
     /**
      * This function is called periodically during operator control
      */
@@ -158,6 +156,13 @@ public class Robot extends IterativeRobot {
 //    	LoggerLevelSet x = (LoggerLevelSet) myLoggerChooser.getSelected();
 //    	RobotLogger.setLoggerLevel(x.getLevel());
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("Shooter Setpoint", RobotMap.shooterMotor.getSetpoint());
+        SmartDashboard.putNumber("Shooter RPM", RobotMap.shooterMotor.getSpeed());
+        SmartDashboard.putNumber("Left Front Speed", RobotMap.leftVictor.get());
+        SmartDashboard.putNumber("Left Back Value", RobotMap.leftFrontDriveMotor.get());
+        SmartDashboard.putNumber("Right Front Value", RobotMap.rightVictor.get());
+        SmartDashboard.putNumber("Right Back Value", RobotMap.leftBackDriveMotor.get());
+        Robot.drivetrainSubsystem.getCurrentAngle();
         
         /*double leftYStick = _joy.getAxis(AxisType.kY);
         double motorOutput = _talon.getOutputVoltage() / _talon.getBusVoltage();
