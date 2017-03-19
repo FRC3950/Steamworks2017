@@ -2,7 +2,12 @@ package org.usfirst.frc.team3950.robot;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.usfirst.frc.team3950.robot.RobotLogger.LoggerLevel;
@@ -114,9 +119,12 @@ public class Robot extends IterativeRobot {
 	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
+	
+  	double initd;
+	
     public void autonomousInit() {
 //        autonomousCommand = (Command) chooser.getSelected();
-    	autonomousCommand = new AutoDriveCommand();
+    	//autonomousCommand = new AutoDriveCommand();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -128,6 +136,22 @@ public class Robot extends IterativeRobot {
 			autonomousCommand = new ExampleCommand();
 			break;
 		} */
+    	GearPipeline gtbr = new GearPipeline();
+        Scheduler.getInstance().run();
+     	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
+ 		gtbr.process(mat);
+ 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
+ 		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+ 			Rect rect = Imgproc.boundingRect(mop);
+ 			gearRects.add(rect);
+ 		}
+ 		logger.log(RobotLogger.LoggerLevel.debug, "NUMBER OF RECTS " + gearRects.size());
+     	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
+     	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
+//     	double distance = VisionUtility.getGearDistance(rect.width);
+     	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
+     	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
+    	initd = Robot.drivetrainSubsystem.getDistance();
     	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -137,8 +161,47 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-    }
+    	double voltage = 0;
+    	//double slope = (.5/(Robot.drivetrainSubsystem.getDistance()/2));
+    	double distance;
+    	
+    	GearPipeline gtbr = new GearPipeline();
+       Scheduler.getInstance().run();
+    	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
+		gtbr.process(mat);
+		ArrayList<Rect> gearRects = new ArrayList<Rect>();
+		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+			Rect rect = Imgproc.boundingRect(mop);
+			gearRects.add(rect);
+		}
+		logger.log(RobotLogger.LoggerLevel.debug, "NUMBER OF RECTS " + gearRects.size());
+    	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
+    	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
+//    	double distance = VisionUtility.getGearDistance(rect.width);
+    	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
+    	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
+    	distance = Robot.drivetrainSubsystem.getDistance();
+    	
+    	if (distance == initd){
+    		voltage = .1;
+    	}
+    	
+    	else if(distance > (initd/2)){
+    		voltage = (initd - distance)/(initd/2);
+    	}
+    	
+    	else if(distance < (initd/2)){
+    		voltage = distance/(initd/2);
+    	}
+    	
+    	if(voltage != 0){
+    		Robot.drivetrainSubsystem.Drive(voltage, 0);
+    	}
+    	
+    	System.out.println(voltage);
+    	
+    	//Logger.log(RobotLogger.LoggerLevel.debug, "Voltage: " + voltage);
+    	}
 
     public void teleopInit() {
 		// This makes sure that the autonomous stops running when

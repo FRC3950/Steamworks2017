@@ -60,7 +60,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	leftFront = RobotMap.leftFrontDriveMotor;
     	leftBack = RobotMap.leftBackDriveMotor;
     	//leftFront.setInverted(true);
-    	leftBack.setInverted(true);
+    	//leftBack.setInverted(true);
     	rightFront = RobotMap.rightFrontDriveMotor;
     	rightBack = RobotMap.rightBackDriveMotor;
     	left = RobotMap.leftVictor;
@@ -68,8 +68,8 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	//left.setInverted(true);
     	//right.setInverted(true);
     	//drivetrain = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
-    	drivetrain = new RobotDrive(right, leftBack, left, leftFront);
-    	//drivetrain = new RobotDrive(right, left);
+    	//drivetrain = new RobotDrive(right, leftBack, left, leftFront);
+    	drivetrain = new RobotDrive(leftBack, leftFront);
     	gearShiftSolenoid = RobotMap.driveGearShiftSolenoid;
     	navx = RobotMap.ahrs;
 		pid = new PIDController(0, 0, 0, this, this);
