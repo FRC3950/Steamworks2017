@@ -10,6 +10,7 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.usfirst.frc.team3950.robot.AutonomousUtil.ProfileType;
 import org.usfirst.frc.team3950.robot.RobotLogger.LoggerLevel;
 import org.usfirst.frc.team3950.robot.commands.*;
 import org.usfirst.frc.team3950.robot.config.RobotConfig;
@@ -182,7 +183,9 @@ public class Robot extends IterativeRobot {
     	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
     	distance = Robot.drivetrainSubsystem.getDistance();
     	
-    	if (distance == initd){
+    	voltage = AutonomousUtil.VoltageProfile(distance, initd, 1.0, ProfileType.Linear, .1);
+
+    	/*    	if (distance == initd){
     		voltage = .1;
     	}
     	
@@ -197,7 +200,7 @@ public class Robot extends IterativeRobot {
     	if(voltage != 0){
     		Robot.drivetrainSubsystem.Drive(voltage, 0);
     	}
-    	
+ */    	
     	System.out.println(voltage);
     	
     	//Logger.log(RobotLogger.LoggerLevel.debug, "Voltage: " + voltage);
