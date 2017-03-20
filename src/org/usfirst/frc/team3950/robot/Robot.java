@@ -153,6 +153,8 @@ public class Robot extends IterativeRobot {
      	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
     	initd = Robot.drivetrainSubsystem.getDistance();
     	
+    	//RobotMap.leftFrontDriveMotor.changeControlMode(vPercentBus);
+    	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
