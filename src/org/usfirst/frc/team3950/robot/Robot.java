@@ -122,14 +122,17 @@ public class Robot extends IterativeRobot {
 	 */
 	
   	double initd;
-	
+	public long currentTime;
+	public long prevTime;
+  	
+  	
     public void autonomousInit() {
 //        autonomousCommand = (Command) chooser.getSelected();
-    	//autonomousCommand = new AutoDriveCommand();
+    	autonomousCommand = new AutoDriveCommand();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
-		case "My Auto":
+		case "My Auto": 
 			autonomousCommand = new MyAutoCommand();
 			break;
 		case "Default Auto":
@@ -137,8 +140,15 @@ public class Robot extends IterativeRobot {
 			autonomousCommand = new ExampleCommand();
 			break;
 		} */
+    	
+/*    	currentTime = System.currentTimeMillis();
+    	prevTime = currentTime;
+    	//Robot.drivetrainSubsystem.Drive(1, 0);
+    	Robot.drivetrainSubsystem.straightDrive(1);
+    	
+    	
     	GearPipeline gtbr = new GearPipeline();
-        Scheduler.getInstance().run();
+        //Scheduler.getInstance().run();
      	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
  		gtbr.process(mat);
  		ArrayList<Rect> gearRects = new ArrayList<Rect>();
@@ -155,6 +165,7 @@ public class Robot extends IterativeRobot {
     	initd = Robot.drivetrainSubsystem.getDistance();
     	
     	//RobotMap.leftFrontDriveMotor.changeControlMode(vPercentBus);
+  */
     	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -164,12 +175,25 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	double voltage = 0;
     	//double slope = (.5/(Robot.drivetrainSubsystem.getDistance()/2));
-    	double distance;
+    	Scheduler.getInstance().run();
+/*    	currentTime = System.currentTimeMillis();
+    	if((currentTime - prevTime) < 1000){
+    		return;
+    	}
+		logger.log(RobotLogger.LoggerLevel.debug, "leftBackControlMode: " + RobotMap.leftBackDriveMotor.getControlMode());
+		logger.log(RobotLogger.LoggerLevel.debug, "leftBackGet: " + RobotMap.leftBackDriveMotor.get());
+		logger.log(RobotLogger.LoggerLevel.debug, "leftFrontControlMode: " + RobotMap.leftFrontDriveMotor.getControlMode());
+		logger.log(RobotLogger.LoggerLevel.debug, "leftFrontGet: " + RobotMap.leftFrontDriveMotor.get());
+
+		RobotMap.leftBackDriveMotor.set(.5);
+		RobotMap.leftFrontDriveMotor.set(.5);
+//    	Robot.drivetrainSubsystem.straightDrive(.5);
     	
-    	GearPipeline gtbr = new GearPipeline();
-       Scheduler.getInstance().run();
+		logger.log(RobotLogger.LoggerLevel.debug, "leftBackGet: " + RobotMap.leftBackDriveMotor.get());
+		logger.log(RobotLogger.LoggerLevel.debug, "leftFrontGet: " + RobotMap.leftFrontDriveMotor.get());
+
+		GearPipeline gtbr = new GearPipeline();
     	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
 		gtbr.process(mat);
 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
@@ -183,9 +207,16 @@ public class Robot extends IterativeRobot {
 //    	double distance = VisionUtility.getGearDistance(rect.width);
     	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
     	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
-    	distance = Robot.drivetrainSubsystem.getDistance();
+    	double distance = Robot.drivetrainSubsystem.getDistance();
     	
-    	voltage = AutonomousUtil.VoltageProfile(distance, initd, 1.0, ProfileType.Linear, .1);
+    	double voltage = AutonomousUtil.VoltageProfile(distance, initd, 1.0, ProfileType.Linear, 1.0);
+
+    	if(voltage < 0.5) {
+    		voltage = 0.5;
+    	}
+    	
+*/
+    	
 
     	/*    	if (distance == initd){
     		voltage = .1;
@@ -203,9 +234,7 @@ public class Robot extends IterativeRobot {
     		Robot.drivetrainSubsystem.Drive(voltage, 0);
     	}
  */    	
-    	System.out.println(voltage);
-    	
-    	//Logger.log(RobotLogger.LoggerLevel.debug, "Voltage: " + voltage);
+//    	logger.log(RobotLogger.LoggerLevel.debug, "Voltage: " + voltage);
     	}
 
     public void teleopInit() {

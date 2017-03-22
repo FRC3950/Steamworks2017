@@ -28,7 +28,7 @@ public class DriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	logger.log(RobotLogger.LoggerLevel.trace, "stick Y: " + stick.getY() + "stick twist: " + stick.getTwist());    	
+    	logger.log(RobotLogger.LoggerLevel.debug, "stick Y: " + stick.getY() + "stick twist: " + stick.getTwist());    	
     	Robot.drivetrainSubsystem.Drive(stick.getY(), stick.getTwist());
     	
     }

@@ -56,6 +56,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
 	}
 
     public void initDefaultCommand() {
+    	logger.log(RobotLogger.LoggerLevel.info, "initDefaultCommand");
         // Set the default command for a subsystem here.
     	leftFront = RobotMap.leftFrontDriveMotor;
     	leftBack = RobotMap.leftBackDriveMotor;
@@ -69,6 +70,9 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	//right.setInverted(true);
     	//drivetrain = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
     	//drivetrain = new RobotDrive(right, leftBack, left, leftFront);
+    	leftBack.changeControlMode(CANTalon.TalonControlMode.Voltage);
+    	leftFront.changeControlMode(CANTalon.TalonControlMode.Voltage);
+    	
     	drivetrain = new RobotDrive(leftBack, leftFront);
     	gearShiftSolenoid = RobotMap.driveGearShiftSolenoid;
     	navx = RobotMap.ahrs;
@@ -85,12 +89,17 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	pidInit = false;
     	gyroPID = false;
     	
-    	setDefaultCommand(new DriveCommand());
+//    	setDefaultCommand(new DriveCommand());
         
     }
     
     public void Drive(double y, double twist){
     	drivetrain.arcadeDrive(-y, -twist);
+    }
+    
+    public void straightDrive(double voltage){
+    	leftFront.set(voltage);
+    	leftBack.set(voltage);
     }
     
 	public double getNavxAngle() {

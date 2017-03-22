@@ -21,7 +21,7 @@ public class RobotConfig {
 	private static RobotConfig instance = null;
 	private static ObjectMapper mapper = null;
 	
-	public static RobotConfig getInstance() {
+	public static RobotConfig getInstance() { 
 		if (instance != null)
 			return instance;
 		mapper = new ObjectMapper();
