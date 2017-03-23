@@ -65,11 +65,12 @@ public class USBCameraSubsystem extends Subsystem {
     	if(N <= 0){
     		return null;
     	}
-    	while(N --> 0){
+    	while(N --> 0){	
     		if(cvSink != null) {
     			cvSink.grabFrame(mat);
 //    			org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/source_" + idx++ + ".jpg", mat);
-    		}
+    		}	
+    
     	}
     	return mat;
     }

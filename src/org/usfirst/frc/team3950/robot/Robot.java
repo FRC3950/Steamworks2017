@@ -60,7 +60,7 @@ public class Robot extends IterativeRobot {
 
     Command autonomousCommand;
     SendableChooser chooser;
-    SendableChooser myLoggerChooser;
+    SendableChooser<LoggerLevelSet> myLoggerChooser;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -71,14 +71,17 @@ public class Robot extends IterativeRobot {
     	logger.log(RobotLogger.LoggerLevel.info, Robot.robotConfig.toString());
     	
 		oi = new OI();
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new DriveCommand());
+//        chooser = new SendableChooser();
+//        chooser.addDefault("Default Auto", new DriveCommand());
         
-        myLoggerChooser = new SendableChooser();
+        myLoggerChooser = new SendableChooser<LoggerLevelSet>();
         myLoggerChooser.addObject("trace", new LoggerLevelSet(RobotLogger.LoggerLevel.trace));
         myLoggerChooser.addObject("debug", new LoggerLevelSet(RobotLogger.LoggerLevel.debug));
         myLoggerChooser.addDefault("info", new LoggerLevelSet(RobotLogger.LoggerLevel.info));
         SmartDashboard.putData("Logger Level", myLoggerChooser);
+        
+    	autonomousCommand = new AutoDriveCommand();
+
 //        chooser.addObject("My Auto", new MyAutoCommand());
 //        SmartDashboard.putNumber("Proportion", 0.2);
 //        SmartDashboard.putNumber("Derivative", 1.0);
@@ -121,6 +124,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	
+
   	double initd;
 	public long currentTime;
 	public long prevTime;
@@ -129,6 +133,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 //        autonomousCommand = (Command) chooser.getSelected();
     	autonomousCommand = new AutoDriveCommand();
+    	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomous Init");
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -236,6 +241,8 @@ public class Robot extends IterativeRobot {
  */    	
 //    	logger.log(RobotLogger.LoggerLevel.debug, "Voltage: " + voltage);
     	}
+    
+
 
     public void teleopInit() {
 		// This makes sure that the autonomous stops running when

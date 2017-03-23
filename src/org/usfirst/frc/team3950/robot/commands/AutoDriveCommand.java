@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team3950.robot.commands;
 
 import java.util.ArrayList;
@@ -7,23 +8,182 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3950.robot.AutonomousUtil;
-import org.usfirst.frc.team3950.robot.AutonomousUtil.ProfileType;
 import org.usfirst.frc.team3950.robot.GearPipeline;
 import org.usfirst.frc.team3950.robot.Robot;
 import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.RobotMap;
 import org.usfirst.frc.team3950.robot.VisionUtility;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class AutoDriveCommand extends Command {
+	
+	
+	private class NavxRunnable implements Runnable {
+		private long prevTime = System.currentTimeMillis();
+		private long intervalTime = 10; // 10 msecs
+		private double angle = 0;
+		private boolean stop = false;
+		
+		private synchronized void setAngle(double angle) {
+			this.angle = angle;
+		}
+
+		public synchronized double getAngle() {
+			return this.angle;
+		}
+
+		private synchronized void setStop(boolean stop) {
+			this.stop = stop;
+			
+		}
+
+		public synchronized boolean getStop() {
+			return this.stop;
+		}
+
+		public void stop() {
+			this.setStop(true);
+		}
+		
+		@Override
+		public void run() {
+			while(true)
+			{
+//				logger.log(RobotLogger.LoggerLevel.debug, "NavxRunnable.run");
+				if(stop)
+					break;
+				
+				long currTime = System.currentTimeMillis();
+				if((currTime - prevTime) > intervalTime) {
+				    this.setAngle(RobotMap.ahrs.getAngle());
+//				    logger.log(RobotLogger.LoggerLevel.info, "Angle is: " + RobotMap.ahrs.getAngle());
+				}
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	}
+
+	private class GearPipelineRunnable implements Runnable {
+		private long prevTime = System.currentTimeMillis();
+		private long intervalTime = 1; // 10 msecs
+		private double distance = 0;
+		private boolean stop = false;
+		private double initDistance = 0;
+		private boolean firstTimeThrough = true;
+		
+		private synchronized void setDistance(double distance) {
+			this.distance = distance;
+		}
+
+		public synchronized double getDistance() {
+			return this.distance;
+		}
+
+		private synchronized void setInitDistance(double initDistance) {
+			this.initDistance = initDistance;
+		}
+
+		public synchronized double getInitDistance() {
+			return this.initDistance;
+		}
+
+		private synchronized void setStop(boolean stop) {
+			this.stop = stop;
+		}
+
+		public synchronized boolean getStop() {
+			return this.stop;
+		}
+
+		public void stop() {
+			this.setStop(true);
+		}
+		
+		@Override
+		public void run() {
+			while(true)
+			{
+				long startTime = System.currentTimeMillis();
+				logger.log(RobotLogger.LoggerLevel.debug, "GearPipelineRunnable.run");
+				if(stop)
+					break;
+				
+				long currTime = System.currentTimeMillis();
+				logger.log(RobotLogger.LoggerLevel.debug, "current time: " + currTime);
+				logger.log(RobotLogger.LoggerLevel.debug, "prev time: " + prevTime);
+				logger.log(RobotLogger.LoggerLevel.debug, "prev time: " + (currTime - prevTime));
+				if((currTime - prevTime) > intervalTime)
+				{
+					// get the nth frame from the camera
+					long startTimeNthFrame= System.currentTimeMillis();
+					Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
+					long endTimeNthFrame = System.currentTimeMillis();
+					
+					logger.log(RobotLogger.LoggerLevel.debug, "Nth Frame run time: " + (endTimeNthFrame - startTimeNthFrame));
+					// process the image through the gear pipeline
+					startTimeNthFrame= System.currentTimeMillis();
+					gtbr.process(mat);
+					endTimeNthFrame= System.currentTimeMillis();
+					logger.log(RobotLogger.LoggerLevel.debug, "gtbr run time: " + (endTimeNthFrame - startTimeNthFrame));
+					// extract the 
+					startTimeNthFrame= System.currentTimeMillis();
+					ArrayList<Rect> gearRects = new ArrayList<Rect>();
+					for(MatOfPoint mop : gtbr.filterContoursOutput()) {
+						gearRects.add(Imgproc.boundingRect(mop));
+					}
+					int numGearRects = gearRects.size();
+					if(!(numGearRects > 0 && numGearRects <= 3))
+						logger.log(RobotLogger.LoggerLevel.error, "NUMBER OF RECTS: " + numGearRects);
+					else {
+						logger.log(RobotLogger.LoggerLevel.debug, "NUMBER OF RECTS: " + numGearRects);
+				    	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
+				    	logger.log(RobotLogger.LoggerLevel.debug, "CONTAINER RECT: " + rect.toString());
+				    	// double distance = VisionUtility.getGearDistance(rect.width);
+				    	double distance = VisionUtility.getGearDistance(rect.width); //VisionUtility.getRectWidthAvg(gearRects));
+				    	logger.log(RobotLogger.LoggerLevel.debug, "Distance " + distance + "width pixels: " + rect.width);
+				    	this.setDistance(distance);
+				    	if(firstTimeThrough) {
+				    		this.setInitDistance(distance);
+				    		firstTimeThrough = false;
+				    	}
+				    	
+					}
+					endTimeNthFrame= System.currentTimeMillis();
+			    	logger.log(RobotLogger.LoggerLevel.debug, "gearRects run time: " + (endTimeNthFrame - startTimeNthFrame));
+					prevTime = currTime;
+				}
+				long endTime = System.currentTimeMillis();
+				logger.log(RobotLogger.LoggerLevel.debug, "Start time:  " + startTime);
+				logger.log(RobotLogger.LoggerLevel.debug, "End time:  " + endTime);
+				logger.log(RobotLogger.LoggerLevel.debug, "Time run:  " + (endTime - startTime));
+//				try {
+//					Thread.sleep(10);
+//				} catch (InterruptedException e) {
+//				}
+			}
+		}
+	}
+	
 	private static RobotLogger logger = new RobotLogger(AutoDriveCommand.class);
 	
-	private double distanceCounts;
 	private boolean finished = false;
+    private GearPipeline gtbr = new GearPipeline();
+    private GearPipelineRunnable gearPipelineRunnable = null;
+    private double initialDistance = 0.0;
+    private double distanceTolerance = 2.0;
+    private NavxRunnable navxRunnable = null;
+	private Thread threadGearPipelineRunnable = null;
+	private Thread threadNavxRunnable = null;
 
     public AutoDriveCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -33,90 +193,101 @@ public class AutoDriveCommand extends Command {
     	requires(Robot.usbCameraSubsystem);
     	requires(Robot.drivetrainSubsystem);
     }
-    
-    double initd = 0.0;
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrainSubsystem.Drive(0.0,  0.0);
-//    	Robot.drivetrainSubsystem.autoDrive();
-    	GearPipeline gtbr = new GearPipeline();
-        //Scheduler.getInstance().run();
-     	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
- 		gtbr.process(mat);
- 		ArrayList<Rect> gearRects = new ArrayList<Rect>();
- 		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
- 			Rect rect = Imgproc.boundingRect(mop);
- 			gearRects.add(rect);
- 		}
- 		logger.log(RobotLogger.LoggerLevel.debug, "NUMBER OF RECTS " + gearRects.size());
-     	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
-     	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
-//     	double distance = VisionUtility.getGearDistance(rect.width);
-     	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
-     	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
-    	initd = Robot.drivetrainSubsystem.getDistance();
+    	// make sure drive train is not moving
+    	Robot.drivetrainSubsystem.Drive(0, 0);
+    	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomousDriveCommand Init");
+    	// set navx to zero
+	    RobotMap.ahrs.reset();
+    	
+    	// create runnable for camera subsystem
+        if(gearPipelineRunnable == null)
+        	gearPipelineRunnable = this.new GearPipelineRunnable();
+
+        // create runnable for navx
+        if(navxRunnable == null)
+        	navxRunnable = this.new NavxRunnable(); 
+        
+    	// create and start a thread for gearPipelineRunnable
+        threadGearPipelineRunnable = new Thread(gearPipelineRunnable);
+        threadGearPipelineRunnable.start();
+        
+    	// create and start a thread for navxRunnable
+        threadNavxRunnable = new Thread(navxRunnable);
+        threadNavxRunnable.start();
+
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+		}
+        // need to initialize distance to gear placement
+        initialDistance = gearPipelineRunnable.getDistance();
+    	logger.log(RobotLogger.LoggerLevel.info, "initialDistance: " + initialDistance);
+    	
+        prevDistance = 0;
+    	voltage = 0;
+    	twist = 0;
+        distanceTolerance = 4.0;
+        targetTime = 0;
     }
     
-    private static GearPipeline gtbr = new GearPipeline();
-
+    double prevTime = 0;
+    double maxVoltage = .65;
+    double minVoltage = .6;
+    double prevDistance = 0;
+	double voltage = 0;
+	double twist = 0;
+	double velocity = 0;
+	double targetTime = 0;
     // Called repeatedly when this Command is scheduled to run 
     protected void execute() {
-		logger.log(RobotLogger.LoggerLevel.debug, "I AM HERE!!!!!!!!!!!!!!!!!!!!!!");
-    	logger.log(RobotLogger.LoggerLevel.debug, "leftBackDriveMotor: "  + RobotMap.leftBackDriveMotor.getBusVoltage());
-    	logger.log(RobotLogger.LoggerLevel.debug, "leftFrontDriveMotor: "  + RobotMap.leftFrontDriveMotor.getBusVoltage());
-    	GearPipeline gtbr = new GearPipeline();
-    	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
-		gtbr.process(mat);
-		ArrayList<Rect> gearRects = new ArrayList<Rect>();
-		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
-			Rect rect = Imgproc.boundingRect(mop);
-			gearRects.add(rect);
-		}
-		logger.log(RobotLogger.LoggerLevel.debug, "NUMBER OF RECTS " + gearRects.size());
-    	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
-    	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
-//    	double distance = VisionUtility.getGearDistance(rect.width);
-    	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
-    	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
-    	double distance = Robot.drivetrainSubsystem.getDistance();
-    	
-    	double voltage = AutonomousUtil.VoltageProfile(distance, initd, 12.0, ProfileType.Linear, 1.0);
-
-    	if(voltage < 0.5) {
-    		voltage = 0.5;
+		long currTime = System.currentTimeMillis();
+//    	logger.log(RobotLogger.LoggerLevel.info, "I am in AutonomousDriveCommand Execute");
+    	if(!navxRunnable.getStop()) {
+    		double angle = navxRunnable.getAngle();
+    		twist = angle / 30.0;	
     	}
-		RobotMap.leftBackDriveMotor.set(10.0);
-		RobotMap.leftFrontDriveMotor.set(10.0);
-
-//    	Robot.drivetrainSubsystem.Drive(5.0,  0.0);
-/*    	Mat mat = Robot.usbCameraSubsystem.getNthFrame(Robot.robotConfig.shooterConfig.nthFrame);
-		gtbr.process(mat);
-		ArrayList<Rect> gearRects = new ArrayList<Rect>();
-		for(MatOfPoint mop : gtbr.filterContoursOutput()) {
-			Rect rect = Imgproc.boundingRect(mop);
-			gearRects.add(rect);
-		}
-		logger.log(RobotLogger.LoggerLevel.debug, "NUMBER OF RECTS " + gearRects.size());
-    	Rect rect = VisionUtility.getRectContainer(gearRects, Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
-    	logger.log(RobotLogger.LoggerLevel.debug, rect.toString());
-//    	double distance = VisionUtility.getGearDistance(rect.width);
-    	Robot.drivetrainSubsystem.setDistance(VisionUtility.getGearDistance(VisionUtility.getRectWidthAvg(gearRects)));
-    	logger.log(RobotLogger.LoggerLevel.debug, "Distance: " + Robot.drivetrainSubsystem.getDistance());
-    	
-//    	if (Robot.drivetrainSubsystem.getDistance() <= 3) {
-//    		finished = true;
-//    		
-//    	}
-    	if (gearRects.size() >= 2) {
-//    		//Robot.drivetrainSubsystem.autoDrive();
+    	if(!gearPipelineRunnable.getStop()) {
+    		double distance = gearPipelineRunnable.getDistance();
+    		if(distance != prevDistance) {
+    			logger.log(RobotLogger.LoggerLevel.info, "Distance to gear: " + distance);
+        		voltage = AutonomousUtil.VoltageProfile1(distance, initialDistance, maxVoltage, AutonomousUtil.ProfileType.Linear, minVoltage, .5 * gearPipelineRunnable.getInitDistance());   		
+    			logger.log(RobotLogger.LoggerLevel.info, "Voltage: " + voltage);
+    			if(prevDistance != 0) {
+    				velocity = (distance - prevDistance) / (currTime - prevTime);
+        			logger.log(RobotLogger.LoggerLevel.info, "Velocity: " + velocity);
+    			}
+    			prevDistance = distance;
+    			prevTime = currTime;
+    		}   	
     	}
     	
-    	logger.log(RobotLogger.LoggerLevel.debug, "VALUE OF FINISHED " + finished);
-    	logger.log(RobotLogger.LoggerLevel.debug, "DISTANCE " + Robot.drivetrainSubsystem.getDistance());
-    	
-    	//Robot.stolenDrivetrainSubsystem.driveStraightNavX(.5);
-    	//Robot.drivetrainSubsystem.Drive(-.5, 0); */
+		if((prevDistance - distanceTolerance) <= 0) {
+	    	if(!gearPipelineRunnable.getStop())
+	    		logger.log(RobotLogger.LoggerLevel.info, "Within distanceTolerance: " + distanceTolerance);
+//	    	logger.log(RobotLogger.LoggerLevel.info, "stop");
+			gearPipelineRunnable.stop();
+			navxRunnable.stop();
+			if(targetTime == 0) {
+				targetTime = -prevDistance / velocity;
+		    	logger.log(RobotLogger.LoggerLevel.info, "TargetTime: " + targetTime);
+    			prevTime = currTime;
+			} else {
+				if((currTime - prevTime + 1000) > targetTime) {
+					finished = true;
+					voltage = 0;
+					twist = 0;
+				}
+			}
+//			finished = true;
+//			voltage = 0;
+//			twist = 0;
+		}
+		//logger.log(RobotLogger.LoggerLevel.info, "Voltage: " + voltage + "  Twist: " + twist);
+    	Robot.drivetrainSubsystem.Drive(voltage, -twist);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -127,15 +298,35 @@ public class AutoDriveCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomousDriveCommand End");
     	Robot.drivetrainSubsystem.returnToTeleop();
     	Robot.drivetrainSubsystem.Drive(0, 0);
+
+    	if(gearPipelineRunnable != null)
+    		gearPipelineRunnable.stop();
     	
+    	if(navxRunnable != null)
+    		navxRunnable.stop();
+        
+    	threadGearPipelineRunnable = null;
+        threadNavxRunnable = null;
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomousDriveCommand interrupted");
     	Robot.drivetrainSubsystem.returnToTeleop();
     	Robot.drivetrainSubsystem.Drive(0, 0);
+
+    	if(gearPipelineRunnable != null)
+    		gearPipelineRunnable.stop();
+    	
+    	if(navxRunnable != null)
+    		navxRunnable.stop();
+        
+    	threadGearPipelineRunnable = null;
+        threadNavxRunnable = null;
     }
 }
+
