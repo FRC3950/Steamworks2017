@@ -40,6 +40,7 @@ public class GearIntakeSubsystem extends Subsystem {
     }
     
     private State gearliftstate;
+    private boolean isGearIn;
     
     public void GearIntake(double trigger){
     	intakeMotor.set(trigger);
@@ -48,6 +49,15 @@ public class GearIntakeSubsystem extends Subsystem {
     public boolean GearBumperSwitchGet(){
     	return true;
 //    	return bumperSwitch.get();
+    }
+    
+    public boolean currentOverload(){
+    	if(intakeMotor.getOutputCurrent() >= 40){
+    		isGearIn = true;
+    	} else {
+    		isGearIn = false;
+    	}
+    	return isGearIn;
     }
     
     public void IntakePositionStart(){

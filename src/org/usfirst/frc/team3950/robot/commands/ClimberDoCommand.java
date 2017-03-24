@@ -21,7 +21,19 @@ public class ClimberDoCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     	Robot.climberSubsystem.climberDo();
+    	
+    	/*switch(Robot.climberSubsystem.getState()){
+    	case stop:
+        	Robot.climberSubsystem.climberDo();
+        	break;
+    	case on:
+    	default:
+    		Robot.climberSubsystem.climberStop();
+    		break;
+    	}*/
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

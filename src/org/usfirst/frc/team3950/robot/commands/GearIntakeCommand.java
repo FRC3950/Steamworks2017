@@ -32,9 +32,17 @@ public class GearIntakeCommand extends Command {
     	
     	if(!gearIn){
     		Robot.gearintakesubsystem.GearIntake(controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft));
+        	gearIn = Robot.gearintakesubsystem.currentOverload();
+    	} else if (gearIn) {
+    		Robot.gearintakesubsystem.GearIntake(-controller.getTriggerAxis(Hand.kLeft));
     	}
-    	lastRightTriggerPosition = controller.getTriggerAxis(Hand.kRight);
     	
+    	if (controller.getTriggerAxis(Hand.kLeft) >= .5){
+    		gearIn = false;
+    	}
+    	
+    	
+    	//lastRightTriggerPosition = controller.getTriggerAxis(Hand.kRight);
     	
     	
 		
