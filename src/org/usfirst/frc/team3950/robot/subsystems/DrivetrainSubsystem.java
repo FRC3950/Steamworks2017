@@ -89,7 +89,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	pidInit = false;
     	gyroPID = false;
     	
-//    	setDefaultCommand(new DriveCommand());
+    	setDefaultCommand(new DriveCommand());
         
     }
     

@@ -31,10 +31,10 @@ public class GearIntakeCommand extends Command {
     	//logger.log(RobotLogger.LoggerLevel.debug, "kRight: " + controller.getTriggerAxis(Hand.kRight) + "  kLeft: " + controller.getTriggerAxis(Hand.kLeft));
     	
     	if(!gearIn){
-    		Robot.gearintakesubsystem.GearIntake(controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft));
+    		Robot.gearintakesubsystem.GearIntake(-controller.getTriggerAxis(Hand.kRight) + controller.getTriggerAxis(Hand.kLeft));
         	gearIn = Robot.gearintakesubsystem.currentOverload();
     	} else if (gearIn) {
-    		Robot.gearintakesubsystem.GearIntake(-controller.getTriggerAxis(Hand.kLeft));
+    		Robot.gearintakesubsystem.GearIntake(controller.getTriggerAxis(Hand.kLeft));
     	}
     	
     	if (controller.getTriggerAxis(Hand.kLeft) >= .5){

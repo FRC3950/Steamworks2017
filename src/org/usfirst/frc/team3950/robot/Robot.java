@@ -59,7 +59,7 @@ public class Robot extends IterativeRobot {
 	
 
     Command autonomousCommand;
-    SendableChooser chooser;
+    SendableChooser<Command> chooser;
     SendableChooser<LoggerLevelSet> myLoggerChooser;
 
     /**
@@ -71,16 +71,19 @@ public class Robot extends IterativeRobot {
     	logger.log(RobotLogger.LoggerLevel.info, Robot.robotConfig.toString());
     	
 		oi = new OI();
-//        chooser = new SendableChooser();
-//        chooser.addDefault("Default Auto", new DriveCommand());
-        
+		chooser = new SendableChooser<Command>();
+		chooser.addDefault("Auto Drive Command", new AutoDriveCommand());
+        chooser.addObject("Auto Gear Command", new AutoGearCommand());
+        chooser.addObject("Auto Baseline Command", new AutoBaselineCommand());
+        chooser.addObject("No Auto", new AutoNoneCommand());
         myLoggerChooser = new SendableChooser<LoggerLevelSet>();
         myLoggerChooser.addObject("trace", new LoggerLevelSet(RobotLogger.LoggerLevel.trace));
         myLoggerChooser.addObject("debug", new LoggerLevelSet(RobotLogger.LoggerLevel.debug));
         myLoggerChooser.addDefault("info", new LoggerLevelSet(RobotLogger.LoggerLevel.info));
         SmartDashboard.putData("Logger Level", myLoggerChooser);
+        SmartDashboard.putData("Auto", chooser);
         
-    	autonomousCommand = new AutoDriveCommand();
+//    	autonomousCommand = new AutoDriveCommand();
 
 //        chooser.addObject("My Auto", new MyAutoCommand());
 //        SmartDashboard.putNumber("Proportion", 0.2);
@@ -131,9 +134,9 @@ public class Robot extends IterativeRobot {
   	
   	
     public void autonomousInit() {
-//        autonomousCommand = (Command) chooser.getSelected();
-    	autonomousCommand = new AutoDriveCommand();
-    	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomous Init");
+        autonomousCommand = (Command) chooser.getSelected();
+    	//autonomousCommand = new AutoDriveCommand();
+    	logger.log(RobotLogger.LoggerLevel.info, "I am in Autonomous Init");
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -250,6 +253,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        new DriveCommand().start();
         RobotMap.ahrs.reset();
     }
 

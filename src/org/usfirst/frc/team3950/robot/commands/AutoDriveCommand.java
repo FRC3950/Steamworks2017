@@ -180,7 +180,7 @@ public class AutoDriveCommand extends Command {
     private GearPipeline gtbr = new GearPipeline();
     private GearPipelineRunnable gearPipelineRunnable = null;
     private double initialDistance = 0.0;
-    private double distanceTolerance = 2.0;
+    private double distanceTolerance = 3.0;
     private NavxRunnable navxRunnable = null;
 	private Thread threadGearPipelineRunnable = null;
 	private Thread threadNavxRunnable = null;
@@ -230,7 +230,7 @@ public class AutoDriveCommand extends Command {
         prevDistance = 0;
     	voltage = 0;
     	twist = 0;
-        distanceTolerance = 4.0;
+        distanceTolerance = 3.0;
         targetTime = 0;
     }
     

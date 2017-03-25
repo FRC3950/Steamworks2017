@@ -42,9 +42,9 @@ public class GearPipeline implements VisionPipeline {
 	public void process(Mat source0) {
 		// Step HSL_Threshold0:
 		Mat hslThresholdInput = source0;
-		double[] hslThresholdHue = {70.0, 94.0};
-		double[] hslThresholdSaturation = {156.0, 255.0};
-		double[] hslThresholdLuminance = {41.0, 216.0};
+		double[] hslThresholdHue = {68.0, 100.0};
+		double[] hslThresholdSaturation = {0.0, 255.0};
+		double[] hslThresholdLuminance = {73.0, 179.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:

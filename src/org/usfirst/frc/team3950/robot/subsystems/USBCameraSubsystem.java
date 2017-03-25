@@ -43,7 +43,7 @@ public class USBCameraSubsystem extends Subsystem {
 		camera.setResolution(Robot.robotConfig.usbCameraSettings.width, Robot.robotConfig.usbCameraSettings.height);
 //		System.out.println("camera has set resolution");
 		camera.setWhiteBalanceManual(Robot.robotConfig.usbCameraSettings.whiteBalance);
-//		camera.setExposureManual(-10);
+		camera.setExposureManual(-10);
 		camera.setBrightness(Robot.robotConfig.usbCameraSettings.cameraBrightness);
 		cvSink = CameraServer.getInstance().getVideo(camera); //capture mats from camera
 		logger.log(RobotLogger.LoggerLevel.info, "system has established cvsink");

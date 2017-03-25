@@ -7,36 +7,35 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class BallIntakeCommand extends Command {
+public class AutoBaselineCommand extends Command {
 
-    public BallIntakeCommand() {
+	private double currTime;
+	private double startTime;
+	private double driveTime = 4000;
+	
+	
+    public AutoBaselineCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.ballintakesubsystem);
+    	requires(Robot.drivetrainSubsystem);
     }
-
+    
     // Called just before this Command runs the first time
     protected void initialize() {
+    	startTime = System.currentTimeMillis();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
- //   	Robot.ballintakesubsystem.ballIntakeIn();
-    	switch(Robot.ballintakesubsystem.getState()){
-    	case outtake: 
-    		Robot.ballintakesubsystem.ballIntakeStop();
-    		break;
-    	case stop:
-    	case intake:
-    	default:
-    		Robot.ballintakesubsystem.ballIntakeOut();
-    	    break;
+    	currTime = System.currentTimeMillis();
+    	if(currTime - startTime <= driveTime){
+    		Robot.drivetrainSubsystem.Drive(-.75, 0);
     	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
