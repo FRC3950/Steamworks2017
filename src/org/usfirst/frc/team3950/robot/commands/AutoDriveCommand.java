@@ -184,6 +184,7 @@ public class AutoDriveCommand extends Command {
     private NavxRunnable navxRunnable = null;
 	private Thread threadGearPipelineRunnable = null;
 	private Thread threadNavxRunnable = null;
+	private double initAngle = 0;
 
     public AutoDriveCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -196,13 +197,16 @@ public class AutoDriveCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    //	double totalCounts = (63.8/(2*Math.PI *4))*4096;
+    //	Robot.drivetrainSubsystem.autoDrive(totalCounts);
+    	
+    
     	// make sure drive train is not moving
     	Robot.drivetrainSubsystem.Drive(0, 0);
-    	Robot.gearintakesubsystem.IntakePositionGear();
-    	
+    	Robot.gearintakesubsystem.IntakePositionStart();
     	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomousDriveCommand Init");
     	// set navx to zero
-	    RobotMap.ahrs.reset();
+	    initAngle = RobotMap.ahrs.getAngle();
     	
     	// create runnable for camera subsystem
         if(gearPipelineRunnable == null)
@@ -234,25 +238,39 @@ public class AutoDriveCommand extends Command {
     	twist = 0;
         distanceTolerance = 4.0;
         targetTime = 0;
-        maxVoltage = .5;
-        minVoltage = .4;
+        maxVoltage = .6;
+        minVoltage = .5;
+        
     }
     
+    
+    
     double prevTime = 0;
-    double maxVoltage = .5;
-    double minVoltage = .4;
+    double maxVoltage = .6;
+    double minVoltage = .5;
     double prevDistance = 0;
 	double voltage = 0;
 	double twist = 0;
 	double velocity = 0;
 	double targetTime = 0;
+	//double totalCounts = (63.8/(2*Math.PI *4))*4096;
     // Called repeatedly when this Command is scheduled to run 
+
+    
     protected void execute() {
+    	//if(RobotMap.leftFrontDriveMotor.getEncPosition() <= totalCounts){
+    		//RobotMap.leftFrontDriveMotor.
+    	//}
+    	//else if(RobotMap.leftFrontDriveMotor.getEncPosition() > totalCounts)
+    	
+    	//	finished = true;
+    	
 		long currTime = System.currentTimeMillis();
 //    	logger.log(RobotLogger.LoggerLevel.info, "I am in AutonomousDriveCommand Execute");
     	if(!navxRunnable.getStop()) {
-    		double angle = navxRunnable.getAngle();
-    		twist = angle / 30.0;	
+    		double angle = navxRunnable.getAngle() - initAngle;
+    		twist = (angle / 15.0) + .12;	
+    		logger.log(RobotLogger.LoggerLevel.debug, "Twist is: " + twist);
     	}
     	if(!gearPipelineRunnable.getStop()) {
     		double distance = gearPipelineRunnable.getDistance();
@@ -274,13 +292,13 @@ public class AutoDriveCommand extends Command {
 	    		logger.log(RobotLogger.LoggerLevel.info, "Within distanceTolerance: " + distanceTolerance);
 //	    	logger.log(RobotLogger.LoggerLevel.info, "stop");
 			gearPipelineRunnable.stop();
-			navxRunnable.stop();
+		//	navxRunnable.stop();
 			if(targetTime == 0) {
 				targetTime = -prevDistance / velocity;
 		    	logger.log(RobotLogger.LoggerLevel.info, "TargetTime: " + targetTime);
     			prevTime = currTime;
 			} else {
-				if((currTime - prevTime + 100) > targetTime) {
+				if((currTime - prevTime + 153) > targetTime) {
 					finished = true;
 					voltage = 0;
 					twist = 0;
@@ -292,6 +310,7 @@ public class AutoDriveCommand extends Command {
 		}
 		//logger.log(RobotLogger.LoggerLevel.info, "Voltage: " + voltage + "  Twist: " + twist);
     	Robot.drivetrainSubsystem.Drive(-voltage, twist);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

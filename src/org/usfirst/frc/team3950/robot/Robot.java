@@ -75,6 +75,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Auto Drive Command", new AutoDriveCommand());
         chooser.addObject("Auto Gear Command", new AutoGearCommand());
         chooser.addObject("Auto Baseline Command", new AutoBaselineCommand());
+        chooser.addObject("Auto Drive Time Command", new AutoDriveTimeCommand());
         chooser.addObject("No Auto", new AutoNoneCommand());
         myLoggerChooser = new SendableChooser<LoggerLevelSet>();
         myLoggerChooser.addObject("trace", new LoggerLevelSet(RobotLogger.LoggerLevel.trace));
@@ -134,9 +135,9 @@ public class Robot extends IterativeRobot {
   	
   	
     public void autonomousInit() {
-//      autonomousCommand = (Command) chooser.getSelected();
-    	//autonomousCommand = new AutoBaselineCommand();
-    	autonomousCommand = new AutoDriveCommand();
+      autonomousCommand = (Command) chooser.getSelected();
+      //autonomousCommand = new AutoBaselineCommand();
+    	//autonomousCommand = new AutoDriveCommand();
        
     	logger.log(RobotLogger.LoggerLevel.info, "I am in Autonomous Init");
         
