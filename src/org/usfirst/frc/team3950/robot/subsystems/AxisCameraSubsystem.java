@@ -35,10 +35,10 @@ public class AxisCameraSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
-    	camera.setResolution(Robot.robotConfig.axisCameraSettings.width, Robot.robotConfig.axisCameraSettings.height);
-    	cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-    	logger.log(RobotLogger.LoggerLevel.info, "CAMERA ENABLED");
+    	//camera = CameraServer.getInstance().addAxisCamera("10.39.50.11");
+    	//camera.setResolution(Robot.robotConfig.axisCameraSettings.width, Robot.robotConfig.axisCameraSettings.height);
+    	//cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
+    	//logger.log(RobotLogger.LoggerLevel.info, "CAMERA ENABLED");
     }
     
     public Mat getFrame() {

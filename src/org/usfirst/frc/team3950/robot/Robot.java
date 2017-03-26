@@ -134,8 +134,10 @@ public class Robot extends IterativeRobot {
   	
   	
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
-    	//autonomousCommand = new AutoDriveCommand();
+//      autonomousCommand = (Command) chooser.getSelected();
+    	//autonomousCommand = new AutoBaselineCommand();
+    	autonomousCommand = new AutoDriveCommand();
+       
     	logger.log(RobotLogger.LoggerLevel.info, "I am in Autonomous Init");
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");

@@ -71,7 +71,7 @@ public class GearIntakeSubsystem extends Subsystem {
     public void IntakePositionGear(){
     	singleSolenoid1.set(true);
     	singleSolenoid2.set(true);
-    	Timer.delay(.1);
+    	Timer.delay(.055);
     	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
     	doubleSolenoid2.set(DoubleSolenoid.Value.kForward);
     	gearliftstate = State.gear;  	

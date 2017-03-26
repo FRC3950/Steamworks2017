@@ -39,18 +39,23 @@ public class GearPipeline implements VisionPipeline {
 	/**
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
+	private static int idx = 0;
 	public void process(Mat source0) {
+		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/rgbThresholdOutput_" + idx++ + ".jpg", source0);
 		// Step HSL_Threshold0:
 		Mat hslThresholdInput = source0;
-		double[] hslThresholdHue = {68.0, 100.0};
-		double[] hslThresholdSaturation = {0.0, 255.0};
-		double[] hslThresholdLuminance = {73.0, 179.0};
+		double[] hslThresholdHue = {55.0, 102.0};
+		double[] hslThresholdSaturation = {190.0, 255.0};
+		double[] hslThresholdLuminance = {25.0, 255.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
+		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/rgbThresholdOutput_" + idx++ + ".jpg", hslThresholdOutput);
+
 
 		// Step Find_Contours0:
 		Mat findContoursInput = hslThresholdOutput;
 		boolean findContoursExternalOnly = true;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
+		org.opencv.imgcodecs.Imgcodecs.imwrite("/home/lvuser/rgbThresholdOutput_" + idx++ + ".jpg", findContoursInput);
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;

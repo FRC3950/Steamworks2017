@@ -180,7 +180,7 @@ public class AutoDriveCommand extends Command {
     private GearPipeline gtbr = new GearPipeline();
     private GearPipelineRunnable gearPipelineRunnable = null;
     private double initialDistance = 0.0;
-    private double distanceTolerance = 3.0;
+    private double distanceTolerance = 4.0;
     private NavxRunnable navxRunnable = null;
 	private Thread threadGearPipelineRunnable = null;
 	private Thread threadNavxRunnable = null;
@@ -198,6 +198,8 @@ public class AutoDriveCommand extends Command {
     protected void initialize() {
     	// make sure drive train is not moving
     	Robot.drivetrainSubsystem.Drive(0, 0);
+    	Robot.gearintakesubsystem.IntakePositionGear();
+    	
     	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomousDriveCommand Init");
     	// set navx to zero
 	    RobotMap.ahrs.reset();
@@ -230,13 +232,15 @@ public class AutoDriveCommand extends Command {
         prevDistance = 0;
     	voltage = 0;
     	twist = 0;
-        distanceTolerance = 3.0;
+        distanceTolerance = 4.0;
         targetTime = 0;
+        maxVoltage = .5;
+        minVoltage = .4;
     }
     
     double prevTime = 0;
-    double maxVoltage = .65;
-    double minVoltage = .6;
+    double maxVoltage = .5;
+    double minVoltage = .4;
     double prevDistance = 0;
 	double voltage = 0;
 	double twist = 0;
@@ -276,7 +280,7 @@ public class AutoDriveCommand extends Command {
 		    	logger.log(RobotLogger.LoggerLevel.info, "TargetTime: " + targetTime);
     			prevTime = currTime;
 			} else {
-				if((currTime - prevTime + 1000) > targetTime) {
+				if((currTime - prevTime + 100) > targetTime) {
 					finished = true;
 					voltage = 0;
 					twist = 0;
@@ -287,7 +291,7 @@ public class AutoDriveCommand extends Command {
 //			twist = 0;
 		}
 		//logger.log(RobotLogger.LoggerLevel.info, "Voltage: " + voltage + "  Twist: " + twist);
-    	Robot.drivetrainSubsystem.Drive(voltage, -twist);
+    	Robot.drivetrainSubsystem.Drive(-voltage, twist);
     }
 
     // Make this return true when this Command no longer needs to run execute()
