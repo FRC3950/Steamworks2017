@@ -5,6 +5,7 @@ import org.usfirst.frc.team3950.robot.RobotLogger;
 import org.usfirst.frc.team3950.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -51,6 +52,18 @@ public class AutoDriveTimeFSMCommand extends Command {
     boolean isFinished = false;
     double twistVoltageNormalizer = 90;
     
+	boolean driveStraight1_useNavX = false;
+	double driveStraight1_driveVoltage = -.75;
+	long driveStraight1_forHowLong = 1900;
+	double rotate_twistVoltage = .7;
+	double rotate_targetAngle = 30;
+	double driveStraight2_driveVoltage = -.75;
+	long driveStraight2_forHowLong = 1900;
+	boolean driveStraight2_useNavX = false;
+	double reverse_driveVoltage = -.75;
+	long reverse_forHowLong = 1900;
+	boolean reverse_useNavX = false;
+    
     public AutoDriveTimeFSMCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -88,12 +101,13 @@ public class AutoDriveTimeFSMCommand extends Command {
     	// here is where we right the logic to
     	// determine if we transition to the next state
     	double currentAngle = RobotMap.ahrs.getAngle();
-    	if((currentAngle - stateStartAngle) >= targetAngle) {
+    	if(Math.abs(currentAngle - stateStartAngle) >= targetAngle) {
     		return getNextState(currentState);
     	}
     	
     	// here is where we write the action autonomous
     	// should perform in this state
+    	//logger.log(RobotLogger.LoggerLevel.debug, "The current angle is: " + currentAngle);
 		Robot.drivetrainSubsystem.Drive(0, twistVoltage);
 		
     	return currentState;
@@ -139,35 +153,19 @@ public class AutoDriveTimeFSMCommand extends Command {
     		break;
     		
     	case DriveStraight1:
-	   		{
-	   			double driveVoltage = -.75;
-	   			long forHowLong = 1900;
-	   			currentState = driveStraight(currentState, forHowLong, driveVoltage, false);
-	   		}
+	   		currentState = driveStraight(currentState, driveStraight1_forHowLong, driveStraight1_driveVoltage, driveStraight1_useNavX);
 	   		break;
     		
     	case Rotate:
-	    	{
-	   			double twistVoltage = .03;
-	    		double targetAngle = 30;
-	    		currentState = rotate(currentState, targetAngle, twistVoltage);
-	    	}
+	    	currentState = rotate(currentState, rotate_targetAngle, rotate_twistVoltage);
 	    	break;
 
     	case DriveStraight2:
-			{
-				double driveVoltage = -.75;
-				long forHowLong = 1900;
-				currentState = driveStraight(currentState, forHowLong, driveVoltage, false);
-			}
+			currentState = driveStraight(currentState, driveStraight2_forHowLong, driveStraight2_driveVoltage, driveStraight2_useNavX);
 			break;
 
     	case Reverse:
-			{
-				double driveVoltage = .75;
-				long forHowLong = 500;
-				currentState = driveStraight(currentState, forHowLong, driveVoltage, false);
-			}
+			currentState = driveStraight(currentState, reverse_forHowLong, reverse_driveVoltage, reverse_useNavX);
 	   		break;
     		
     	case End:

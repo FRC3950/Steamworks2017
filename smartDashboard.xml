@@ -1,5 +1,26 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Auto" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="467" y="502"/>
+	</widget>
+	<widget field="Right Back Value" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="553"/>
+	</widget>
+	<widget field="Right Front Value" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="532"/>
+	</widget>
+	<widget field="Left Back Value" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="511"/>
+	</widget>
+	<widget field="Left Front Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="490"/>
+	</widget>
+	<widget field="Shooter RPM" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="469"/>
+	</widget>
+	<widget field="Shooter Setpoint" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="448"/>
+	</widget>
 	<widget field="Logger Level" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="1478" y="281"/>
 	</widget>
@@ -8,7 +29,7 @@
 		<property name="Camera Choice" value="Axis Camera"/>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="0" y="206"/>
+		<location x="-3" y="205"/>
 		<property name="Camera Choice" value="USB Camera 0"/>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
@@ -17,7 +38,7 @@
 		<property name="Text" value="Logger Level"/>
 	</static-widget>
 	<widget field="Shooter speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="262" y="14"/>
+		<location x="271" y="30"/>
 		<width>747</width>
 		<height>413</height>
 	</widget>

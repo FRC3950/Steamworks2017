@@ -203,7 +203,7 @@ public class AutoDriveCommand extends Command {
     
     	// make sure drive train is not moving
     	Robot.drivetrainSubsystem.Drive(0, 0);
-    	Robot.gearintakesubsystem.IntakePositionStart();
+//    	Robot.gearintakesubsystem.IntakePositionStart();
     	logger.log(RobotLogger.LoggerLevel.info, "I am in pastAutonomousDriveCommand Init");
     	// set navx to zero
 	    initAngle = RobotMap.ahrs.getAngle();
