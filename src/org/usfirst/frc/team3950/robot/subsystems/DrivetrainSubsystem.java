@@ -44,6 +44,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
 	private static PIDController pid;
 	boolean pidInit;
 	boolean gyroPID;
+	private double angleTolerance = 1;
 
     
     // Put methods for controlling this subsystem
@@ -186,6 +187,33 @@ public class DrivetrainSubsystem extends Subsystem implements PIDSource, PIDOutp
     	pid.setSetpoint(3);
     	pid.setPID(P, I, D);
     	
+    }
+    
+	
+	public void rotate(double desiredAngle, double twistVolts) {
+		double angle = Robot.drivetrainSubsystem.getNavxAngle();
+		if ((angle <= (desiredAngle + angleTolerance)) && (angle >= (desiredAngle - angleTolerance))){
+			Robot.drivetrainSubsystem.Drive(0, 0);
+		}
+		else if(angle < desiredAngle) {
+			Robot.drivetrainSubsystem.Drive(0, twistVolts);
+		} else if (angle > desiredAngle){
+			Robot.drivetrainSubsystem.Drive(0, -twistVolts);
+		}
+	}
+    
+    //for encoder things
+    public void resetEncPosition() {
+    	leftFront.setPosition(0);
+    	rightFront.setPosition(0);
+    }
+    
+    public int getEncPosition() {
+    	int encLeft = leftFront.getEncPosition();
+    	int encRight = rightFront.getEncPosition();
+    	int avg = (encLeft + encRight) / 2;
+    	//return avg;
+    	return avg;
     }
     
  /*   public void turnAngle(double angle){

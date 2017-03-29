@@ -60,6 +60,8 @@ public class AutoDriveTimeFSMCommand extends Command {
 	double rotate_twistVoltage = .7;
 	double rotate_targetAngle = 30;
 	double driveStraight2_driveVoltage = -.75;
+	double driveStraight1_twistVoltage = 0;
+	double driveStraight2_twistVoltage = 0;
 	long driveStraight2_forHowLong = 1900;
 	boolean driveStraight2_useNavX = false;
 	int driveStraight2_encoderCount = 0;
@@ -82,6 +84,8 @@ public class AutoDriveTimeFSMCommand extends Command {
         isFinished = false;
         twistVoltageNormalizer = 90;
         stateStartEncoder = 0;
+        //for encoder things
+        Robot.drivetrainSubsystem.resetEncPosition();
 
         logger.log(RobotLogger.LoggerLevel.debug, "initialize - startTime is:" + stateStartTime);
     }
@@ -127,6 +131,8 @@ public class AutoDriveTimeFSMCommand extends Command {
         	logger.log(RobotLogger.LoggerLevel.debug, currentState.name() + ":  forHowLong=" + forHowLong + "  driveVoltage=" + driveVoltage + "  useNavx=" + useNavx);
         	stateStartTime = System.currentTimeMillis();
         	prevState = currentState;
+        	RobotMap.ahrs.reset();
+        	stateStartAngle = RobotMap.ahrs.getAngle();    	
     	}
     	
     	// here is where we right the logic to
@@ -136,9 +142,18 @@ public class AutoDriveTimeFSMCommand extends Command {
     	}
 
     	double twistVoltage = 0;
-    	if(useNavx) {
-    		twistVoltage = RobotMap.ahrs.getAngle() / twistVoltageNormalizer;
+    	if(currentState == State.DriveStraight1) {
+    		twistVoltage = driveStraight1_twistVoltage;
+    	} else if(currentState == State.DriveStraight2) {
+    		twistVoltage = driveStraight2_twistVoltage;
     	}
+    	
+    	if(useNavx) {
+    		double currentAngle = RobotMap.ahrs.getAngle();
+    		twistVoltage = -(currentAngle - stateStartAngle) / twistVoltageNormalizer;
+    		logger.log(RobotLogger.LoggerLevel.debug, "Twist Voltage= " + twistVoltage + "  Angle= " + currentAngle + "State Start Angle= " + stateStartAngle); 
+    	}
+    	
     	
     	// here is where we write the action autonomous
     	// should perform in this state

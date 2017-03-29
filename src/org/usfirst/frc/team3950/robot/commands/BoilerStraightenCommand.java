@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class BoilerStraightenCommand extends Command {
 	private static RobotLogger logger = new RobotLogger(BoilerStraightenCommand.class);
+	//private double angleTolerance = 1;
 
 	public BoilerStraightenCommand() {
 		// Use requires() here to declare subsystem dependencies
@@ -22,7 +23,7 @@ public class BoilerStraightenCommand extends Command {
 		requires(Robot.axisCameraSubsystem);
 		requires(Robot.drivetrainSubsystem);
 	}
-
+	
 	// Called just before this Command runs the first time
 	protected void initialize() {
 	}
@@ -46,11 +47,12 @@ public class BoilerStraightenCommand extends Command {
 			logger.log(RobotLogger.LoggerLevel.debug, "Angle: " + boilerAngle);
 			double initialAngle = Robot.drivetrainSubsystem.getCurrentAngle();
 			double desiredAngle = initialAngle + boilerAngle;
-			if ((initialAngle != desiredAngle) && (desiredAngle > 0)) {
-				// movedrivetrain right
-			} else if ((initialAngle != desiredAngle) && (desiredAngle < 0)) {
-				// move drivetrain left
-			}
+			Robot.drivetrainSubsystem.rotate(desiredAngle, 0.75);
+//			if ((initialAngle != desiredAngle) && (desiredAngle > 0)) {
+//				// movedrivetrain right
+//			} else if ((initialAngle != desiredAngle) && (desiredAngle < 0)) {
+//				// move drivetrain left
+//			}
 		}
 	}
 

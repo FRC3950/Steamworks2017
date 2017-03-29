@@ -29,7 +29,7 @@ public class StraightenShootCommandGroup extends CommandGroup {
         // e.g. addParallel(new Command1()); wrote code
         //      addSequential(new Command2());
         // Command1 and Command2 will run in parallel. 
-    	//addSequential(new BoilerStraightenCommand());
+    	addSequential(new BoilerStraightenCommand());
 		addParallel(new AgitatorCommand());
     	addParallel(new ShooterStartCommand());
     	addParallel(new ShooterIndexerCommand());
