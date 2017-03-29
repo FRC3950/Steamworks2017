@@ -51,15 +51,18 @@ public class AutoDriveTimeFSMCommand extends Command {
     double stateStartAngle = 0;
     boolean isFinished = false;
     double twistVoltageNormalizer = 90;
+    int stateStartEncoder = 0;
     
 	boolean driveStraight1_useNavX = false;
 	double driveStraight1_driveVoltage = -.75;
 	long driveStraight1_forHowLong = 1900;
+	int driveStraight1_encoderCount = 0;
 	double rotate_twistVoltage = .7;
 	double rotate_targetAngle = 30;
 	double driveStraight2_driveVoltage = -.75;
 	long driveStraight2_forHowLong = 1900;
 	boolean driveStraight2_useNavX = false;
+	int driveStraight2_encoderCount = 0;
 	double reverse_driveVoltage = -.75;
 	long reverse_forHowLong = 1900;
 	boolean reverse_useNavX = false;
@@ -78,6 +81,7 @@ public class AutoDriveTimeFSMCommand extends Command {
         stateStartAngle = 0;
         isFinished = false;
         twistVoltageNormalizer = 90;
+        stateStartEncoder = 0;
 
         logger.log(RobotLogger.LoggerLevel.debug, "initialize - startTime is:" + stateStartTime);
     }
@@ -143,6 +147,36 @@ public class AutoDriveTimeFSMCommand extends Command {
     	return currentState;
     }
     
+    private State driveStraightEncoder(State currentState, Object... params) {
+    	int encoderCount = (int)params[0];
+    	double driveVoltage = (double)params[1];
+    	boolean useNavx = (boolean)params[2];
+    	
+    	// log the first time autonomous has entered this state
+    	if(currentState != prevState) {
+        	logger.log(RobotLogger.LoggerLevel.debug, currentState.name() + ":  encoderCount=" + encoderCount + "  driveVoltage=" + driveVoltage + "  useNavx=" + useNavx);
+        	stateStartEncoder = Robot.drivetrainSubsystem.getEncPosition();
+        	prevState = currentState;
+    	}
+    	
+    	// here is where we right the logic to
+    	// determine if we transition to the next state
+    	if((Robot.drivetrainSubsystem.getEncPosition() - stateStartEncoder) > encoderCount) {
+    		return getNextState(currentState);
+    	}
+
+    	double twistVoltage = 0;
+    	if(useNavx) {
+    		twistVoltage = RobotMap.ahrs.getAngle() / twistVoltageNormalizer;
+    	}
+    	
+    	// here is where we write the action autonomous
+    	// should perform in this state
+		Robot.drivetrainSubsystem.Drive(driveVoltage, twistVoltage);
+		
+    	return currentState;
+    }
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	switch(currentState)
