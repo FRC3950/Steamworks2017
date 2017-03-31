@@ -86,7 +86,7 @@ public class AutoDriveTimeFSMCommand extends Command {
         stateStartEncoder = 0;
         //for encoder things
         Robot.drivetrainSubsystem.resetEncPosition();
-
+        Robot.gearintakesubsystem.IntakePositionStart();
         logger.log(RobotLogger.LoggerLevel.debug, "initialize - startTime is:" + stateStartTime);
     }
 

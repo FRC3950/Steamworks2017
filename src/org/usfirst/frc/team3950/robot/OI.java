@@ -80,6 +80,6 @@ public class OI {
     	xboxControllerAButton.whenPressed(new GearIntakeFloorCommand());
   //  	driveStick10Button.whenPressed(new BoilerRectanglesCommand());
     //	driveStick11Button.whenPressed(new GearShiftCommand());
-    	driveStick12Button.whenPressed(new AgitatorCommand());
+   // 	driveStick12Button.whenPressed(new AgitatorCommand());
     }
 }
