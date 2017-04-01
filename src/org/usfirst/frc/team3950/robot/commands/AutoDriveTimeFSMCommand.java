@@ -109,6 +109,8 @@ public class AutoDriveTimeFSMCommand extends Command {
     	// here is where we right the logic to
     	// determine if we transition to the next state
     	double currentAngle = RobotMap.ahrs.getAngle();
+    	logger.log(RobotLogger.LoggerLevel.debug, "Current Angle: " + currentAngle + " State start ANGLE: " + stateStartAngle + "  target angle: " + targetAngle);
+
     	if(Math.abs(currentAngle - stateStartAngle) >= targetAngle) {
     		return getNextState(currentState);
     	}

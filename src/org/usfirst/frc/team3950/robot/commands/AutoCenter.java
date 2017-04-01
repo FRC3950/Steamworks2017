@@ -9,8 +9,8 @@ public class AutoCenter extends AutoDriveTimeFSMCommand {
 		super.initialize();
 		this.driveStraight1_useNavX = false;
 		this.driveStraight1_driveVoltage = -.75;
-		this.driveStraight1_forHowLong = 2650;
-		this.driveStraight1_twistVoltage = 0.2;
+		this.driveStraight1_forHowLong = 2700;
+		this.driveStraight1_twistVoltage = 0.075;//0.15;
 		this.rotate_twistVoltage = .7;
 		this.rotate_targetAngle = 0;
 		this.driveStraight2_driveVoltage = -.75;

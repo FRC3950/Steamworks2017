@@ -8,17 +8,17 @@ public class AutoRight extends AutoDriveTimeFSMCommand {
 	protected void initialize() {
 		super.initialize();
 		this.driveStraight1_useNavX = false;
-		this.driveStraight1_driveVoltage = -.75;
-		this.driveStraight1_twistVoltage = 0.2;
-		this.driveStraight1_forHowLong = 2325;
+		this.driveStraight1_driveVoltage = 0;//-.75;
+		this.driveStraight1_twistVoltage = 0;//0.1;
+		this.driveStraight1_forHowLong = 0;//2200;
 		this.rotate_twistVoltage = -.7;
-		this.rotate_targetAngle = 40;
+		this.rotate_targetAngle = 30;
 		this.driveStraight2_driveVoltage = -.75;
-		this.driveStraight2_forHowLong = 1730;
+		this.driveStraight2_forHowLong = 0;//1710;
 		this.driveStraight2_twistVoltage = 0.2;
 		this.driveStraight2_useNavX = false;
 		this.reverse_driveVoltage = .75;
-		this.reverse_forHowLong = 75;
+		this.reverse_forHowLong = 0;//75;
 		this.reverse_useNavX = false;
 	}
 }
